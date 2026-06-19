@@ -1,12 +1,12 @@
 # @pago-sh/hono
 
-Payments and Checkouts made dead simple with Hono.
+Pagamentos e Checkouts extremamente simples com Hono.
 
 `pnpm install @pago-sh/hono zod`
 
 ## Checkout
 
-Create a Checkout handler which takes care of redirections.
+Crie um handler de Checkout que cuida dos redirecionamentos.
 
 ```typescript
 import { Hono } from "hono";
@@ -17,29 +17,29 @@ const app = new Hono();
 app.get(
   "/checkout",
   Checkout({
-    accessToken: "xxx", // Or set an environment variable to PAGO_ACCESS_TOKEN
+    accessToken: "xxx", // Ou defina a variável de ambiente PAGO_ACCESS_TOKEN
     successUrl: process.env.SUCCESS_URL,
-    returnUrl: "https://myapp.com", // Optional Return URL, which renders a Back-button in the Checkout
-    server: "sandbox", // Use sandbox if you're testing Pago - omit the parameter or pass 'production' otherwise
-    theme: "dark" // Enforces the theme - System-preferred theme will be set if left omitted
+    returnUrl: "https://myapp.com", // URL de retorno opcional, que renderiza um botão Voltar no Checkout
+    server: "sandbox", // Use sandbox se estiver testando a Pago - omita o parâmetro ou passe 'production' caso contrário
+    theme: "dark" // Força o tema - o tema preferido do sistema será usado se omitido
   }),
 );
 ```
 
 ### Query Params
 
-Pass query params to this route.
+Passe query params para esta rota.
 
 - products `?products=123`
-- customerId (optional) `?products=123&customerId=xxx`
-- customerExternalId (optional) `?products=123&customerExternalId=xxx`
-- customerEmail (optional) `?products=123&customerEmail=janedoe@gmail.com`
-- customerName (optional) `?products=123&customerName=Jane`
-- metadata (optional) `URL-Encoded JSON string`
+- customerId (opcional) `?products=123&customerId=xxx`
+- customerExternalId (opcional) `?products=123&customerExternalId=xxx`
+- customerEmail (opcional) `?products=123&customerEmail=janedoe@gmail.com`
+- customerName (opcional) `?products=123&customerName=Jane`
+- metadata (opcional) `URL-Encoded JSON string`
 
 ## Customer Portal
 
-Create a customer portal where your customer can view orders and subscriptions.
+Crie um portal do cliente onde seus clientes podem visualizar pedidos e assinaturas.
 
 ```typescript
 import { Hono } from "hono";
@@ -50,17 +50,17 @@ const app = new Hono();
 app.get(
   "/portal",
   CustomerPortal({
-    accessToken: "xxx", // Or set an environment variable to PAGO_ACCESS_TOKEN
-    getCustomerId: (event) => "", // Fuction to resolve a Pago Customer ID
-    returnUrl: "https://myapp.com", // Optional Return URL, which renders a Back-button in the Customer Portal
-    server: "sandbox", // Use sandbox if you're testing Pago - omit the parameter or pass 'production' otherwise
+    accessToken: "xxx", // Ou defina a variável de ambiente PAGO_ACCESS_TOKEN
+    getCustomerId: (event) => "", // Função para resolver um Customer ID da Pago
+    returnUrl: "https://myapp.com", // URL de retorno opcional, que renderiza um botão Voltar no Customer Portal
+    server: "sandbox", // Use sandbox se estiver testando a Pago - omita o parâmetro ou passe 'production' caso contrário
   }),
 );
 ```
 
 ## Webhooks
 
-A simple utility which resolves incoming webhook payloads by signing the webhook secret properly.
+Um utilitário simples que resolve os payloads de webhook recebidos, assinando corretamente o webhook secret.
 
 ```typescript
 import { Hono } from 'hono'
@@ -70,13 +70,13 @@ const app = new Hono()
 
 app.post('/pago/webhooks', Webhooks({
   webhookSecret: process.env.PAGO_WEBHOOK_SECRET!,
-  onPayload: async (payload) => /** Handle payload */,
+  onPayload: async (payload) => /** Trate o payload */,
 }))
 ```
 
 #### Payload Handlers
 
-The Webhook handler also supports granular handlers for easy integration.
+O handler de Webhook também oferece suporte a handlers granulares para facilitar a integração.
 
 - onCheckoutCreated: (payload) =>
 - onCheckoutUpdated: (payload) =>

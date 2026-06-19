@@ -1,39 +1,39 @@
 # @pago-sh/better-auth
 
-A [Better Auth](https://github.com/better-auth/better-auth) plugin for integrating [Pago](https://pago.sh) payments and subscriptions into your authentication flow.
+Um plugin do [Better Auth](https://github.com/better-auth/better-auth) para integrar pagamentos e assinaturas da [pago.sh](https://pago.sh) ao seu fluxo de autenticação.
 
-## Features
+## Recursos
 
-- Checkout Integration
-- Customer Portal
-- Automatic Customer creation on signup
-- Event Ingestion & Customer Meters for flexible Usage Based Billing
-- Handle Pago Webhooks securely with signature verification
-- Reference System to associate purchases with organizations
+- Integração de Checkout
+- Portal do Cliente
+- Criação automática de Cliente no cadastro
+- Ingestão de Eventos e Medidores de Cliente para Cobrança por Uso flexível
+- Tratamento seguro de Webhooks da pago.sh com verificação de assinatura
+- Sistema de Referência para associar compras a organizações
 
-## Installation
+## Instalação
 
 ```bash
 pnpm add better-auth @pago-sh/better-auth @pago-sh/sdk
 ```
 
-## Preparation
+## Preparação
 
-Go to your Pago Organization Settings, and create an Organization Access Token. Add it to your environment.
+Acesse as Configurações da sua Organização na pago.sh e crie um Token de Acesso da Organização. Adicione-o ao seu ambiente.
 
 ```bash
 # .env
 PAGO_ACCESS_TOKEN=...
 ```
 
-### Configuring BetterAuth Server
+### Configurando o Servidor BetterAuth
 
-The Pago plugin comes with a handful additional plugins which adds functionality to your stack.
+O plugin da pago.sh vem com um conjunto de plugins adicionais que adicionam funcionalidades à sua stack.
 
-- Checkout - Enables a seamless checkout integration
-- Portal - Makes it possible for your customers to manage their orders, subscriptions & granted benefits
-- Usage - Simple extension for listing customer meters & ingesting events for Usage Based Billing
-- Webhooks - Listen for relevant Pago webhooks
+- Checkout - Habilita uma integração de checkout perfeita
+- Portal - Permite que seus clientes gerenciem seus pedidos, assinaturas e benefícios concedidos
+- Usage - Extensão simples para listar medidores de clientes e ingerir eventos para Cobrança por Uso
+- Webhooks - Escuta os webhooks relevantes da pago.sh
 
 ```typescript
 import { betterAuth } from "better-auth";
@@ -83,9 +83,9 @@ const auth = betterAuth({
 });
 ```
 
-### Configuring BetterAuth Client
+### Configurando o Cliente BetterAuth
 
-You will be using the BetterAuth Client to interact with the Pago functionalities.
+Você utilizará o Cliente BetterAuth para interagir com as funcionalidades da pago.sh.
 
 ```typescript
 import { createAuthClient } from "better-auth/react";
@@ -99,7 +99,7 @@ export const authClient = createAuthClient({
 });
 ```
 
-## Configuration Options
+## Opções de Configuração
 
 ```typescript
 import { betterAuth } from "better-auth";
@@ -139,24 +139,24 @@ const auth = betterAuth({
 });
 ```
 
-### Required Options
+### Opções Obrigatórias
 
-- `client`: Pago SDK client instance
+- `client`: Instância do cliente do SDK da pago.sh
 
-### Optional Options
+### Opções Opcionais
 
-- `createCustomerOnSignUp`: Automatically create a Pago customer when a user signs up
-- `getCustomerCreateParams`: Custom function to provide additional customer creation metadata
+- `createCustomerOnSignUp`: Cria automaticamente um cliente na pago.sh quando um usuário se cadastra
+- `getCustomerCreateParams`: Função personalizada para fornecer metadados adicionais na criação do cliente
 
-### Customers
+### Clientes
 
-When `createCustomerOnSignUp` is enabled, a new Pago Customer is automatically created when a new User is added in the Better-Auth Database.
+Quando `createCustomerOnSignUp` está habilitado, um novo Cliente da pago.sh é criado automaticamente quando um novo Usuário é adicionado ao Banco de Dados do Better-Auth.
 
-All new customers are created with an associated `externalId`, which is the ID of your User in the Database. This allows us to skip any Pago <-> User mapping in your Database.
+Todos os novos clientes são criados com um `externalId` associado, que é o ID do seu Usuário no Banco de Dados. Isso nos permite dispensar qualquer mapeamento entre pago.sh e Usuário no seu Banco de Dados.
 
-## Checkout Plugin
+## Plugin de Checkout
 
-To support checkouts in your app, simply pass the Checkout plugin to the use-property.
+Para dar suporte a checkouts no seu app, basta passar o plugin Checkout para a propriedade `use`.
 
 ```typescript
 import { pago, checkout } from "@pago-sh/better-auth";
@@ -185,7 +185,7 @@ const auth = betterAuth({
 });
 ```
 
-When checkouts are enabled, you're able to initialize Checkout Sessions using the checkout-method on the BetterAuth Client. This will redirect the user to the Product Checkout.
+Quando os checkouts estão habilitados, você pode inicializar Sessões de Checkout usando o método `checkout` no Cliente BetterAuth. Isso redirecionará o usuário para o Checkout do Produto.
 
 ```typescript
 await authClient.checkout({
@@ -196,14 +196,14 @@ await authClient.checkout({
 });
 ```
 
-Checkouts will automatically carry the authenticated User as the customer to the checkout. Email-address will be "locked-in".
+Os checkouts levarão automaticamente o Usuário autenticado como o cliente para o checkout. O endereço de e-mail será "fixado".
 
-If `authenticatedUsersOnly` is `false` - then it will be possible to trigger checkout sessions without any associated customer.
+Se `authenticatedUsersOnly` for `false`, então será possível disparar sessões de checkout sem nenhum cliente associado.
 
 
-### Checkout Embed
+### Checkout Incorporado (Embed)
 
-You can use the `checkoutEmbed` method to instead open the Checkout as an Embed on your site. 
+Você pode usar o método `checkoutEmbed` para, em vez disso, abrir o Checkout como um Embed no seu site.
 
 ```typescript
 const embed = await authClient.checkoutEmbed({
@@ -226,9 +226,9 @@ checkout.addEventListener("success", (event) => {
 });
 ```
 
-### Organization Support
+### Suporte a Organizações
 
-This plugin supports the Organization plugin. If you pass the organization ID to the Checkout referenceId, you will be able to keep track of purchases made from organization members.
+Este plugin suporta o plugin Organization. Se você passar o ID da organização para o `referenceId` do Checkout, poderá acompanhar as compras feitas pelos membros da organização.
 
 ```typescript
 const organizationId = (await authClient.organization.list())?.data?.[0]?.id,
@@ -243,9 +243,9 @@ await authClient.checkout({
 });
 ```
 
-## Portal Plugin
+## Plugin do Portal
 
-A plugin which enables customer management of their purchases, orders and subscriptions.
+Um plugin que habilita o gerenciamento, pelo cliente, de suas compras, pedidos e assinaturas.
 
 ```typescript
 import { pago, checkout, portal } from "@pago-sh/better-auth";
@@ -267,45 +267,45 @@ const auth = betterAuth({
 });
 ```
 
-The portal-plugin gives the BetterAuth Client a set of customer management methods, scoped under `authClient.customer`.
+O plugin do portal fornece ao Cliente BetterAuth um conjunto de métodos de gerenciamento de clientes, agrupados sob `authClient.customer`.
 
-### Customer Portal Management
+### Gerenciamento do Portal do Cliente
 
-The following method will redirect the user to the Pago Customer Portal, where they can see orders, purchases, subscriptions, benefits, etc.
+O método a seguir redirecionará o usuário para o Portal do Cliente da pago.sh, onde ele poderá ver pedidos, compras, assinaturas, benefícios, etc.
 
 ```typescript
 await authClient.customer.portal();
 ```
 
-### Customer State
+### Estado do Cliente
 
-The portal plugin also adds a convenient state-method for retrieving the general Customer State.
+O plugin do portal também adiciona um método de estado conveniente para recuperar o Estado geral do Cliente.
 
 ```typescript
 const { data: customerState } = await authClient.customer.state();
 ```
 
-The customer state object contains:
+O objeto de estado do cliente contém:
 
-- All the data about the customer.
-- The list of their active subscriptions
-  - Note: This does not include subscriptions done by a parent organization. See the subscription list-method below for more information.
-- The list of their granted benefits.
-- The list of their active meters, with their current balance.
+- Todos os dados sobre o cliente.
+- A lista de suas assinaturas ativas
+  - Observação: Isso não inclui assinaturas feitas por uma organização-mãe. Veja o método `list` de assinaturas abaixo para mais informações.
+- A lista de seus benefícios concedidos.
+- A lista de seus medidores ativos, com o saldo atual.
 
-Thus, with that single object, you have all the required information to check if you should provision access to your service or not.
+Assim, com esse único objeto, você tem todas as informações necessárias para verificar se deve ou não provisionar acesso ao seu serviço.
 
-[You can learn more about the Pago Customer State in the Pago Docs](https://docs.pago.sh/integrate/customer-state).
+[Você pode saber mais sobre o Estado do Cliente da pago.sh na Documentação da pago.sh](https://docs.pago.sh/integrate/customer-state).
 
-### Benefits, Orders & Subscriptions
+### Benefícios, Pedidos e Assinaturas
 
-The portal plugin adds 3 convenient methods for listing benefits, orders & subscriptions relevant to the authenticated user/customer.
+O plugin do portal adiciona 3 métodos convenientes para listar benefícios, pedidos e assinaturas relevantes para o usuário/cliente autenticado.
 
-[All of these methods use the Pago CustomerPortal APIs](https://docs.pago.sh/api-reference/customer-portal)
+[Todos esses métodos usam as APIs do CustomerPortal da pago.sh](https://docs.pago.sh/api-reference/customer-portal)
 
-#### Benefits
+#### Benefícios
 
-This method only lists granted benefits for the authenticated user/customer.
+Este método lista apenas os benefícios concedidos ao usuário/cliente autenticado.
 
 ```typescript
 const { data: benefits } = await authClient.customer.benefits.list({
@@ -316,9 +316,9 @@ const { data: benefits } = await authClient.customer.benefits.list({
 });
 ```
 
-#### Orders
+#### Pedidos
 
-This method lists orders like purchases and subscription renewals for the authenticated user/customer.
+Este método lista pedidos como compras e renovações de assinatura para o usuário/cliente autenticado.
 
 ```typescript
 const { data: orders } = await authClient.customer.orders.list({
@@ -330,9 +330,9 @@ const { data: orders } = await authClient.customer.orders.list({
 });
 ```
 
-#### Subscriptions
+#### Assinaturas
 
-This method lists the subscriptions associated with authenticated user/customer.
+Este método lista as assinaturas associadas ao usuário/cliente autenticado.
 
 ```typescript
 const { data: subscriptions } = await authClient.customer.subscriptions.list({
@@ -344,13 +344,13 @@ const { data: subscriptions } = await authClient.customer.subscriptions.list({
 });
 ```
 
-**Important** - Organization Support
+**Importante** - Suporte a Organizações
 
-This will **not** return subscriptions made by a parent organization to the authenticated user.
+Isto **não** retornará assinaturas feitas por uma organização-mãe para o usuário autenticado.
 
-However, you can pass a `referenceId` to this method. This will return all subscriptions associated with that referenceId instead of subscriptions associated with the user.
+No entanto, você pode passar um `referenceId` para este método. Isso retornará todas as assinaturas associadas a esse `referenceId` em vez das assinaturas associadas ao usuário.
 
-So in order to figure out if a user should have access, pass the user's organization ID to see if there is an active subscription for that organization.
+Então, para descobrir se um usuário deve ter acesso, passe o ID da organização do usuário para verificar se há uma assinatura ativa para essa organização.
 
 ```typescript
 const organizationId = (await authClient.organization.list())?.data?.[0]?.id,
@@ -369,9 +369,9 @@ const userShouldHaveAccess = subscriptions.some(
 )
 ```
 
-## Usage Plugin
+## Plugin de Uso (Usage)
 
-A simple plugin for Usage Based Billing.
+Um plugin simples para Cobrança por Uso.
 
 ```typescript
 import { pago, checkout, portal, usage } from "@pago-sh/better-auth";
@@ -391,11 +391,11 @@ const auth = betterAuth({
 });
 ```
 
-### Event Ingestion
+### Ingestão de Eventos
 
-Pago's Usage Based Billing builds entirely on event ingestion. Ingest events from your application, create Meters to represent that usage, and add metered prices to Products to charge for it.
+A Cobrança por Uso da pago.sh é construída inteiramente sobre a ingestão de eventos. Ingira eventos da sua aplicação, crie Medidores para representar esse uso e adicione preços medidos aos Produtos para cobrar por isso.
 
-[Learn more about Usage Based Billing in the Pago Docs.](https://docs.pago.sh/features/usage-based-billing/introduction)
+[Saiba mais sobre Cobrança por Uso na Documentação da pago.sh.](https://docs.pago.sh/features/usage-based-billing/introduction)
 
 ```typescript
 const { data: ingested } = await authClient.usage.ingest({
@@ -406,20 +406,20 @@ const { data: ingested } = await authClient.usage.ingest({
 });
 ```
 
-The authenticated user is automatically associated with the ingested event.
+O usuário autenticado é automaticamente associado ao evento ingerido.
 
-### Customer Meters
+### Medidores de Cliente
 
-A simple method for listing the authenticated user's Usage Meters, or as we call them, Customer Meters.
+Um método simples para listar os Medidores de Uso do usuário autenticado, ou, como os chamamos, Medidores de Cliente.
 
-Customer Meter's contains all information about their consumtion on your defined meters.
+Os Medidores de Cliente contêm todas as informações sobre o consumo do cliente nos medidores que você definiu.
 
-- Customer Information
-- Meter Information
-- Customer Meter Information
-  - Consumed Units
-  - Credited Units
-  - Balance
+- Informações do Cliente
+- Informações do Medidor
+- Informações do Medidor de Cliente
+  - Unidades Consumidas
+  - Unidades Creditadas
+  - Saldo
 
 ```typescript
 const { data: customerMeters } = await authClient.usage.meters.list({
@@ -430,9 +430,9 @@ const { data: customerMeters } = await authClient.usage.meters.list({
 });
 ```
 
-## Webhooks Plugin
+## Plugin de Webhooks
 
-The Webhooks plugin can be used to capture incoming events from your Pago organization.
+O plugin de Webhooks pode ser usado para capturar eventos recebidos da sua organização na pago.sh.
 
 ```typescript
 import { pago, webhooks } from "@pago-sh/better-auth";
@@ -456,40 +456,40 @@ const auth = betterAuth({
 });
 ```
 
-Configure a Webhook endpoint in your Pago Organization Settings page. Webhook endpoint is configured at /pago/webhooks.
+Configure um endpoint de Webhook na página de Configurações da sua Organização na pago.sh. O endpoint do Webhook é configurado em /pago/webhooks.
 
-Add the secret to your environment.
+Adicione o secret ao seu ambiente.
 
 ```bash
 # .env
 PAGO_WEBHOOK_SECRET=...
 ```
 
-The plugin supports handlers for all Pago webhook events:
+O plugin suporta handlers para todos os eventos de webhook da pago.sh:
 
-- `onPayload` - Catch-all handler for any incoming Webhook event
-- `onCheckoutCreated` - Triggered when a checkout is created
-- `onCheckoutUpdated` - Triggered when a checkout is updated
-- `onOrderCreated` - Triggered when an order is created
-- `onOrderPaid` - Triggered when an order is paid
-- `onOrderRefunded` - Triggered when an order is refunded
-- `onRefundCreated` - Triggered when a refund is created
-- `onRefundUpdated` - Triggered when a refund is updated
-- `onSubscriptionCreated` - Triggered when a subscription is created
-- `onSubscriptionUpdated` - Triggered when a subscription is updated
-- `onSubscriptionActive` - Triggered when a subscription becomes active
-- `onSubscriptionCanceled` - Triggered when a subscription is canceled
-- `onSubscriptionRevoked` - Triggered when a subscription is revoked
-- `onSubscriptionUncanceled` - Triggered when a subscription cancellation is reversed
-- `onProductCreated` - Triggered when a product is created
-- `onProductUpdated` - Triggered when a product is updated
-- `onOrganizationUpdated` - Triggered when an organization is updated
-- `onBenefitCreated` - Triggered when a benefit is created
-- `onBenefitUpdated` - Triggered when a benefit is updated
-- `onBenefitGrantCreated` - Triggered when a benefit grant is created
-- `onBenefitGrantUpdated` - Triggered when a benefit grant is updated
-- `onBenefitGrantRevoked` - Triggered when a benefit grant is revoked
-- `onCustomerCreated` - Triggered when a customer is created
-- `onCustomerUpdated` - Triggered when a customer is updated
-- `onCustomerDeleted` - Triggered when a customer is deleted
-- `onCustomerStateChanged` - Triggered when a customer is created
+- `onPayload` - Handler genérico para qualquer evento de Webhook recebido
+- `onCheckoutCreated` - Disparado quando um checkout é criado
+- `onCheckoutUpdated` - Disparado quando um checkout é atualizado
+- `onOrderCreated` - Disparado quando um pedido é criado
+- `onOrderPaid` - Disparado quando um pedido é pago
+- `onOrderRefunded` - Disparado quando um pedido é reembolsado
+- `onRefundCreated` - Disparado quando um reembolso é criado
+- `onRefundUpdated` - Disparado quando um reembolso é atualizado
+- `onSubscriptionCreated` - Disparado quando uma assinatura é criada
+- `onSubscriptionUpdated` - Disparado quando uma assinatura é atualizada
+- `onSubscriptionActive` - Disparado quando uma assinatura se torna ativa
+- `onSubscriptionCanceled` - Disparado quando uma assinatura é cancelada
+- `onSubscriptionRevoked` - Disparado quando uma assinatura é revogada
+- `onSubscriptionUncanceled` - Disparado quando um cancelamento de assinatura é revertido
+- `onProductCreated` - Disparado quando um produto é criado
+- `onProductUpdated` - Disparado quando um produto é atualizado
+- `onOrganizationUpdated` - Disparado quando uma organização é atualizada
+- `onBenefitCreated` - Disparado quando um benefício é criado
+- `onBenefitUpdated` - Disparado quando um benefício é atualizado
+- `onBenefitGrantCreated` - Disparado quando uma concessão de benefício é criada
+- `onBenefitGrantUpdated` - Disparado quando uma concessão de benefício é atualizada
+- `onBenefitGrantRevoked` - Disparado quando uma concessão de benefício é revogada
+- `onCustomerCreated` - Disparado quando um cliente é criado
+- `onCustomerUpdated` - Disparado quando um cliente é atualizado
+- `onCustomerDeleted` - Disparado quando um cliente é excluído
+- `onCustomerStateChanged` - Disparado quando um cliente é criado

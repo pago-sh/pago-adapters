@@ -1,7 +1,7 @@
 {
   "name": "@pago-sh/remix",
   "version": "0.6.6",
-  "description": "Pago integration for Remix and React Router",
+  "description": "Integração da pago.sh para Remix e React Router",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

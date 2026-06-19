@@ -1,7 +1,7 @@
 {
   "name": "@pago-sh/elysia",
   "version": "0.5.6",
-  "description": "Pago integration for Elysia",
+  "description": "Integracao da pago.sh para Elysia",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

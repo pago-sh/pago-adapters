@@ -1,7 +1,7 @@
 {
   "name": "@pago-sh/better-auth",
   "version": "1.8.4",
-  "description": "Pago integration for better-auth",
+  "description": "Integração da pago.sh para o better-auth",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

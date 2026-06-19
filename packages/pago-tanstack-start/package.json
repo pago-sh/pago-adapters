@@ -1,6 +1,7 @@
 {
   "name": "@pago-sh/tanstack-start",
   "version": "0.4.6",
+  "description": "Integracao da pago.sh para Tanstack Start",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

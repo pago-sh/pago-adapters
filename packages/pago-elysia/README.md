@@ -1,12 +1,12 @@
 # @pago-sh/elysia
 
-Payments and Checkouts made dead simple with Elysia.
+Pagamentos e Checkouts extremamente simples com Elysia.
 
 `pnpm install @pago-sh/elysia zod`
 
 ## Checkout
 
-Create a Checkout handler which takes care of redirections.
+Crie um handler de Checkout que cuida dos redirecionamentos.
 
 ```typescript
 import { Elysia } from "elysia";
@@ -17,30 +17,30 @@ const app = new Elysia();
 app.get(
   "/checkout",
   Checkout({
-    accessToken: "xxx", // Or set an environment variable to PAGO_ACCESS_TOKEN
+    accessToken: "xxx", // Ou defina a variavel de ambiente PAGO_ACCESS_TOKEN
     successUrl: process.env.SUCCESS_URL,
-    returnUrl: "https://myapp.com", // Optional Return URL, which renders a Back-button in the Checkout
-    server: "sandbox", // Use sandbox if you're testing Pago - omit the parameter or pass 'production' otherwise
-    theme: "dark" // Enforces the theme - System-preferred theme will be set if left omitted
+    returnUrl: "https://myapp.com", // URL de retorno opcional, que exibe um botao Voltar no Checkout
+    server: "sandbox", // Use sandbox se estiver testando a pago.sh - omita o parametro ou passe 'production' caso contrario
+    theme: "dark" // Forca o tema - o tema preferido do sistema sera usado se omitido
   }),
 );
 ```
 
 ### Query Params
 
-Pass query params to this route.
+Passe query params para esta rota.
 
 - products `?products=123`
-- customerId (optional) `?products=123&customerId=xxx`
-- customerExternalId (optional) `?products=123&customerExternalId=xxx`
-- customerEmail (optional) `?products=123&customerEmail=janedoe@gmail.com`
-- customerName (optional) `?products=123&customerName=Jane`
-- seats (optional) `?products=123&seats=5` - Number of seats for seat-based products
-- metadata (optional) `URL-Encoded JSON string`
+- customerId (opcional) `?products=123&customerId=xxx`
+- customerExternalId (opcional) `?products=123&customerExternalId=xxx`
+- customerEmail (opcional) `?products=123&customerEmail=janedoe@gmail.com`
+- customerName (opcional) `?products=123&customerName=Jane`
+- seats (opcional) `?products=123&seats=5` - Numero de assentos para produtos baseados em assentos
+- metadata (opcional) `URL-Encoded JSON string`
 
 ## Customer Portal
 
-Create a customer portal where your customer can view orders and subscriptions.
+Crie um portal do cliente onde seu cliente pode visualizar pedidos e assinaturas.
 
 ```typescript
 import { Elysia } from "elysia";
@@ -51,17 +51,17 @@ const app = new Elysia();
 app.get(
   "/portal",
   CustomerPortal({
-    accessToken: "xxx", // Or set an environment variable to PAGO_ACCESS_TOKEN
-    getCustomerId: (event) => "", // Fuction to resolve a Pago Customer ID
-    returnUrl: "https://myapp.com", // Optional Return URL, which renders a Back-button in the Customer Portal
-    server: "sandbox", // Use sandbox if you're testing Pago - omit the parameter or pass 'production' otherwise
+    accessToken: "xxx", // Ou defina a variavel de ambiente PAGO_ACCESS_TOKEN
+    getCustomerId: (event) => "", // Funcao para resolver um Customer ID da pago.sh
+    returnUrl: "https://myapp.com", // URL de retorno opcional, que exibe um botao Voltar no Customer Portal
+    server: "sandbox", // Use sandbox se estiver testando a pago.sh - omita o parametro ou passe 'production' caso contrario
   }),
 );
 ```
 
 ## Webhooks
 
-A simple utility which resolves incoming webhook payloads by signing the webhook secret properly.
+Um utilitario simples que resolve os payloads de webhook recebidos assinando o webhook secret corretamente.
 
 ```typescript
 import { Elysia } from 'elysia'
@@ -71,13 +71,13 @@ const app = new Elysia()
 
 app.post('/pago/webhooks', Webhooks({
   webhookSecret: process.env.PAGO_WEBHOOK_SECRET!,
-  onPayload: async (payload) => /** Handle payload */,
+  onPayload: async (payload) => /** Trate o payload */,
 }))
 ```
 
 #### Payload Handlers
 
-The Webhook handler also supports granular handlers for easy integration.
+O handler de Webhook tambem suporta handlers granulares para facilitar a integracao.
 
 - onCheckoutCreated: (payload) =>
 - onCheckoutUpdated: (payload) =>

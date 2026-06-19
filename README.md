@@ -1,8 +1,8 @@
 # Pago Adapters
 
-This repository hosts a wide array of Pago adapters for your TypeScript framework. Our Adapters are built to make it as easy as possible to integrate Pago in your application.
+Este repositório hospeda uma ampla variedade de adaptadores da pago.sh para o seu framework TypeScript. Nossos adaptadores são feitos para tornar a integração da pago.sh na sua aplicação o mais simples possível.
 
-### Adapters
+### Adaptadores
 
 - [BetterAuth](./packages/pago-betterauth)
 - [Supabase](./packages/pago-supabase/)
@@ -19,18 +19,18 @@ This repository hosts a wide array of Pago adapters for your TypeScript framewor
 - [TanStack Start](./packages/pago-tanstack-start)
 
 
-### Deploying Adapters
+### Publicando os adaptadores
 
-1. To deploy the adapters, you need to create a new changeset. You can do this by running and follow the instructions in the terminal:
+1. Para publicar os adaptadores, você precisa criar um novo changeset. Você pode fazer isso executando o comando abaixo e seguindo as instruções no terminal:
 
 ```bash
 npx @changesets/cli
 ```
 
-2. After you have created the changeset, you should create a pull request to the main branch. 
-3. Once the pull request is merged, a new pull request will be created that will bump the version of the adapters.
-4. Merge it to the main branch and the adapters will be published to npm.
+2. Depois de criar o changeset, você deve abrir um pull request para a branch main.
+3. Assim que o pull request for mesclado, um novo pull request será criado para incrementar a versão dos adaptadores.
+4. Mescle-o na branch main e os adaptadores serão publicados no npm.
 
 
 > [!WARNING]  
-> Deno package is published to JSR registry, not npm. At the moment this is done manually.
+> O pacote Deno é publicado no registry JSR, não no npm. No momento, isso é feito manualmente.

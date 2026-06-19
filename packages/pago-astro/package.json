@@ -1,7 +1,7 @@
 {
   "name": "@pago-sh/astro",
   "version": "0.7.6",
-  "description": "Pago integration for Astro",
+  "description": "Integração da pago.sh para Astro",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

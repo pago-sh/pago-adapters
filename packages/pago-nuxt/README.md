@@ -1,18 +1,18 @@
 # @pago-sh/nuxt
 
-Payments and Checkouts made dead simple with Nuxt.
+Pagamentos e Checkouts extremamente simples com Nuxt.
 
-## Installation
+## Instalação
 
-### Install the package
+### Instale o pacote
 
-Choose your preferred package manager to install the module:
+Escolha o gerenciador de pacotes de sua preferência para instalar o módulo:
 
 `pnpm add @pago-sh/nuxt`
 
-### Register the module
+### Registre o módulo
 
-Add the module to your `nuxt.config.ts`:
+Adicione o módulo ao seu `nuxt.config.ts`:
 
 ```typescript
 export default defineNuxtConfig({
@@ -22,7 +22,7 @@ export default defineNuxtConfig({
 
 ## Checkout
 
-Create a Checkout handler which takes care of redirections.
+Crie um handler de Checkout que cuida dos redirecionamentos.
 
 ```typescript
 // server/routes/api/checkout.post.ts
@@ -34,29 +34,29 @@ export default defineEventHandler((event) => {
   const checkoutHandler = Checkout({
     accessToken: pagoAccessToken,
     successUrl: pagoCheckoutSuccessUrl,
-    returnUrl: "https://myapp.com", // Optional Return URL, which renders a Back-button in the Checkout
+    returnUrl: "https://myapp.com", // URL de retorno opcional, que renderiza um botão de Voltar no Checkout
     server: pagoServer as "sandbox" | "production",
-    theme: "dark" // Enforces the theme - System-preferred theme will be set if left omitted
+    theme: "dark" // Força o tema - O tema preferido do sistema será usado se omitido
   });
 
   return checkoutHandler(event);
 });
 ```
 
-### Query Params
+### Parâmetros de Query
 
-Pass query params to this route.
+Passe parâmetros de query para esta rota.
 
 - products `?products=123`
-- customerId (optional) `?products=123&customerId=xxx`
-- customerExternalId (optional) `?products=123&customerExternalId=xxx`
-- customerEmail (optional) `?products=123&customerEmail=janedoe@gmail.com`
-- customerName (optional) `?products=123&customerName=Jane`
-- metadata (optional) `URL-Encoded JSON string`
+- customerId (opcional) `?products=123&customerId=xxx`
+- customerExternalId (opcional) `?products=123&customerExternalId=xxx`
+- customerEmail (opcional) `?products=123&customerEmail=janedoe@gmail.com`
+- customerName (opcional) `?products=123&customerName=Jane`
+- metadata (opcional) `URL-Encoded JSON string`
 
-## Customer Portal
+## Portal do Cliente
 
-Create a customer portal where your customer can view orders and subscriptions.
+Crie um portal do cliente onde seu cliente pode visualizar pedidos e assinaturas.
 
 ```typescript
 // server/routes/api/portal.get.ts
@@ -71,7 +71,7 @@ export default defineEventHandler((event) => {
     getCustomerId: (event) => {
       return Promise.resolve("9d89909b-216d-475e-8005-053dba7cff07");
     },
-    returnUrl: "https://myapp.com", // Optional Return URL, which renders a Back-button in the Customer Portal
+    returnUrl: "https://myapp.com", // URL de retorno opcional, que renderiza um botão de Voltar no Portal do Cliente
   });
 
   return customerPortalHandler(event);
@@ -80,7 +80,7 @@ export default defineEventHandler((event) => {
 
 ## Webhooks
 
-A simple utility which resolves incoming webhook payloads by signing the webhook secret properly.
+Um utilitário simples que resolve os payloads de webhook recebidos assinando o segredo do webhook corretamente.
 
 ```typescript
 // server/routes/webhook/pago.post.ts
@@ -92,8 +92,8 @@ export default defineEventHandler((event) => {
   const webhooksHandler = Webhooks({
     webhookSecret: pagoWebhookSecret,
     onPayload: async (payload: any) => {
-      // Handle the payload
-      // No need to return an acknowledge response
+      // Trate o payload
+      // Não é necessário retornar uma resposta de confirmação
     },
   });
 
@@ -101,9 +101,9 @@ export default defineEventHandler((event) => {
 });
 ```
 
-### Payload Handlers
+### Handlers de Payload
 
-The Webhook handler also supports granular handlers for easy integration.
+O handler de Webhook também oferece suporte a handlers granulares para facilitar a integração.
 
 - onCheckoutCreated: (payload) =>
 - onCheckoutUpdated: (payload) =>

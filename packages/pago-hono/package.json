@@ -1,7 +1,7 @@
 {
   "name": "@pago-sh/hono",
   "version": "0.5.6",
-  "description": "Pago integration for Hono",
+  "description": "Integração da pago.sh para Hono",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

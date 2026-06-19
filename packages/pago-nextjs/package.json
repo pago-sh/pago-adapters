@@ -1,5 +1,6 @@
 {
   "name": "@pago-sh/nextjs",
+  "description": "Integração da pago.sh para Next.js",
   "version": "0.9.6",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

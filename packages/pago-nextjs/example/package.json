@@ -2,6 +2,7 @@
   "name": "example",
   "version": "0.1.0",
   "private": true,
+  "description": "Exemplo de integração da pago.sh para Next.js",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

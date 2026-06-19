@@ -1,12 +1,12 @@
 # @pago-sh/supabase
 
-Payments and Checkouts made dead simple with Supabase Edge Functions.
+Pagamentos e Checkouts extremamente simples com Supabase Edge Functions.
 
 `npm install @pago-sh/supabase`
 
 ## Checkout
 
-Create a Checkout handler which takes care of redirections.
+Crie um handler de Checkout que cuida dos redirecionamentos.
 
 ```typescript
 // supabase/functions/checkout/index.ts
@@ -25,25 +25,25 @@ Deno.serve(handler);
 
 ### Query Params
 
-Pass query params to this route.
+Passe parametros de query para esta rota.
 
 - products `?products=123`
-- customerId (optional) `?products=123&customerId=xxx`
-- customerExternalId (optional) `?products=123&customerExternalId=xxx`
-- customerEmail (optional) `?products=123&customerEmail=janedoe@gmail.com`
-- customerName (optional) `?products=123&customerName=Jane`
-- customerBillingAddress (optional) `URL-Encoded JSON string`
-- customerTaxId (optional) `?products=123&customerTaxId=xxx`
-- customerIpAddress (optional) `?products=123&customerIpAddress=192.168.1.1`
-- customerMetadata (optional) `URL-Encoded JSON string`
-- allowDiscountCodes (optional) `?products=123&allowDiscountCodes=true`
-- discountId (optional) `?products=123&discountId=xxx`
-- seats (optional) `?products=123&seats=5` - Number of seats for seat-based products
-- metadata (optional) `URL-Encoded JSON string`
+- customerId (opcional) `?products=123&customerId=xxx`
+- customerExternalId (opcional) `?products=123&customerExternalId=xxx`
+- customerEmail (opcional) `?products=123&customerEmail=janedoe@gmail.com`
+- customerName (opcional) `?products=123&customerName=Jane`
+- customerBillingAddress (opcional) `URL-Encoded JSON string`
+- customerTaxId (opcional) `?products=123&customerTaxId=xxx`
+- customerIpAddress (opcional) `?products=123&customerIpAddress=192.168.1.1`
+- customerMetadata (opcional) `URL-Encoded JSON string`
+- allowDiscountCodes (opcional) `?products=123&allowDiscountCodes=true`
+- discountId (opcional) `?products=123&discountId=xxx`
+- seats (opcional) `?products=123&seats=5` - Numero de assentos para produtos baseados em assentos
+- metadata (opcional) `URL-Encoded JSON string`
 
 ## Customer Portal
 
-Create a customer portal where your customer can view orders and subscriptions.
+Crie um portal do cliente onde seu cliente pode visualizar pedidos e assinaturas.
 
 ```typescript
 // supabase/functions/portal/index.ts
@@ -65,7 +65,7 @@ Deno.serve(handler);
 
 ## Webhooks
 
-A simple utility which resolves incoming webhook payloads by validating the webhook signature.
+Um utilitario simples que resolve payloads de webhook recebidos validando a assinatura do webhook.
 
 ```typescript
 // supabase/functions/webhooks/index.ts
@@ -84,7 +84,7 @@ Deno.serve(handler);
 
 ### Payload Handlers
 
-The Webhook handler also supports granular handlers for easy integration.
+O handler de Webhook tambem suporta handlers granulares para facilitar a integracao.
 
 - onCheckoutCreated: (payload) => Promise<void>
 - onCheckoutUpdated: (payload) => Promise<void>
@@ -115,10 +115,10 @@ The Webhook handler also supports granular handlers for easy integration.
 
 ## Edge Runtime Compatibility
 
-This adapter is built to work with Supabase Edge Functions, which run on the Deno runtime. It uses standard Web APIs (`Request`, `Response`) that are compatible with edge environments, making it ideal for:
+Este adaptador foi construido para funcionar com Supabase Edge Functions, que rodam no runtime Deno. Ele usa Web APIs padrao (`Request`, `Response`) que sao compativeis com ambientes edge, tornando-o ideal para:
 
 - Supabase Edge Functions
 - Deno Deploy
-- Other Deno-based edge runtimes
+- Outros runtimes edge baseados em Deno
 
-All handlers return standard `Response` objects and accept standard `Request` objects, ensuring maximum compatibility with edge runtimes.
+Todos os handlers retornam objetos `Response` padrao e aceitam objetos `Request` padrao, garantindo maxima compatibilidade com runtimes edge.

@@ -1,12 +1,12 @@
 # @pago-sh/tanstack-start
 
-Payments and Checkouts made dead simple with [Tanstack Start](https://tanstack.com/start)
+Pagamentos e Checkouts extremamente simples com o [Tanstack Start](https://tanstack.com/start)
 
 `pnpm install @pago-sh/tanstack-start zod`
 
 ## Checkout
 
-Create a Checkout handler which takes care of redirections.
+Crie um handler de Checkout que cuida dos redirecionamentos.
 
 ```typescript
 // routes/api/checkout.ts
@@ -17,28 +17,28 @@ export const APIRoute = createAPIFileRoute("/api/checkout")({
   GET: Checkout({
     accessToken: process.env.PAGO_ACCESS_TOKEN,
     successUrl: process.env.SUCCESS_URL,
-    returnUrl: "https://myapp.com", // Optional Return URL, which renders a Back-button in the Checkout
-    server: "sandbox", // Use sandbox if you're testing Pago - omit the parameter or pass 'production' otherwise
-    theme: "dark" // Enforces the theme - System-preferred theme will be set if left omitted
+    returnUrl: "https://myapp.com", // URL de retorno opcional, que renderiza um botao de Voltar no Checkout
+    server: "sandbox", // Use sandbox se estiver testando a Pago - omita o parametro ou passe 'production' caso contrario
+    theme: "dark" // Forca o tema - o tema preferido do sistema sera usado se omitido
   }),
 });
 ```
 
-### Query Params
+### Parametros de Query
 
-Pass query params to this route.
+Passe parametros de query para esta rota.
 
 - products `?products=123`
-- customerId (optional) `?products=123&customerId=xxx`
-- customerExternalId (optional) `?products=123&customerExternalId=xxx`
-- customerEmail (optional) `?products=123&customerEmail=janedoe@gmail.com`
-- customerName (optional) `?products=123&customerName=Jane`
-- seats (optional) `?products=123&seats=5` - Number of seats for seat-based products
-- metadata (optional) `URL-Encoded JSON string`
+- customerId (opcional) `?products=123&customerId=xxx`
+- customerExternalId (opcional) `?products=123&customerExternalId=xxx`
+- customerEmail (opcional) `?products=123&customerEmail=janedoe@gmail.com`
+- customerName (opcional) `?products=123&customerName=Jane`
+- seats (opcional) `?products=123&seats=5` - Numero de assentos para produtos baseados em assentos
+- metadata (opcional) `URL-Encoded JSON string`
 
-## Customer Portal
+## Portal do Cliente
 
-Create a customer portal where your customer can view orders and subscriptions.
+Crie um portal do cliente onde seus clientes podem visualizar pedidos e assinaturas.
 
 ```typescript
 // routes/api/portal.ts
@@ -49,16 +49,16 @@ import { getSupabaseServerClient } from "~/servers/supabase-server";
 export const APIRoute = createAPIFileRoute("/api/portal")({
   GET: CustomerPortal({
     accessToken: process.env.PAGO_ACCESS_TOKEN,
-    getCustomerId: async (request: Request) => "", // Fuction to resolve a Pago Customer ID
-    returnUrl: "https://myapp.com", // Optional Return URL, which renders a Back-button in the Customer Portal
-    server: "sandbox", // Use sandbox if you're testing Pago - omit the parameter or pass 'production' otherwise
+    getCustomerId: async (request: Request) => "", // Funcao para resolver um Customer ID da Pago
+    returnUrl: "https://myapp.com", // URL de retorno opcional, que renderiza um botao de Voltar no Portal do Cliente
+    server: "sandbox", // Use sandbox se estiver testando a Pago - omita o parametro ou passe 'production' caso contrario
   }),
 });
 ```
 
 ## Webhooks
 
-A simple utility which resolves incoming webhook payloads by signing the webhook secret properly.
+Um utilitario simples que resolve os payloads de webhook recebidos assinando corretamente o segredo do webhook.
 
 ```typescript
 // api/webhook/pago.ts
@@ -69,16 +69,16 @@ export const APIRoute = createAPIFileRoute("/api/webhook/pago")({
   POST: Webhooks({
     webhookSecret: process.env.PAGO_WEBHOOK_SECRET!,
     onPayload: async (payload) => {
-      // Handle the payload
-      // No need to return an acknowledge response
+      // Trate o payload
+      // Nao e necessario retornar uma resposta de confirmacao
     },
   }),
 });
 ```
 
-#### Payload Handlers
+#### Handlers de Payload
 
-The Webhook handler also supports granular handlers for easy integration.
+O handler de Webhook tambem suporta handlers granulares para facilitar a integracao.
 
 - onCheckoutCreated: (payload) =>
 - onCheckoutUpdated: (payload) =>
