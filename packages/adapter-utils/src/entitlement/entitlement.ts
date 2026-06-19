@@ -1,6 +1,6 @@
-import type { Customer } from "@polar-sh/sdk/models/components/customer";
-import type { WebhookBenefitGrantCreatedPayload } from "@polar-sh/sdk/models/components/webhookbenefitgrantcreatedpayload";
-import type { WebhookBenefitGrantRevokedPayload } from "@polar-sh/sdk/models/components/webhookbenefitgrantrevokedpayload";
+import type { Customer } from "@pago-sh/sdk/models/components/customer";
+import type { WebhookBenefitGrantCreatedPayload } from "@pago-sh/sdk/models/components/webhookbenefitgrantcreatedpayload";
+import type { WebhookBenefitGrantRevokedPayload } from "@pago-sh/sdk/models/components/webhookbenefitgrantrevokedpayload";
 
 export type EntitlementProperties = Record<string, string>;
 

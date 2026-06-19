@@ -1,37 +1,37 @@
-# @polar-sh/adapter-utils
+# @pago-sh/adapter-utils
 
 ## 0.4.6
 
 ### Patch Changes
 
-- 9b0cf46: Update @polar-sh/sdk to 0.46.5
-- fbb9c4c: Update @polar-sh/sdk to 0.46.7
-- a89b1ee: Update @polar-sh/sdk to 0.47.0
-- 19b0f48: Update @polar-sh/sdk to 0.46.6
+- 9b0cf46: Update @pago-sh/sdk to 0.46.5
+- fbb9c4c: Update @pago-sh/sdk to 0.46.7
+- a89b1ee: Update @pago-sh/sdk to 0.47.0
+- 19b0f48: Update @pago-sh/sdk to 0.46.6
 
 ## 0.4.5
 
 ### Patch Changes
 
-- 0e8d982: Update @polar-sh/sdk to 0.46.2
+- 0e8d982: Update @pago-sh/sdk to 0.46.2
 
 ## 0.4.4
 
 ### Patch Changes
 
-- 43ff4ac: Update @polar-sh/sdk to 0.46.0
+- 43ff4ac: Update @pago-sh/sdk to 0.46.0
 
 ## 0.4.3
 
 ### Patch Changes
 
-- 3906ed9: Bump @polar-sh/sdk
+- 3906ed9: Bump @pago-sh/sdk
 
 ## 0.4.2
 
 ### Patch Changes
 
-- c591126: Bump @polar-sh/sdk
+- c591126: Bump @pago-sh/sdk
 
 ## 0.4.1
 
@@ -43,7 +43,7 @@
 
 ### Minor Changes
 
-- 4512e82: Bump Polar SDK
+- 4512e82: Bump Pago SDK
 
 ## 0.3.0
 
@@ -55,7 +55,7 @@
 
 ### Patch Changes
 
-- 3250323: Update Polar SDK to 0.38.1
+- 3250323: Update Pago SDK to 0.38.1
 
 ## 0.2.9
 
@@ -93,7 +93,7 @@
 
 ### Patch Changes
 
-- 39f4d39: Update Polar SDK version
+- 39f4d39: Update Pago SDK version
 
 ## 0.2.3
 
@@ -111,7 +111,7 @@
 
 ### Patch Changes
 
-- 87de0c5: Bump Polar SDK
+- 87de0c5: Bump Pago SDK
 
 ## 0.2.0
 
@@ -172,7 +172,7 @@
 
 ### Patch Changes
 
-- 9dd847d: Bump Polar SDK
+- 9dd847d: Bump Pago SDK
 
 ## 0.1.7
 

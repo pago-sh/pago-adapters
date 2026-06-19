@@ -1,0 +1,151 @@
+import type { GenericEndpointContext, User } from "better-auth";
+import { APIError } from "better-auth/api";
+import type { PagoOptions } from "../types";
+
+export const onBeforeUserCreate =
+	(options: PagoOptions) =>
+	async (user: Partial<User>, context: GenericEndpointContext | null) => {
+		if (context && options.createCustomerOnSignUp) {
+			try {
+				if (user.isAnonymous) {
+					return;
+				}
+
+				const params = options.getCustomerCreateParams
+					? await options.getCustomerCreateParams({
+							user,
+						})
+					: {};
+
+				if (!user.email) {
+					throw new APIError("BAD_REQUEST", {
+						message: "An associated email is required",
+					});
+				}
+
+				// Check if customer already exists
+				const { result: existingCustomers } =
+					await options.client.customers.list({ email: user.email });
+				const existingCustomer = existingCustomers.items[0];
+
+				// Skip creation if customer already exists
+				if (!existingCustomer) {
+					await options.client.customers.create({
+						...params,
+						email: user.email,
+						name: user.name,
+					});
+				}
+			} catch (e: unknown) {
+				if (e instanceof Error) {
+					throw new APIError("INTERNAL_SERVER_ERROR", {
+						message: `Pago customer creation failed. Error: ${e.message}`,
+					});
+				}
+
+				throw new APIError("INTERNAL_SERVER_ERROR", {
+					message: `Pago customer creation failed. Error: ${e}`,
+				});
+			}
+		}
+	};
+
+export const onAfterUserCreate =
+	(options: PagoOptions) =>
+	async (user: User, context: GenericEndpointContext | null) => {
+		if (context && options.createCustomerOnSignUp) {
+			if (user.isAnonymous) {
+				return;
+			}
+
+			try {
+				const { result: existingCustomers } =
+					await options.client.customers.list({ email: user.email });
+				const existingCustomer = existingCustomers.items[0];
+
+				if (existingCustomer) {
+					if (existingCustomer.externalId !== user.id) {
+						await options.client.customers.update({
+							id: existingCustomer.id,
+							customerUpdate: {
+								externalId: user.id,
+							},
+						});
+					}
+				}
+			} catch (e: unknown) {
+				if (e instanceof Error) {
+					throw new APIError("INTERNAL_SERVER_ERROR", {
+						message: `Pago customer creation failed. Error: ${e.message}`,
+					});
+				}
+
+				throw new APIError("INTERNAL_SERVER_ERROR", {
+					message: `Pago customer creation failed. Error: ${e}`,
+				});
+			}
+		}
+	};
+
+export const onUserUpdate =
+	(options: PagoOptions) =>
+	async (user: User, context: GenericEndpointContext | null) => {
+		if (context && options.createCustomerOnSignUp) {
+			try {
+				if (user.isAnonymous) {
+					return;
+				}
+
+				await options.client.customers.updateExternal({
+					externalId: user.id,
+					customerUpdateExternalID: {
+						email: user.email,
+						name: user.name,
+					},
+				});
+			} catch (e: unknown) {
+				if (e instanceof Error) {
+					context.context.logger.error(
+						`Pago customer update failed. Error: ${e.message}`,
+					);
+				} else {
+					context.context.logger.error(
+						`Pago customer update failed. Error: ${e}`,
+					);
+				}
+			}
+		}
+	};
+
+export const onUserDelete =
+	(options: PagoOptions) =>
+	async (user: User, context: GenericEndpointContext | null) => {
+		if (context && options.createCustomerOnSignUp) {
+			try {
+				if (user.isAnonymous) {
+					return;
+				}
+
+				if (user.email) {
+					const { result: existingCustomers } =
+						await options.client.customers.list({ email: user.email });
+					const existingCustomer = existingCustomers.items[0];
+					if (existingCustomer) {
+						await options.client.customers.delete({
+							id: existingCustomer.id,
+						});
+					}
+				}
+			} catch (e: unknown) {
+				if (e instanceof Error) {
+					context?.context.logger.error(
+						`Pago customer delete failed. Error: ${e.message}`,
+					);
+					return;
+				}
+				context?.context.logger.error(
+					`Pago customer delete failed. Error: ${e}`,
+				);
+			}
+		}
+	};

@@ -1,5 +1,5 @@
 {
-	"name": "@polar-sh/adapters",
+	"name": "@pago-sh/adapters",
 	"private": true,
 	"scripts": {
 		"build": "turbo build",

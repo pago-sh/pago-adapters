@@ -27,7 +27,7 @@ importers:
 
   packages/adapter-utils:
     dependencies:
-      '@polar-sh/sdk':
+      '@pago-sh/sdk':
         specifier: ^0.47.0
         version: 0.47.0
     devDependencies:
@@ -80,12 +80,12 @@ importers:
         specifier: ^8.46.2
         version: 8.46.2(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
 
-  packages/polar-astro:
+  packages/pago-astro:
     dependencies:
-      '@polar-sh/adapter-utils':
+      '@pago-sh/adapter-utils':
         specifier: workspace:*
         version: link:../adapter-utils
-      '@polar-sh/sdk':
+      '@pago-sh/sdk':
         specifier: ^0.47.0
         version: 0.47.0
       astro:
@@ -111,19 +111,19 @@ importers:
         specifier: ^2.1.8
         version: 2.1.9(@types/node@20.19.13)(lightningcss@1.30.1)(terser@5.44.0)
 
-  packages/polar-betterauth:
+  packages/pago-betterauth:
     dependencies:
-      '@polar-sh/checkout':
+      '@pago-sh/checkout':
         specifier: ^0.2.0
         version: 0.2.0(@stripe/react-stripe-js@3.10.0(@stripe/stripe-js@7.9.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(@stripe/stripe-js@7.9.0)(@types/react-dom@19.1.9(@types/react@19.1.16))(@types/react@19.1.16)(react-dom@19.1.1(react@19.1.1))(react-is@16.13.1)(react@19.1.1)(redux@5.0.1)
     devDependencies:
       '@biomejs/biome':
         specifier: 1.9.4
         version: 1.9.4
-      '@polar-sh/adapter-utils':
+      '@pago-sh/adapter-utils':
         specifier: workspace:*
         version: link:../adapter-utils
-      '@polar-sh/sdk':
+      '@pago-sh/sdk':
         specifier: ^0.47.0
         version: 0.47.0
       '@sindresorhus/tsconfig':
@@ -145,12 +145,12 @@ importers:
         specifier: ^3.25.0 || ^4.0.0
         version: 3.25.76
 
-  packages/polar-elysia:
+  packages/pago-elysia:
     dependencies:
-      '@polar-sh/adapter-utils':
+      '@pago-sh/adapter-utils':
         specifier: workspace:*
         version: link:../adapter-utils
-      '@polar-sh/sdk':
+      '@pago-sh/sdk':
         specifier: ^0.47.0
         version: 0.47.0
     devDependencies:
@@ -179,12 +179,12 @@ importers:
         specifier: ^2.1.8
         version: 2.1.9(@types/node@20.19.13)(lightningcss@1.30.1)(terser@5.44.0)
 
-  packages/polar-express:
+  packages/pago-express:
     dependencies:
-      '@polar-sh/adapter-utils':
+      '@pago-sh/adapter-utils':
         specifier: workspace:*
         version: link:../adapter-utils
-      '@polar-sh/sdk':
+      '@pago-sh/sdk':
         specifier: ^0.47.0
         version: 0.47.0
     devDependencies:
@@ -219,12 +219,12 @@ importers:
         specifier: ^2.1.8
         version: 2.1.9(@types/node@20.19.13)(lightningcss@1.30.1)(terser@5.44.0)
 
-  packages/polar-fastify:
+  packages/pago-fastify:
     dependencies:
-      '@polar-sh/adapter-utils':
+      '@pago-sh/adapter-utils':
         specifier: workspace:*
         version: link:../adapter-utils
-      '@polar-sh/sdk':
+      '@pago-sh/sdk':
         specifier: ^0.47.0
         version: 0.47.0
     devDependencies:
@@ -250,12 +250,12 @@ importers:
         specifier: ^2.1.8
         version: 2.1.9(@types/node@20.19.13)(lightningcss@1.30.1)(terser@5.44.0)
 
-  packages/polar-hono:
+  packages/pago-hono:
     dependencies:
-      '@polar-sh/adapter-utils':
+      '@pago-sh/adapter-utils':
         specifier: workspace:*
         version: link:../adapter-utils
-      '@polar-sh/sdk':
+      '@pago-sh/sdk':
         specifier: ^0.47.0
         version: 0.47.0
     devDependencies:
@@ -281,12 +281,12 @@ importers:
         specifier: ^2.1.8
         version: 2.1.9(@types/node@20.19.13)(lightningcss@1.30.1)(terser@5.44.0)
 
-  packages/polar-nextjs:
+  packages/pago-nextjs:
     dependencies:
-      '@polar-sh/adapter-utils':
+      '@pago-sh/adapter-utils':
         specifier: workspace:*
         version: link:../adapter-utils
-      '@polar-sh/sdk':
+      '@pago-sh/sdk':
         specifier: ^0.47.0
         version: 0.47.0
       next:
@@ -306,15 +306,15 @@ importers:
         specifier: ^2.1.8
         version: 2.1.9(@types/node@25.3.3)(lightningcss@1.30.1)(terser@5.44.0)
 
-  packages/polar-nuxt:
+  packages/pago-nuxt:
     dependencies:
       '@nuxt/kit':
         specifier: ^3.15.4
         version: 3.20.1(magicast@0.3.5)
-      '@polar-sh/adapter-utils':
+      '@pago-sh/adapter-utils':
         specifier: workspace:*
         version: link:../adapter-utils
-      '@polar-sh/sdk':
+      '@pago-sh/sdk':
         specifier: ^0.47.0
         version: 0.47.0
     devDependencies:
@@ -361,12 +361,12 @@ importers:
         specifier: ^3.24.2
         version: 3.25.76
 
-  packages/polar-remix:
+  packages/pago-remix:
     dependencies:
-      '@polar-sh/adapter-utils':
+      '@pago-sh/adapter-utils':
         specifier: workspace:*
         version: link:../adapter-utils
-      '@polar-sh/sdk':
+      '@pago-sh/sdk':
         specifier: ^0.47.0
         version: 0.47.0
     devDependencies:
@@ -389,16 +389,16 @@ importers:
         specifier: ^2.1.8
         version: 2.1.9(@types/node@20.19.13)(lightningcss@1.30.1)(terser@5.44.0)
 
-  packages/polar-supabase:
+  packages/pago-supabase:
     dependencies:
-      '@polar-sh/sdk':
+      '@pago-sh/sdk':
         specifier: ^0.47.0
         version: 0.47.0
     devDependencies:
       '@biomejs/biome':
         specifier: 1.9.4
         version: 1.9.4
-      '@polar-sh/adapter-utils':
+      '@pago-sh/adapter-utils':
         specifier: workspace:*
         version: link:../adapter-utils
       '@sindresorhus/tsconfig':
@@ -411,12 +411,12 @@ importers:
         specifier: ^3.2.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@25.3.3)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
 
-  packages/polar-sveltekit:
+  packages/pago-sveltekit:
     dependencies:
-      '@polar-sh/adapter-utils':
+      '@pago-sh/adapter-utils':
         specifier: workspace:*
         version: link:../adapter-utils
-      '@polar-sh/sdk':
+      '@pago-sh/sdk':
         specifier: ^0.47.0
         version: 0.47.0
     devDependencies:
@@ -454,12 +454,12 @@ importers:
         specifier: ^3.0.0
         version: 3.9.1(@types/node@20.19.13)(rollup@4.50.2)(typescript@5.9.3)(vite@6.3.6(@types/node@20.19.13)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))
 
-  packages/polar-tanstack-start:
+  packages/pago-tanstack-start:
     dependencies:
-      '@polar-sh/adapter-utils':
+      '@pago-sh/adapter-utils':
         specifier: workspace:*
         version: link:../adapter-utils
-      '@polar-sh/sdk':
+      '@pago-sh/sdk':
         specifier: ^0.47.0
         version: 0.47.0
       '@tanstack/react-start':
@@ -2539,20 +2539,20 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  '@polar-sh/checkout@0.2.0':
+  '@pago-sh/checkout@0.2.0':
     resolution: {integrity: sha512-lkHa7JJtQpbHblsfpEX91bJRV6s7gyBIlehVCy2KRL89vP4t6t2vYKNwIxIHI+EG7RxXKu/4fCMchQYrVSMYuQ==}
     peerDependencies:
       '@stripe/react-stripe-js': ^3.6.0 || ^4.0.2
       '@stripe/stripe-js': ^7.1.0
       react: ^18 || ^19
 
-  '@polar-sh/sdk@0.42.5':
+  '@pago-sh/sdk@0.42.5':
     resolution: {integrity: sha512-GzC3/ElCtMO55+KeXwFTANlydZzw5qI3DU/F9vAFIsUKuegSmh+Xu03KCL+ct9/imJOvLUQucYhUSsNKqo2j2Q==}
 
-  '@polar-sh/sdk@0.47.0':
+  '@pago-sh/sdk@0.47.0':
     resolution: {integrity: sha512-tZEt8eLWsQVhmyfUQzXhnN84e5Cnu/JsYFnCci1ranWkIGveQc+wTiyzDCG9Tl1xiz1Y/ztPsAJ1fevj6ExdAA==}
 
-  '@polar-sh/ui@0.1.2':
+  '@pago-sh/ui@0.1.2':
     resolution: {integrity: sha512-YTmMB2lr+PplMTDZnTs0Crgu0KNBKyQcSX4N0FYXSlo1Q6e9IKs4hwzEcqNUv3eHS4BxGO1SvxxNjuSK+il49Q==}
     peerDependencies:
       react: ^18 || ^19
@@ -11332,10 +11332,10 @@ snapshots:
     dependencies:
       playwright: 1.57.0
 
-  '@polar-sh/checkout@0.2.0(@stripe/react-stripe-js@3.10.0(@stripe/stripe-js@7.9.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(@stripe/stripe-js@7.9.0)(@types/react-dom@19.1.9(@types/react@19.1.16))(@types/react@19.1.16)(react-dom@19.1.1(react@19.1.1))(react-is@16.13.1)(react@19.1.1)(redux@5.0.1)':
+  '@pago-sh/checkout@0.2.0(@stripe/react-stripe-js@3.10.0(@stripe/stripe-js@7.9.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(@stripe/stripe-js@7.9.0)(@types/react-dom@19.1.9(@types/react@19.1.16))(@types/react@19.1.16)(react-dom@19.1.1(react@19.1.1))(react-is@16.13.1)(react@19.1.1)(redux@5.0.1)':
     dependencies:
-      '@polar-sh/sdk': 0.42.5
-      '@polar-sh/ui': 0.1.2(@types/react-dom@19.1.9(@types/react@19.1.16))(@types/react@19.1.16)(react-dom@19.1.1(react@19.1.1))(react-is@16.13.1)(react@19.1.1)(redux@5.0.1)
+      '@pago-sh/sdk': 0.42.5
+      '@pago-sh/ui': 0.1.2(@types/react-dom@19.1.9(@types/react@19.1.16))(@types/react@19.1.16)(react-dom@19.1.1(react@19.1.1))(react-is@16.13.1)(react@19.1.1)(redux@5.0.1)
       '@stripe/react-stripe-js': 3.10.0(@stripe/stripe-js@7.9.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@stripe/stripe-js': 7.9.0
       event-source-plus: 0.1.15
@@ -11350,17 +11350,17 @@ snapshots:
       - react-is
       - redux
 
-  '@polar-sh/sdk@0.42.5':
+  '@pago-sh/sdk@0.42.5':
     dependencies:
       standardwebhooks: 1.0.0
       zod: 3.25.76
 
-  '@polar-sh/sdk@0.47.0':
+  '@pago-sh/sdk@0.47.0':
     dependencies:
       standardwebhooks: 1.0.0
       zod: 3.25.76
 
-  '@polar-sh/ui@0.1.2(@types/react-dom@19.1.9(@types/react@19.1.16))(@types/react@19.1.16)(react-dom@19.1.1(react@19.1.1))(react-is@16.13.1)(react@19.1.1)(redux@5.0.1)':
+  '@pago-sh/ui@0.1.2(@types/react-dom@19.1.9(@types/react@19.1.16))(@types/react@19.1.16)(react-dom@19.1.1(react@19.1.1))(react-is@16.13.1)(react@19.1.1)(redux@5.0.1)':
     dependencies:
       '@radix-ui/react-accordion': 1.2.12(@types/react-dom@19.1.9(@types/react@19.1.16))(@types/react@19.1.16)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@radix-ui/react-alert-dialog': 1.1.15(@types/react-dom@19.1.9(@types/react@19.1.16))(@types/react@19.1.16)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
