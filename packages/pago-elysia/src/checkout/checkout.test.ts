@@ -28,7 +28,7 @@ import { Elysia } from "elysia";
 import { describe, expect, it, vi } from "vitest";
 import { Checkout } from "./checkout";
 
-describe("Checkout middleware", () => {
+describe("Middleware de checkout", () => {
 	it("should redirect to checkout when products is valid", async () => {
 		const app = new Elysia();
 		app.get(
@@ -59,7 +59,7 @@ describe("Checkout middleware", () => {
 
 		expect(response.status).toBe(400);
 		expect(await response.json()).toEqual({
-			error: "Missing products in query params",
+			error: "Produtos ausentes nos parâmetros da query",
 		});
 	});
 

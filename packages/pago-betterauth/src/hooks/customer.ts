@@ -19,16 +19,16 @@ export const onBeforeUserCreate =
 
 				if (!user.email) {
 					throw new APIError("BAD_REQUEST", {
-						message: "An associated email is required",
+						message: "É necessário um e-mail associado",
 					});
 				}
 
-				// Check if customer already exists
+				// Verifica se o cliente já existe
 				const { result: existingCustomers } =
 					await options.client.customers.list({ email: user.email });
 				const existingCustomer = existingCustomers.items[0];
 
-				// Skip creation if customer already exists
+				// Ignora a criação se o cliente já existir
 				if (!existingCustomer) {
 					await options.client.customers.create({
 						...params,
@@ -39,12 +39,12 @@ export const onBeforeUserCreate =
 			} catch (e: unknown) {
 				if (e instanceof Error) {
 					throw new APIError("INTERNAL_SERVER_ERROR", {
-						message: `Pago customer creation failed. Error: ${e.message}`,
+						message: `Falha ao criar o cliente Pago. Erro: ${e.message}`,
 					});
 				}
 
 				throw new APIError("INTERNAL_SERVER_ERROR", {
-					message: `Pago customer creation failed. Error: ${e}`,
+					message: `Falha ao criar o cliente Pago. Erro: ${e}`,
 				});
 			}
 		}
@@ -76,12 +76,12 @@ export const onAfterUserCreate =
 			} catch (e: unknown) {
 				if (e instanceof Error) {
 					throw new APIError("INTERNAL_SERVER_ERROR", {
-						message: `Pago customer creation failed. Error: ${e.message}`,
+						message: `Falha ao criar o cliente Pago. Erro: ${e.message}`,
 					});
 				}
 
 				throw new APIError("INTERNAL_SERVER_ERROR", {
-					message: `Pago customer creation failed. Error: ${e}`,
+					message: `Falha ao criar o cliente Pago. Erro: ${e}`,
 				});
 			}
 		}
@@ -106,11 +106,11 @@ export const onUserUpdate =
 			} catch (e: unknown) {
 				if (e instanceof Error) {
 					context.context.logger.error(
-						`Pago customer update failed. Error: ${e.message}`,
+						`Falha ao atualizar o cliente Pago. Erro: ${e.message}`,
 					);
 				} else {
 					context.context.logger.error(
-						`Pago customer update failed. Error: ${e}`,
+						`Falha ao atualizar o cliente Pago. Erro: ${e}`,
 					);
 				}
 			}
@@ -139,12 +139,12 @@ export const onUserDelete =
 			} catch (e: unknown) {
 				if (e instanceof Error) {
 					context?.context.logger.error(
-						`Pago customer delete failed. Error: ${e.message}`,
+						`Falha ao excluir o cliente Pago. Erro: ${e.message}`,
 					);
 					return;
 				}
 				context?.context.logger.error(
-					`Pago customer delete failed. Error: ${e}`,
+					`Falha ao excluir o cliente Pago. Erro: ${e}`,
 				);
 			}
 		}

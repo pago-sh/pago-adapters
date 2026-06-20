@@ -28,7 +28,7 @@ import Elysia from "elysia";
 import { describe, expect, it, vi } from "vitest";
 import { CustomerPortal } from "./customerPortal";
 
-describe("CustomerPortal middleware", () => {
+describe("Middleware do portal do cliente", () => {
 	it("should redirect to customer portal when customerId is valid", async () => {
 		const app = new Elysia();
 		const mockGetCustomerId = async () => "valid-customer-id";

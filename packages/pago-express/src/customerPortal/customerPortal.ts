@@ -25,7 +25,7 @@ export const CustomerPortal = ({
 		const customerId = await getCustomerId(req);
 
 		if (!customerId) {
-			res.status(400).json({ error: "customerId not defined" });
+			res.status(400).json({ error: "customerId não definido" });
 			return;
 		}
 
@@ -39,7 +39,7 @@ export const CustomerPortal = ({
 			return;
 		} catch (error) {
 			console.error(error);
-			res.status(500).json({ error: "Internal server error" });
+			res.status(500).json({ error: "Erro interno do servidor" });
 			return;
 		}
 	};

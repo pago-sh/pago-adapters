@@ -32,16 +32,16 @@ export const Webhooks = ({
 			);
 		} catch (error) {
 			if (error instanceof WebhookVerificationError) {
-				console.error("Failed to verify webhook event", error);
+				console.error("Falha ao verificar o evento de webhook", error);
 				setResponseStatus(event, 403);
 				return { received: false };
 			}
 
-			console.error("Failed to validate webhook event", error);
+			console.error("Falha ao validar o evento de webhook", error);
 			throw createError({
 				statusCode: 500,
 				statusMessage: (error as Error).message,
-				message: (error as Error).message ?? "Internal server error",
+				message: (error as Error).message ?? "Erro interno do servidor",
 			});
 		}
 
@@ -55,11 +55,11 @@ export const Webhooks = ({
 
 			return { received: true };
 		} catch (error) {
-			console.error("Webhook error", error);
+			console.error("Erro no webhook", error);
 			throw createError({
 				statusCode: 500,
 				statusMessage: (error as Error).message,
-				message: (error as Error).message ?? "Internal server error",
+				message: (error as Error).message ?? "Erro interno do servidor",
 			});
 		}
 	};

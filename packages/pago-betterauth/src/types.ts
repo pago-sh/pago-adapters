@@ -8,11 +8,11 @@ import type { webhooks } from "./plugins/webhooks";
 
 export type Product = {
 	/**
-	 * Product Id from Pago Product
+	 * Id do produto do Produto Pago
 	 */
 	productId: string;
 	/**
-	 * Easily identifiable slug for the product
+	 * Slug facilmente identificável para o produto
 	 */
 	slug: string;
 };
@@ -29,17 +29,17 @@ export type PagoEndpoints = UnionToIntersection<ReturnType<PagoPlugin>>;
 
 export interface PagoOptions {
 	/**
-	 * Pago Client
+	 * Cliente Pago
 	 */
 	client: Pago;
 	/**
-	 * Enable customer creation when a user signs up
+	 * Habilita a criação de cliente quando um usuário se cadastra
 	 */
 	createCustomerOnSignUp?: boolean;
 	/**
-	 * A custom function to get the customer create
-	 * params
-	 * @param data - data containing user and session
+	 * Uma função personalizada para obter os parâmetros de
+	 * criação do cliente
+	 * @param data - dados contendo o usuário e a sessão
 	 * @returns
 	 */
 	getCustomerCreateParams?: (
@@ -51,7 +51,7 @@ export interface PagoOptions {
 		metadata?: Record<string, string | number | boolean>;
 	}>;
 	/**
-	 * Use Pago plugins
+	 * Usa plugins Pago
 	 */
 	use: PagoPlugins;
 }

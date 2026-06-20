@@ -15,7 +15,7 @@ describe("Checkout", () => {
 
     assertEquals(response.status, 400);
     const body = await response.json();
-    assertEquals(body.error, "Missing products in query params");
+    assertEquals(body.error, "Produtos ausentes nos parâmetros da query");
   });
 
   it("should redirect to checkout URL on successful creation", async () => {

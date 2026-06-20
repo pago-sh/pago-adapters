@@ -28,7 +28,7 @@ import fastify from "fastify";
 import { describe, expect, it, vi } from "vitest";
 import { Checkout } from "./checkout";
 
-describe("Checkout middleware", () => {
+describe("Middleware de checkout", () => {
 	it("should redirect to checkout when products is valid", async () => {
 		const app = fastify();
 		app.get(
@@ -63,7 +63,7 @@ describe("Checkout middleware", () => {
 
 		expect(response.statusCode).toBe(400);
 		expect(response.json()).toEqual({
-			error: "Missing products in query params",
+			error: "Produtos ausentes nos parâmetros da query",
 		});
 	});
 });

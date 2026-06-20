@@ -11,7 +11,7 @@ import supertest from "supertest";
 import { describe, expect, it, vi } from "vitest";
 import { Webhooks } from "./webhooks";
 
-describe("Webhooks middleware", () => {
+describe("Middleware de webhooks", () => {
 	it("should call onPayload with the payload", async () => {
 		const app = express();
 		const mockOnPayload = vi.fn();

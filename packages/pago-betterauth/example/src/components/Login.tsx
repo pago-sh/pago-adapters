@@ -9,16 +9,16 @@ export const Login = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1>Login</h1>
+      <h1>Entrar</h1>
       <input
         type="email"
-        placeholder="Email"
+        placeholder="E-mail"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
       <input
         type="password"
-        placeholder="Password"
+        placeholder="Senha"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
@@ -34,7 +34,7 @@ export const Login = () => {
           console.log(user);
         }}
       >
-        Sign In
+        Entrar
       </button>
     </div>
   );

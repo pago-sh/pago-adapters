@@ -47,7 +47,7 @@ export const Webhooks = ({
 				return reply.status(400).send({ received: false });
 			}
 
-			return reply.status(500).send({ error: "Internal server error" });
+			return reply.status(500).send({ error: "Erro interno do servidor" });
 		}
 
 		await handleWebhookPayload(webhookPayload, {

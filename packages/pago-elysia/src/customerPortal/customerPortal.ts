@@ -26,7 +26,7 @@ export const CustomerPortal = ({
 		const customerId = await getCustomerId(ctx.request);
 
 		if (!customerId) {
-			return status(400, { error: "customerId not defined" });
+			return status(400, { error: "customerId não definido" });
 		}
 
 		try {
@@ -38,7 +38,7 @@ export const CustomerPortal = ({
 			return ctx.redirect(result.customerPortalUrl);
 		} catch (error) {
 			console.error(error);
-			return status(500, { error: "Internal server error" });
+			return status(500, { error: "Erro interno do servidor" });
 		}
 	};
 };

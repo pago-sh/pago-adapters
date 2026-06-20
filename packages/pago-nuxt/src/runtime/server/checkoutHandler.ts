@@ -99,11 +99,11 @@ export const Checkout = ({
 
 			return sendRedirect(event, redirectUrl.toString());
 		} catch (error) {
-			console.error("Failed to checkout:", error);
+			console.error("Falha ao realizar o checkout:", error);
 			throw createError({
 				statusCode: 500,
 				statusMessage: (error as Error).message,
-				message: (error as Error).message ?? "Internal server error",
+				message: (error as Error).message ?? "Erro interno do servidor",
 			});
 		}
 	};

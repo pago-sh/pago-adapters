@@ -174,14 +174,14 @@ describe("customer hooks", () => {
 			const mockUser = createMockUser();
 
 			vi.mocked(mockClient.customers.create).mockRejectedValue(
-				mockApiError(500, "Internal server error"),
+				mockApiError(500, "Erro interno do servidor"),
 			);
 
 			const ctx = { context: { logger: { error: vi.fn() } } } as any;
 			const hook = onBeforeUserCreate(options);
 
 			await expect(hook(mockUser, ctx)).rejects.toThrow(
-				"Pago customer creation failed. Error: Internal server error",
+				"Falha ao criar o cliente. Erro: Erro interno do servidor",
 			);
 		});
 
@@ -193,13 +193,13 @@ describe("customer hooks", () => {
 
 			const mockUser = createMockUser();
 
-			vi.mocked(mockClient.customers.create).mockRejectedValue("Unknown error");
+			vi.mocked(mockClient.customers.create).mockRejectedValue("Erro desconhecido");
 
 			const ctx = { context: { logger: { error: vi.fn() } } } as any;
 			const hook = onBeforeUserCreate(options);
 
 			await expect(hook(mockUser, ctx)).rejects.toThrow(
-				"Pago customer creation failed. Error: Unknown error",
+				"Falha ao criar o cliente. Erro: Erro desconhecido",
 			);
 		});
 
@@ -214,7 +214,7 @@ describe("customer hooks", () => {
 			const hook = onBeforeUserCreate(options);
 
 			await expect(hook(mockUser, ctx)).rejects.toThrow(
-				"An associated email is required",
+				"Um e-mail associado é obrigatório",
 			);
 
 			expect(mockClient.customers.create).not.toHaveBeenCalled();
@@ -388,14 +388,14 @@ describe("customer hooks", () => {
 			const mockUser = createMockUser();
 
 			vi.mocked(mockClient.customers.list).mockRejectedValue(
-				mockApiError(500, "Internal server error"),
+				mockApiError(500, "Erro interno do servidor"),
 			);
 
 			const ctx = { context: { logger: { error: vi.fn() } } } as any;
 			const hook = onAfterUserCreate(options);
 
 			await expect(hook(mockUser, ctx)).rejects.toThrow(
-				"Pago customer creation failed. Error: Internal server error",
+				"Falha ao criar o cliente. Erro: Erro interno do servidor",
 			);
 		});
 
@@ -407,13 +407,13 @@ describe("customer hooks", () => {
 
 			const mockUser = createMockUser();
 
-			vi.mocked(mockClient.customers.list).mockRejectedValue("Unknown error");
+			vi.mocked(mockClient.customers.list).mockRejectedValue("Erro desconhecido");
 
 			const ctx = { context: { logger: { error: vi.fn() } } } as any;
 			const hook = onAfterUserCreate(options);
 
 			await expect(hook(mockUser, ctx)).rejects.toThrow(
-				"Pago customer creation failed. Error: Unknown error",
+				"Falha ao criar o cliente. Erro: Erro desconhecido",
 			);
 		});
 	});
@@ -428,7 +428,7 @@ describe("customer hooks", () => {
 			const mockUser = createMockUser({
 				id: "user-123",
 				email: "updated@example.com",
-				name: "Updated User",
+				name: "Usuário atualizado",
 			});
 
 			const mockCustomer = createMockCustomer();
@@ -448,7 +448,7 @@ describe("customer hooks", () => {
 				externalId: "user-123",
 				customerUpdateExternalID: {
 					email: "updated@example.com",
-					name: "Updated User",
+					name: "Usuário atualizado",
 				},
 			});
 		});
@@ -494,7 +494,7 @@ describe("customer hooks", () => {
 			const mockUser = createMockUser();
 
 			vi.mocked(mockClient.customers.updateExternal).mockRejectedValue(
-				mockApiError(404, "Customer not found"),
+				mockApiError(404, "Cliente não encontrado"),
 			);
 
 			const ctx = {
@@ -507,7 +507,7 @@ describe("customer hooks", () => {
 			await hook(mockUser, ctx);
 
 			expect(ctx.context.logger.error).toHaveBeenCalledWith(
-				"Pago customer update failed. Error: Customer not found",
+				"Falha ao atualizar o cliente. Erro: Cliente não encontrado",
 			);
 		});
 
@@ -520,7 +520,7 @@ describe("customer hooks", () => {
 			const mockUser = createMockUser();
 
 			vi.mocked(mockClient.customers.updateExternal).mockRejectedValue(
-				"Unknown error",
+				"Erro desconhecido",
 			);
 
 			const ctx = {
@@ -532,7 +532,7 @@ describe("customer hooks", () => {
 			await hook(mockUser, ctx);
 
 			expect(ctx.context.logger.error).toHaveBeenCalledWith(
-				"Pago customer update failed. Error: Unknown error",
+				"Falha ao atualizar o cliente. Erro: Erro desconhecido",
 			);
 		});
 
@@ -545,7 +545,7 @@ describe("customer hooks", () => {
 			const mockUser = createMockUser();
 
 			vi.mocked(mockClient.customers.updateExternal).mockRejectedValue(
-				new Error("Network timeout"),
+				new Error("Tempo de rede esgotado"),
 			);
 
 			const ctx = {
@@ -557,7 +557,7 @@ describe("customer hooks", () => {
 			await hook(mockUser, ctx);
 
 			expect(ctx.context.logger.error).toHaveBeenCalledWith(
-				"Pago customer update failed. Error: Network timeout",
+				"Falha ao atualizar o cliente. Erro: Tempo de rede esgotado",
 			);
 		});
 	});

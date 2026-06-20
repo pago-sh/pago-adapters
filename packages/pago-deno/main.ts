@@ -36,7 +36,7 @@ export const Checkout = ({
 
     if (products.length === 0) {
       return new Response(
-        JSON.stringify({ error: "Missing products in query params" }),
+        JSON.stringify({ error: "Produtos ausentes nos parâmetros da query" }),
         {
           status: 400,
           headers: { "Content-Type": "application/json" },
@@ -89,7 +89,7 @@ export const Checkout = ({
       return Response.redirect(redirectUrl.toString());
     } catch (error) {
       console.error(error);
-      return new Response(JSON.stringify({ error: "Internal server error" }), {
+      return new Response(JSON.stringify({ error: "Erro interno do servidor" }), {
         status: 500,
         headers: { "Content-Type": "application/json" },
       });
@@ -122,7 +122,7 @@ export const CustomerPortal = ({
     const customerId = await getCustomerId(request);
 
     if (!customerId) {
-      return new Response(JSON.stringify({ error: "customerId not defined" }), {
+      return new Response(JSON.stringify({ error: "customerId não definido" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
       });
@@ -137,7 +137,7 @@ export const CustomerPortal = ({
       return Response.redirect(result.customerPortalUrl);
     } catch (error) {
       console.error(error);
-      return new Response(JSON.stringify({ error: "Internal server error" }), {
+      return new Response(JSON.stringify({ error: "Erro interno do servidor" }), {
         status: 500,
         headers: { "Content-Type": "application/json" },
       });

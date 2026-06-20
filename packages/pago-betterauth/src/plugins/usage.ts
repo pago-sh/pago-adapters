@@ -9,7 +9,7 @@ import type { Product } from "../types";
 
 export interface UsageOptions {
 	/**
-	 * Products to use for topping up credits
+	 * Produtos a serem usados para recarregar créditos
 	 */
 	creditProducts?: Product[] | (() => Promise<Product[]>);
 }
@@ -29,7 +29,7 @@ export const usage = (_usageOptions?: UsageOptions) => (pago: Pago) => {
 			async (ctx) => {
 				if (!ctx.context.session.user.id) {
 					throw new APIError("BAD_REQUEST", {
-						message: "User not found",
+						message: "Usuário não encontrado",
 					});
 				}
 
@@ -50,12 +50,12 @@ export const usage = (_usageOptions?: UsageOptions) => (pago: Pago) => {
 				} catch (e: unknown) {
 					if (e instanceof Error) {
 						ctx.context.logger.error(
-							`Pago meters list failed. Error: ${e.message}`,
+							`Falha ao listar medidores do Pago. Erro: ${e.message}`,
 						);
 					}
 
 					throw new APIError("INTERNAL_SERVER_ERROR", {
-						message: "Meters list failed",
+						message: "Falha ao listar medidores",
 					});
 				}
 			},
@@ -76,7 +76,7 @@ export const usage = (_usageOptions?: UsageOptions) => (pago: Pago) => {
 			async (ctx) => {
 				if (!ctx.context.session.user.id) {
 					throw new APIError("BAD_REQUEST", {
-						message: "User not found",
+						message: "Usuário não encontrado",
 					});
 				}
 
@@ -95,12 +95,12 @@ export const usage = (_usageOptions?: UsageOptions) => (pago: Pago) => {
 				} catch (e: unknown) {
 					if (e instanceof Error) {
 						ctx.context.logger.error(
-							`Pago ingestion failed. Error: ${e.message}`,
+							`Falha na ingestão do Pago. Erro: ${e.message}`,
 						);
 					}
 
 					throw new APIError("INTERNAL_SERVER_ERROR", {
-						message: "Ingestion failed",
+						message: "Falha na ingestão",
 					});
 				}
 			},

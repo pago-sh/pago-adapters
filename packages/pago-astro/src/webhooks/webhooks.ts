@@ -24,7 +24,7 @@ export const Webhooks = ({
 }: WebhooksConfig): APIRoute => {
 	return async ({ request }) => {
 		if (request.method !== "POST") {
-			return Response.json({ message: "Method not allowed" }, { status: 405 });
+			return Response.json({ message: "Método não permitido" }, { status: 405 });
 		}
 
 		const requestBody = await request.text();
@@ -48,7 +48,7 @@ export const Webhooks = ({
 				return Response.json({ received: false }, { status: 403 });
 			}
 
-			return Response.json({ error: "Internal server error" }, { status: 500 });
+			return Response.json({ error: "Erro interno do servidor" }, { status: 500 });
 		}
 
 		await handleWebhookPayload(webhookPayload, {

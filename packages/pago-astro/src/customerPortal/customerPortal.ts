@@ -29,7 +29,7 @@ export const CustomerPortal = ({
 
 		if (!customerId) {
 			return Response.json(
-				{ error: "customerId not defined" },
+				{ error: "customerId não definido" },
 				{ status: 400 },
 			);
 		}
@@ -45,7 +45,7 @@ export const CustomerPortal = ({
 			return Response.redirect(result.customerPortalUrl);
 		} catch (error) {
 			console.error(error);
-			return Response.json({ error: "Internal server error" }, { status: 500 });
+			return Response.json({ error: "Erro interno do servidor" }, { status: 500 });
 		}
 	};
 };

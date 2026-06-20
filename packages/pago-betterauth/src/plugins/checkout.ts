@@ -9,23 +9,23 @@ import type { Product } from "../types";
 
 export interface CheckoutOptions {
 	/**
-	 * Optional list of slug -> productId mappings for easy slug checkouts
+	 * Lista opcional de mapeamentos slug -> productId para facilitar checkouts por slug
 	 */
 	products?: Product[] | (() => Promise<Product[]>);
 	/**
-	 * Checkout Success URL
+	 * URL de sucesso do checkout
 	 */
 	successUrl?: string;
 	/**
-	 * Checkout Return URL
+	 * URL de retorno do checkout
 	 */
 	returnUrl?: string;
 	/**
-	 * Only allow authenticated customers to checkout
+	 * Permitir apenas que clientes autenticados façam checkout
 	 */
 	authenticatedUsersOnly?: boolean;
 	/**
-	 * Checkout theme
+	 * Tema do checkout
 	 */
 	theme?: "light" | "dark";
 }
@@ -40,10 +40,10 @@ export const CheckoutParams = z.object({
 	metadata: z
 		.record(z.string(), z.union([z.string().max(500), z.number(), z.boolean()]))
 		.refine((obj) => Object.keys(obj).length <= 50, {
-			message: "Metadata can have at most 50 key-value pairs",
+			message: "Metadados podem ter no máximo 50 pares de chave-valor",
 		})
 		.refine((obj) => Object.keys(obj).every((key) => key.length <= 40), {
-			message: "Metadata keys must be at most 40 characters",
+			message: "As chaves dos metadados devem ter no máximo 40 caracteres",
 		})
 		.optional(),
 	allowDiscountCodes: z.coerce.boolean().optional(),
@@ -53,13 +53,13 @@ export const CheckoutParams = z.object({
 	successUrl: z
 		.string()
 		.refine((val) => val.startsWith("/") || URL.canParse(val), {
-			message: "Must be a valid URL or a relative path starting with /",
+			message: "Deve ser uma URL válida ou um caminho relativo começando com /",
 		})
 		.optional(),
 	returnUrl: z
 		.string()
 		.refine((val) => val.startsWith("/") || URL.canParse(val), {
-			message: "Must be a valid URL or a relative path starting with /",
+			message: "Deve ser uma URL válida ou um caminho relativo começando com /",
 		})
 		.optional(),
 	allowTrial: z.boolean().optional(),
@@ -96,7 +96,7 @@ export const checkout =
 
 						if (!productId) {
 							throw new APIError("BAD_REQUEST", {
-								message: "Product not found",
+								message: "Produto não encontrado",
 							});
 						}
 
@@ -110,13 +110,13 @@ export const checkout =
 					if (checkoutOptions.authenticatedUsersOnly) {
 						if (!session?.user.id) {
 							throw new APIError("UNAUTHORIZED", {
-								message: "You must be logged in to checkout",
+								message: "Você precisa estar autenticado para finalizar a compra",
 							});
 						}
 
 						if (session.user["isAnonymous"]) {
 							throw new APIError("UNAUTHORIZED", {
-								message: "Anonymous users are not allowed to checkout",
+								message: "Usuários anônimos não têm permissão para finalizar a compra",
 							});
 						}
 					}
@@ -168,12 +168,12 @@ export const checkout =
 					} catch (e: unknown) {
 						if (e instanceof Error) {
 							ctx.context.logger.error(
-								`Pago checkout creation failed. Error: ${e.message}`,
+								`Falha ao criar o checkout do Pago. Erro: ${e.message}`,
 							);
 						}
 
 						throw new APIError("INTERNAL_SERVER_ERROR", {
-							message: "Checkout creation failed",
+							message: "Falha ao criar o checkout",
 						});
 					}
 				},

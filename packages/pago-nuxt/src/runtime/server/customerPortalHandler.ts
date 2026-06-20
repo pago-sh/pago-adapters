@@ -22,11 +22,11 @@ export const CustomerPortal = ({
 
 		if (!customerId) {
 			console.error(
-				"Failed to redirect to customer portal, customerId not defined",
+				"Falha ao redirecionar para o portal do cliente, customerId não definido",
 			);
 			throw createError({
 				statusCode: 400,
-				message: "customerId not defined",
+				message: "customerId não definido",
 			});
 		}
 
@@ -43,11 +43,11 @@ export const CustomerPortal = ({
 
 			return sendRedirect(event, result.customerPortalUrl);
 		} catch (error) {
-			console.error("Failed to redirect to customer portal", error);
+			console.error("Falha ao redirecionar para o portal do cliente", error);
 			throw createError({
 				statusCode: 500,
 				statusMessage: (error as Error).message,
-				message: (error as Error).message ?? "Internal server error",
+				message: (error as Error).message ?? "Erro interno do servidor",
 			});
 		}
 	};

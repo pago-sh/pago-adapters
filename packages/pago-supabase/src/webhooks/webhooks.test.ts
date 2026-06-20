@@ -98,7 +98,7 @@ describe("Webhooks", () => {
 
 		it("should return 403 on verification error", async () => {
 			mockValidateEvent.mockImplementation(() => {
-				throw new WebhookVerificationError("Invalid signature");
+				throw new WebhookVerificationError("Assinatura inválida");
 			});
 
 			const handler = Webhooks({

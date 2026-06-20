@@ -176,12 +176,12 @@ describe("usage plugin", () => {
 				},
 			};
 
-			await expect(handler(ctx)).rejects.toThrow("User not found");
+			await expect(handler(ctx)).rejects.toThrow("Usuário não encontrado");
 		});
 
 		it("should handle customer session creation failure", async () => {
 			vi.mocked(mockClient.customerSessions.create).mockRejectedValue(
-				mockApiError(400, "Customer not found"),
+				mockApiError(400, "Cliente não encontrado"),
 			);
 
 			const ctx = {
@@ -191,9 +191,9 @@ describe("usage plugin", () => {
 				},
 			};
 
-			await expect(handler(ctx)).rejects.toThrow("Meters list failed");
+			await expect(handler(ctx)).rejects.toThrow("Falha ao listar medidores");
 			expect(ctx.context.logger.error).toHaveBeenCalledWith(
-				expect.stringContaining("Pago meters list failed"),
+				expect.stringContaining("Falha ao listar medidores"),
 			);
 		});
 
@@ -204,7 +204,7 @@ describe("usage plugin", () => {
 			);
 			vi.mocked(
 				mockClient.customerPortal.customerMeters.list,
-			).mockRejectedValue(mockApiError(500, "Internal server error"));
+			).mockRejectedValue(mockApiError(500, "Erro interno do servidor"));
 
 			const ctx = {
 				context: {
@@ -213,7 +213,7 @@ describe("usage plugin", () => {
 				},
 			};
 
-			await expect(handler(ctx)).rejects.toThrow("Meters list failed");
+			await expect(handler(ctx)).rejects.toThrow("Falha ao listar medidores");
 		});
 	});
 
@@ -359,12 +359,12 @@ describe("usage plugin", () => {
 				},
 			};
 
-			await expect(handler(ctx)).rejects.toThrow("User not found");
+			await expect(handler(ctx)).rejects.toThrow("Usuário não encontrado");
 		});
 
 		it("should handle ingestion API failure", async () => {
 			vi.mocked(mockClient.events.ingest).mockRejectedValue(
-				mockApiError(400, "Invalid event data"),
+				mockApiError(400, "Dados de evento inválidos"),
 			);
 
 			const ctx = {
@@ -378,15 +378,15 @@ describe("usage plugin", () => {
 				},
 			};
 
-			await expect(handler(ctx)).rejects.toThrow("Ingestion failed");
+			await expect(handler(ctx)).rejects.toThrow("Falha na ingestão");
 			expect(ctx.context.logger.error).toHaveBeenCalledWith(
-				expect.stringContaining("Pago ingestion failed"),
+				expect.stringContaining("Falha na ingestão"),
 			);
 		});
 
 		it("should handle network errors", async () => {
 			vi.mocked(mockClient.events.ingest).mockRejectedValue(
-				new Error("Network timeout"),
+				new Error("Tempo de rede esgotado"),
 			);
 
 			const ctx = {
@@ -400,9 +400,9 @@ describe("usage plugin", () => {
 				},
 			};
 
-			await expect(handler(ctx)).rejects.toThrow("Ingestion failed");
+			await expect(handler(ctx)).rejects.toThrow("Falha na ingestão");
 			expect(ctx.context.logger.error).toHaveBeenCalledWith(
-				"Pago ingestion failed. Error: Network timeout",
+				"Falha na ingestão. Erro: Tempo de rede esgotado",
 			);
 		});
 	});

@@ -31,7 +31,7 @@ export const Checkout = <TPath extends string = string>({
 
 		if (products.length === 0) {
 			return Response.json(
-				{ error: "Missing products in query params" },
+				{ error: "Produtos ausentes nos parâmetros da query" },
 				{ status: 400 },
 			);
 		}

@@ -112,7 +112,7 @@ describe("portal plugin", () => {
 				},
 			};
 
-			await expect(handler(ctx)).rejects.toThrow("User not found");
+			await expect(handler(ctx)).rejects.toThrow("Usuário não encontrado");
 		});
 
 		it("should return redirect: false when body param is false (POST)", async () => {
@@ -169,7 +169,7 @@ describe("portal plugin", () => {
 
 		it("should handle API errors", async () => {
 			vi.mocked(mockClient.customerSessions.create).mockRejectedValue(
-				mockApiError(400, "Customer not found"),
+				mockApiError(400, "Cliente não encontrado"),
 			);
 
 			const ctx = {
@@ -180,10 +180,10 @@ describe("portal plugin", () => {
 			};
 
 			await expect(handler(ctx)).rejects.toThrow(
-				"Customer portal creation failed",
+				"Falha ao criar o portal do cliente",
 			);
 			expect(ctx.context.logger.error).toHaveBeenCalledWith(
-				expect.stringContaining("Pago customer portal creation failed"),
+				expect.stringContaining("Falha ao criar o portal do cliente"),
 			);
 		});
 
@@ -347,12 +347,12 @@ describe("portal plugin", () => {
 				},
 			};
 
-			await expect(handler(ctx)).rejects.toThrow("User not found");
+			await expect(handler(ctx)).rejects.toThrow("Usuário não encontrado");
 		});
 
 		it("should handle API errors", async () => {
 			vi.mocked(mockClient.customers.getStateExternal).mockRejectedValue(
-				mockApiError(404, "Customer not found"),
+				mockApiError(404, "Cliente não encontrado"),
 			);
 
 			const ctx = {
@@ -362,9 +362,9 @@ describe("portal plugin", () => {
 				},
 			};
 
-			await expect(handler(ctx)).rejects.toThrow("Subscriptions list failed");
+			await expect(handler(ctx)).rejects.toThrow("Falha ao listar assinaturas");
 			expect(ctx.context.logger.error).toHaveBeenCalledWith(
-				expect.stringContaining("Pago subscriptions list failed"),
+				expect.stringContaining("Falha ao listar assinaturas"),
 			);
 		});
 	});
@@ -446,7 +446,7 @@ describe("portal plugin", () => {
 
 		it("should handle API errors", async () => {
 			vi.mocked(mockClient.customerSessions.create).mockRejectedValue(
-				mockApiError(400, "Session creation failed"),
+				mockApiError(400, "Falha ao criar a sessão"),
 			);
 
 			const ctx = {
@@ -456,7 +456,7 @@ describe("portal plugin", () => {
 				},
 			};
 
-			await expect(handler(ctx)).rejects.toThrow("Benefits list failed");
+			await expect(handler(ctx)).rejects.toThrow("Falha ao listar benefícios");
 		});
 	});
 
@@ -533,7 +533,7 @@ describe("portal plugin", () => {
 
 		it("should handle API errors for reference ID lookup", async () => {
 			vi.mocked(mockClient.subscriptions.list).mockRejectedValue(
-				mockApiError(400, "Subscription lookup failed"),
+				mockApiError(400, "Falha ao buscar a assinatura"),
 			);
 
 			const ctx = {
@@ -545,13 +545,13 @@ describe("portal plugin", () => {
 			};
 
 			await expect(handler(ctx)).rejects.toThrow(
-				"Subscriptions list with referenceId failed",
+				"Falha ao listar assinaturas com referenceId",
 			);
 		});
 
 		it("should handle API errors for customer portal lookup", async () => {
 			vi.mocked(mockClient.customerSessions.create).mockRejectedValue(
-				mockApiError(400, "Session creation failed"),
+				mockApiError(400, "Falha ao criar a sessão"),
 			);
 
 			const ctx = {
@@ -563,7 +563,7 @@ describe("portal plugin", () => {
 			};
 
 			await expect(handler(ctx)).rejects.toThrow(
-				"Pago subscriptions list failed",
+				"Falha ao listar assinaturas",
 			);
 		});
 	});
@@ -643,12 +643,12 @@ describe("portal plugin", () => {
 				},
 			};
 
-			await expect(handler(ctx)).rejects.toThrow("User not found");
+			await expect(handler(ctx)).rejects.toThrow("Usuário não encontrado");
 		});
 
 		it("should handle API errors", async () => {
 			vi.mocked(mockClient.customerSessions.create).mockRejectedValue(
-				mockApiError(400, "Session creation failed"),
+				mockApiError(400, "Falha ao criar a sessão"),
 			);
 
 			const ctx = {
@@ -658,7 +658,7 @@ describe("portal plugin", () => {
 				},
 			};
 
-			await expect(handler(ctx)).rejects.toThrow("Orders list failed");
+			await expect(handler(ctx)).rejects.toThrow("Falha ao listar pedidos");
 		});
 	});
 });

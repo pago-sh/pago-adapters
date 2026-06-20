@@ -222,7 +222,7 @@ describe("checkout plugin", () => {
 				body: { slug: "unknown-product" },
 			};
 
-			await expect(handler(ctx)).rejects.toThrow("Product not found");
+			await expect(handler(ctx)).rejects.toThrow("Produto não encontrado");
 		});
 
 		it("should include metadata and custom field data", async () => {
@@ -301,7 +301,7 @@ describe("checkout plugin", () => {
 			};
 
 			await expect(authHandler(ctx)).rejects.toThrow(
-				"You must be logged in to checkout",
+				"Você precisa estar logado para finalizar a compra",
 			);
 		});
 
@@ -310,7 +310,7 @@ describe("checkout plugin", () => {
 				user: { id: "user-123" },
 			});
 			vi.mocked(mockClient.checkouts.create).mockRejectedValue(
-				mockApiError(400, "Invalid product"),
+				mockApiError(400, "Produto inválido"),
 			);
 
 			const ctx = {
@@ -319,9 +319,9 @@ describe("checkout plugin", () => {
 				context: { logger: { error: vi.fn() } },
 			};
 
-			await expect(handler(ctx)).rejects.toThrow("Checkout creation failed");
+			await expect(handler(ctx)).rejects.toThrow("Falha ao criar o checkout");
 			expect(ctx.context.logger.error).toHaveBeenCalledWith(
-				expect.stringContaining("Pago checkout creation failed"),
+				expect.stringContaining("Falha ao criar o checkout"),
 			);
 		});
 

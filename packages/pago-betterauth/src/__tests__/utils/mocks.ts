@@ -98,7 +98,7 @@ export const createMockBetterAuthContext = () => ({
 
 export const createMockProduct = () => ({
 	id: "product-123",
-	name: "Test Product",
+	name: "Produto de teste",
 	description: "A test product",
 	isRecurring: false,
 	isArchived: false,
@@ -129,7 +129,7 @@ export const createMockCustomer = (
 	id: "customer-123",
 	email: "test@example.com",
 	emailVerified: true,
-	name: "Test Customer",
+	name: "Cliente de teste",
 	billingAddress: null,
 	taxId: null,
 	organizationId: "org-123",

@@ -28,7 +28,7 @@ import type { APIContext } from "astro";
 import { describe, expect, it, vi } from "vitest";
 import { CustomerPortal } from "./customerPortal";
 
-describe("CustomerPortal middleware", () => {
+describe("Middleware do portal do cliente", () => {
 	it("should redirect to customer portal when customerId is valid", async () => {
 		const response = await CustomerPortal({
 			accessToken: "mock-access-token",

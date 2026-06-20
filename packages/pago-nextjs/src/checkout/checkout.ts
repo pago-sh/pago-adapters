@@ -30,7 +30,7 @@ export const Checkout = ({
 
 		if (products.length === 0) {
 			return NextResponse.json(
-				{ error: "Missing products in query params" },
+				{ error: "Produtos ausentes nos parâmetros da query" },
 				{ status: 400 },
 			);
 		}

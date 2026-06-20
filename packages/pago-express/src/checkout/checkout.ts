@@ -31,7 +31,7 @@ export const Checkout = ({
 
 		if (products.length === 0) {
 			res.status(400).json({
-				error: "Missing products in query params",
+				error: "Produtos ausentes nos parâmetros da query",
 			});
 			return;
 		}
@@ -84,7 +84,7 @@ export const Checkout = ({
 			res.redirect(redirectUrl.toString());
 		} catch (error) {
 			console.error(error);
-			res.status(500).json({ error: "Internal server error" });
+			res.status(500).json({ error: "Erro interno do servidor" });
 		}
 	};
 };

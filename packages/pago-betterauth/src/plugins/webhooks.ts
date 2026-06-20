@@ -31,135 +31,135 @@ import { APIError, createAuthEndpoint } from "better-auth/api";
 
 export interface WebhooksOptions {
 	/**
-	 * Webhook Secret
+	 * Segredo do webhook
 	 */
 	secret: string;
 	/**
-	 * Generic handler for all webhooks
+	 * Handler genérico para todos os webhooks
 	 */
 	onPayload?: (payload: ReturnType<typeof validateEvent>) => Promise<void>;
 	/**
-	 * Webhook for checkout created
+	 * Webhook para checkout criado
 	 */
 	onCheckoutCreated?: (payload: WebhookCheckoutCreatedPayload) => Promise<void>;
 	/**
-	 * Webhook for checkout updated
+	 * Webhook para checkout atualizado
 	 */
 	onCheckoutUpdated?: (payload: WebhookCheckoutUpdatedPayload) => Promise<void>;
 	/**
-	 * Webhook for order created
+	 * Webhook para pedido criado
 	 */
 	onOrderCreated?: (payload: WebhookOrderCreatedPayload) => Promise<void>;
 	/**
-	 * Webhook for order refunded
+	 * Webhook para pedido reembolsado
 	 */
 	onOrderRefunded?: (payload: WebhookOrderRefundedPayload) => Promise<void>;
 	/**
-	 * Webhook for order paid
+	 * Webhook para pedido pago
 	 */
 	onOrderPaid?: (payload: WebhookOrderPaidPayload) => Promise<void>;
 	/**
-	 * Webhook for order updated
+	 * Webhook para pedido atualizado
 	 */
 	onOrderUpdated?: (payload: WebhookOrderUpdatedPayload) => Promise<void>;
 	/**
-	 * Webhook for refund created
+	 * Webhook para reembolso criado
 	 */
 	onRefundCreated?: (payload: WebhookRefundCreatedPayload) => Promise<void>;
 	/**
-	 * Webhook for refund updated
+	 * Webhook para reembolso atualizado
 	 */
 	onRefundUpdated?: (payload: WebhookRefundUpdatedPayload) => Promise<void>;
 	/**
-	 * Webhook for subscription created
+	 * Webhook para assinatura criada
 	 */
 	onSubscriptionCreated?: (
 		payload: WebhookSubscriptionCreatedPayload,
 	) => Promise<void>;
 	/**
-	 * Webhook for subscription updated
+	 * Webhook para assinatura atualizada
 	 */
 	onSubscriptionUpdated?: (
 		payload: WebhookSubscriptionUpdatedPayload,
 	) => Promise<void>;
 	/**
-	 * Webhook for subscription active
+	 * Webhook para assinatura ativa
 	 */
 	onSubscriptionActive?: (
 		payload: WebhookSubscriptionActivePayload,
 	) => Promise<void>;
 	/**
-	 * Webhook for subscription canceled
+	 * Webhook para assinatura cancelada
 	 */
 	onSubscriptionCanceled?: (
 		payload: WebhookSubscriptionCanceledPayload,
 	) => Promise<void>;
 	/**
-	 * Webhook for subscription revoked
+	 * Webhook para assinatura revogada
 	 */
 	onSubscriptionRevoked?: (
 		payload: WebhookSubscriptionRevokedPayload,
 	) => Promise<void>;
 	/**
-	 * Webhook for subscription uncanceled
+	 * Webhook para cancelamento de assinatura desfeito
 	 */
 	onSubscriptionUncanceled?: (
 		payload: WebhookSubscriptionUncanceledPayload,
 	) => Promise<void>;
 	/**
-	 * Webhook for product created
+	 * Webhook para produto criado
 	 */
 	onProductCreated?: (payload: WebhookProductCreatedPayload) => Promise<void>;
 	/**
-	 * Webhook for product updated
+	 * Webhook para produto atualizado
 	 */
 	onProductUpdated?: (payload: WebhookProductUpdatedPayload) => Promise<void>;
 	/**
-	 * Webhook for organization updated
+	 * Webhook para organização atualizada
 	 */
 	onOrganizationUpdated?: (
 		payload: WebhookOrganizationUpdatedPayload,
 	) => Promise<void>;
 	/**
-	 * Webhook for benefit created
+	 * Webhook para benefício criado
 	 */
 	onBenefitCreated?: (payload: WebhookBenefitCreatedPayload) => Promise<void>;
 	/**
-	 * Webhook for benefit updated
+	 * Webhook para benefício atualizado
 	 */
 	onBenefitUpdated?: (payload: WebhookBenefitUpdatedPayload) => Promise<void>;
 	/**
-	 * Webhook for benefit grant created
+	 * Webhook para concessão de benefício criada
 	 */
 	onBenefitGrantCreated?: (
 		payload: WebhookBenefitGrantCreatedPayload,
 	) => Promise<void>;
 	/**
-	 * Webhook for benefit grant updated
+	 * Webhook para concessão de benefício atualizada
 	 */
 	onBenefitGrantUpdated?: (
 		payload: WebhookBenefitGrantUpdatedPayload,
 	) => Promise<void>;
 	/**
-	 * Webhook for benefit grant revoked
+	 * Webhook para concessão de benefício revogada
 	 */
 	onBenefitGrantRevoked?: (
 		payload: WebhookBenefitGrantRevokedPayload,
 	) => Promise<void>;
 	/**
-	 * Webhook for customer created
+	 * Webhook para cliente criado
 	 */
 	onCustomerCreated?: (payload: WebhookCustomerCreatedPayload) => Promise<void>;
 	/**
-	 * Webhook for customer updated
+	 * Webhook para cliente atualizado
 	 */
 	onCustomerUpdated?: (payload: WebhookCustomerUpdatedPayload) => Promise<void>;
 	/**
-	 * Webhook for customer deleted
+	 * Webhook para cliente excluído
 	 */
 	onCustomerDeleted?: (payload: WebhookCustomerDeletedPayload) => Promise<void>;
 	/**
-	 * Webhook for customer state changed
+	 * Webhook para estado do cliente alterado
 	 */
 	onCustomerStateChanged?: (
 		payload: WebhookCustomerStateChangedPayload,
@@ -188,7 +188,7 @@ export const webhooks = (options: WebhooksOptions) => (_pago: Pago) => {
 				try {
 					if (!secret) {
 						throw new APIError("INTERNAL_SERVER_ERROR", {
-							message: "Pago webhook secret not found",
+							message: "Segredo do webhook do Pago não encontrado",
 						});
 					}
 
@@ -207,11 +207,11 @@ export const webhooks = (options: WebhooksOptions) => (_pago: Pago) => {
 					if (err instanceof Error) {
 						ctx.context.logger.error(`${err.message}`);
 						throw new APIError("BAD_REQUEST", {
-							message: `Webhook Error: ${err.message}`,
+							message: `Erro no webhook: ${err.message}`,
 						});
 					}
 					throw new APIError("BAD_REQUEST", {
-						message: `Webhook Error: ${err}`,
+						message: `Erro no webhook: ${err}`,
 					});
 				}
 
@@ -223,14 +223,15 @@ export const webhooks = (options: WebhooksOptions) => (_pago: Pago) => {
 				} catch (e: unknown) {
 					if (e instanceof Error) {
 						ctx.context.logger.error(
-							`Pago webhook failed. Error: ${e.message}`,
+							`Falha no webhook do Pago. Erro: ${e.message}`,
 						);
 					} else {
-						ctx.context.logger.error(`Pago webhook failed. Error: ${e}`);
+						ctx.context.logger.error(`Falha no webhook do Pago. Erro: ${e}`);
 					}
 
 					throw new APIError("BAD_REQUEST", {
-						message: "Webhook error: See server logs for more information.",
+						message:
+							"Erro no webhook: consulte os logs do servidor para mais informações.",
 					});
 				}
 

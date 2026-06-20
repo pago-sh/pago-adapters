@@ -36,7 +36,7 @@ import { Hono } from "hono";
 import { describe, expect, it, vi } from "vitest";
 import { Checkout, CustomerPortal, Webhooks } from "./index";
 
-describe("Checkout middleware", () => {
+describe("Middleware de checkout", () => {
 	it("should redirect to checkout when products is valid", async () => {
 		const app = new Hono();
 		app.use(
@@ -63,12 +63,12 @@ describe("Checkout middleware", () => {
 		const res = await app.request("/");
 		expect(res.status).toBe(400);
 		expect(await res.json()).toEqual({
-			error: "Missing products in query params",
+			error: "Produtos ausentes nos parâmetros da query",
 		});
 	});
 });
 
-describe("CustomerPortal middleware", () => {
+describe("Middleware do portal do cliente", () => {
 	it("should redirect to customer portal when customerId is valid", async () => {
 		const app = new Hono();
 		const mockGetCustomerId = async () => "valid-customer-id";
@@ -101,7 +101,7 @@ describe("CustomerPortal middleware", () => {
 	});
 });
 
-describe("Webhooks middleware", () => {
+describe("Middleware de webhooks", () => {
 	it("should call onPayload with the payload", async () => {
 		const app = new Hono();
 		const mockOnPayload = vi.fn();

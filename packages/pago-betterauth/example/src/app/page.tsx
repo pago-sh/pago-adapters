@@ -57,22 +57,22 @@ export default function Home() {
 			<Login />
 			<div className="flex flex-col gap-4 items-center justify-center">
 				<button onClick={onClickCheckout} type="button">
-					Checkout
+					Finalizar compra
 				</button>
 				<button onClick={onClickCustomerPortal} type="button">
-					Customer Portal
+					Portal do cliente
 				</button>
 				<button onClick={onClickCustomerState} type="button">
-					Customer State
+					Estado do cliente
 				</button>
 				<button onClick={onClickOrganization} type="button">
-					Organization
+					Organização
 				</button>
 				<button onClick={onClickIngest} type="button">
-					Ingest
+					Ingerir
 				</button>
 				<button onClick={onClickSubscriptions} type="button">
-					Subscriptions
+					Assinaturas
 				</button>
 			</div>
 		</div>

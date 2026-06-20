@@ -28,7 +28,7 @@ export const Checkout = ({
 
 		if (products.length === 0) {
 			return new Response(
-				JSON.stringify({ error: "Missing products in query params" }),
+				JSON.stringify({ error: "Produtos ausentes nos parâmetros da query" }),
 				{
 					status: 400,
 					headers: { "Content-Type": "application/json" },

@@ -46,7 +46,7 @@ export const CustomerPortal = (config: CustomerPortalConfig) => {
 
 			if (!externalCustomerId) {
 				return NextResponse.json(
-					{ error: "externalCustomerId not defined" },
+					{ error: "externalCustomerId não definido" },
 					{ status: 400 },
 				);
 			}
@@ -68,7 +68,7 @@ export const CustomerPortal = (config: CustomerPortalConfig) => {
 
 		if (!customerId) {
 			return NextResponse.json(
-				{ error: "customerId not defined" },
+				{ error: "customerId não definido" },
 				{ status: 400 },
 			);
 		}

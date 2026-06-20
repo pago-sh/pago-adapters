@@ -187,13 +187,13 @@ describe("webhooks plugin", () => {
 			};
 
 			await expect(noSecretHandler(ctx)).rejects.toThrow(
-				"Pago webhook secret not found",
+				"Segredo do webhook da Pago não encontrado",
 			);
 		});
 
 		it("should handle invalid webhook signature", async () => {
 			vi.mocked(validateEvent).mockImplementation(() => {
-				throw new Error("Invalid signature");
+				throw new Error("Assinatura inválida");
 			});
 
 			const ctx = {
@@ -202,10 +202,10 @@ describe("webhooks plugin", () => {
 			};
 
 			await expect(handler(ctx)).rejects.toThrow(
-				"Webhook Error: Invalid signature",
+				"Erro de webhook: Assinatura inválida",
 			);
 			expect(ctx.context.logger.error).toHaveBeenCalledWith(
-				"Invalid signature",
+				"Assinatura inválida",
 			);
 		});
 
@@ -217,7 +217,7 @@ describe("webhooks plugin", () => {
 			} as any;
 
 			vi.mocked(validateEvent).mockImplementation(() => {
-				throw new Error("Missing required headers");
+				throw new Error("Cabeçalhos obrigatórios ausentes");
 			});
 
 			const ctx = {
@@ -226,7 +226,7 @@ describe("webhooks plugin", () => {
 			};
 
 			await expect(handler(ctx)).rejects.toThrow(
-				"Webhook Error: Missing required headers",
+				"Erro de webhook: Cabeçalhos obrigatórios ausentes",
 			);
 		});
 
@@ -234,7 +234,7 @@ describe("webhooks plugin", () => {
 			const mockEvent = { type: "checkout.created", data: {} };
 			vi.mocked(validateEvent).mockReturnValue(mockEvent);
 			vi.mocked(handleWebhookPayload).mockRejectedValue(
-				new Error("Handler processing failed"),
+				new Error("Falha no processamento do handler"),
 			);
 
 			const ctx = {
@@ -243,17 +243,17 @@ describe("webhooks plugin", () => {
 			};
 
 			await expect(handler(ctx)).rejects.toThrow(
-				"Webhook error: See server logs for more information.",
+				"Erro de webhook: veja os logs do servidor para mais informações.",
 			);
 			expect(ctx.context.logger.error).toHaveBeenCalledWith(
-				"Pago webhook failed. Error: Handler processing failed",
+				"Falha no webhook. Erro: Falha no processamento do handler",
 			);
 		});
 
 		it("should handle non-Error webhook payload failures", async () => {
 			const mockEvent = { type: "checkout.created", data: {} };
 			vi.mocked(validateEvent).mockReturnValue(mockEvent);
-			vi.mocked(handleWebhookPayload).mockRejectedValue("Unknown error");
+			vi.mocked(handleWebhookPayload).mockRejectedValue("Erro desconhecido");
 
 			const ctx = {
 				request: mockRequest,
@@ -261,16 +261,16 @@ describe("webhooks plugin", () => {
 			};
 
 			await expect(handler(ctx)).rejects.toThrow(
-				"Webhook error: See server logs for more information.",
+				"Erro de webhook: veja os logs do servidor para mais informações.",
 			);
 			expect(ctx.context.logger.error).toHaveBeenCalledWith(
-				"Pago webhook failed. Error: Unknown error",
+				"Falha no webhook. Erro: Erro desconhecido",
 			);
 		});
 
 		it("should handle non-Error validation failures", async () => {
 			vi.mocked(validateEvent).mockImplementation(() => {
-				throw "Unknown validation error";
+				throw "Erro de validação desconhecido";
 			});
 
 			const ctx = {
@@ -279,7 +279,7 @@ describe("webhooks plugin", () => {
 			};
 
 			await expect(handler(ctx)).rejects.toThrow(
-				"Webhook Error: Unknown validation error",
+				"Erro de webhook: Erro de validação desconhecido",
 			);
 		});
 

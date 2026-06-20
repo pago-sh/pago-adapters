@@ -46,7 +46,7 @@ export const Checkout = ({
 		if (products.length === 0) {
 			return new Response(
 				JSON.stringify({
-					error: "Missing products in query params",
+					error: "Produtos ausentes nos parâmetros da query",
 				}),
 				{ status: 400 },
 			);
@@ -99,7 +99,7 @@ export const Checkout = ({
 				headers: { Location: redirectUrl.toString() },
 			});
 		} catch (error) {
-			console.error("Catch checkout error", error);
+			console.error("Capturar erro de checkout", error);
 			return new Response(null, { status: 500 });
 		}
 	};

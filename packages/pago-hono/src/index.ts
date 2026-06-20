@@ -44,7 +44,7 @@ export const Checkout = ({
 
 		if (products.length === 0) {
 			return c.json(
-				{ error: "Missing products in query params" },
+				{ error: "Produtos ausentes nos parâmetros da query" },
 				{ status: 400 },
 			);
 		}
@@ -94,7 +94,7 @@ export const Checkout = ({
 			return c.redirect(redirectUrl.toString());
 		} catch (error) {
 			console.error(error);
-			return c.json({ error: "Internal server error" }, { status: 500 });
+			return c.json({ error: "Erro interno do servidor" }, { status: 500 });
 		}
 	};
 };
@@ -123,7 +123,7 @@ export const CustomerPortal = ({
 		const customerId = await getCustomerId(c);
 
 		if (!customerId) {
-			return c.json({ error: "customerId not defined" }, { status: 400 });
+			return c.json({ error: "customerId não definido" }, { status: 400 });
 		}
 
 		try {
@@ -135,7 +135,7 @@ export const CustomerPortal = ({
 			return c.redirect(result.customerPortalUrl);
 		} catch (error) {
 			console.error(error);
-			return c.json({ error: "Internal server error" }, { status: 500 });
+			return c.json({ error: "Erro interno do servidor" }, { status: 500 });
 		}
 	};
 };

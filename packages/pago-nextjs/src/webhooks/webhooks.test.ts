@@ -115,7 +115,7 @@ describe("Webhooks", () => {
 				"@pago-sh/sdk/webhooks"
 			);
 			mockValidateEvent.mockImplementation(() => {
-				throw new WebhookVerificationError("Invalid signature");
+				throw new WebhookVerificationError("Assinatura inválida");
 			});
 
 			const webhookHandler = Webhooks({
@@ -143,7 +143,7 @@ describe("Webhooks", () => {
 
 		it("should re-throw non-verification errors", async () => {
 			mockValidateEvent.mockImplementation(() => {
-				throw new Error("Unexpected error");
+				throw new Error("Erro inesperado");
 			});
 
 			const webhookHandler = Webhooks({
@@ -156,7 +156,7 @@ describe("Webhooks", () => {
 				body: "test payload",
 			});
 
-			await expect(webhookHandler(request)).rejects.toThrow("Unexpected error");
+			await expect(webhookHandler(request)).rejects.toThrow("Erro inesperado");
 		});
 	});
 

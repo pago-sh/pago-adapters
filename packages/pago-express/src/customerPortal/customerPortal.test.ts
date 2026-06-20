@@ -29,7 +29,7 @@ import supertest from "supertest";
 import { describe, it, vi } from "vitest";
 import { CustomerPortal } from "./customerPortal";
 
-describe("CustomerPortal middleware", () => {
+describe("Middleware do portal do cliente", () => {
 	it("should redirect to customer portal when customerId is valid", async () => {
 		const app = express();
 		const mockGetCustomerId = async () => "valid-customer-id";

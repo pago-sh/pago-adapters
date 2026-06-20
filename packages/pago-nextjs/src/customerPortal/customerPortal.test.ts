@@ -142,7 +142,7 @@ describe("CustomerPortal", () => {
 		});
 
 		it("should handle getCustomerId throwing an error", async () => {
-			const getCustomerId = vi.fn().mockRejectedValue(new Error("Auth error"));
+			const getCustomerId = vi.fn().mockRejectedValue(new Error("Erro de autenticação"));
 			const consoleSpy = vi
 				.spyOn(console, "error")
 				.mockImplementation(() => {});
@@ -155,7 +155,7 @@ describe("CustomerPortal", () => {
 
 			const request = new NextRequest("https://example.com/portal");
 
-			await expect(portal(request)).rejects.toThrow("Auth error");
+			await expect(portal(request)).rejects.toThrow("Erro de autenticação");
 
 			consoleSpy.mockRestore();
 		});

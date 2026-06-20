@@ -29,7 +29,7 @@ import supertest from "supertest";
 import { describe, it, vi } from "vitest";
 import { Checkout } from "./checkout";
 
-describe("Checkout middleware", () => {
+describe("Middleware de checkout", () => {
 	it("should redirect to checkout when products is valid", async () => {
 		const app = express();
 		app.get(
@@ -63,7 +63,7 @@ describe("Checkout middleware", () => {
 			.get("/")
 			.expect(400)
 			.expect({
-				error: "Missing products in query params",
+				error: "Produtos ausentes nos parâmetros da query",
 			})
 			.end((err) => {
 				if (err) {

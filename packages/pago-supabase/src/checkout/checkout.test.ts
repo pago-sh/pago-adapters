@@ -53,7 +53,7 @@ describe("Checkout", () => {
 			const data = await response.json();
 
 			expect(response.status).toBe(400);
-			expect(data.error).toBe("Missing products in query params");
+			expect(data.error).toBe("Produtos ausentes nos parâmetros da query");
 		});
 
 		it("should create checkout with single product", async () => {

@@ -27,7 +27,7 @@ vi.mock("@pago-sh/sdk", async (importOriginal) => {
 import { describe, expect, it, vi } from "vitest";
 import { Checkout } from "./checkout";
 
-describe("Checkout middleware", () => {
+describe("Middleware de checkout", () => {
 	it("should redirect to checkout when products is valid", async () => {
 		const loader = Checkout({});
 
@@ -59,7 +59,7 @@ describe("Checkout middleware", () => {
 		expect(response).toBeInstanceOf(Response);
 		expect((response as Response).status).toBe(400);
 		expect(await (response as Response).json()).toEqual({
-			error: "Missing products in query params",
+			error: "Produtos ausentes nos parâmetros da query",
 		});
 	});
 });

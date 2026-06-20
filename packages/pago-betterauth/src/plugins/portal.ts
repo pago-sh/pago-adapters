@@ -6,7 +6,7 @@ import * as z from "zod/v4";
 export interface PortalConfig {
 	returnUrl?: string;
 	/**
-	 * Portal theme
+	 * Tema do portal
 	 */
 	theme?: "light" | "dark";
 }
@@ -31,13 +31,13 @@ export const portal =
 				async (ctx) => {
 					if (!ctx.context.session?.user.id) {
 						throw new APIError("BAD_REQUEST", {
-							message: "User not found",
+							message: "Usuário não encontrado",
 						});
 					}
 
 					if (ctx.context.session?.user["isAnonymous"]) {
 						throw new APIError("UNAUTHORIZED", {
-							message: "Anonymous users cannot access the portal",
+							message: "Usuários anônimos não podem acessar o portal",
 						});
 					}
 
@@ -60,12 +60,12 @@ export const portal =
 					} catch (e: unknown) {
 						if (e instanceof Error) {
 							ctx.context.logger.error(
-								`Pago customer portal creation failed. Error: ${e.message}`,
+								`Falha ao criar o portal do cliente Pago. Erro: ${e.message}`,
 							);
 						}
 
 						throw new APIError("INTERNAL_SERVER_ERROR", {
-							message: "Customer portal creation failed",
+							message: "Falha ao criar o portal do cliente",
 						});
 					}
 				},
@@ -79,7 +79,7 @@ export const portal =
 				async (ctx) => {
 					if (!ctx.context.session.user.id) {
 						throw new APIError("BAD_REQUEST", {
-							message: "User not found",
+							message: "Usuário não encontrado",
 						});
 					}
 
@@ -92,12 +92,12 @@ export const portal =
 					} catch (e: unknown) {
 						if (e instanceof Error) {
 							ctx.context.logger.error(
-								`Pago subscriptions list failed. Error: ${e.message}`,
+								`Falha ao listar assinaturas Pago. Erro: ${e.message}`,
 							);
 						}
 
 						throw new APIError("INTERNAL_SERVER_ERROR", {
-							message: "Subscriptions list failed",
+							message: "Falha ao listar assinaturas",
 						});
 					}
 				},
@@ -117,7 +117,7 @@ export const portal =
 				async (ctx) => {
 					if (!ctx.context.session.user.id) {
 						throw new APIError("BAD_REQUEST", {
-							message: "User not found",
+							message: "Usuário não encontrado",
 						});
 					}
 
@@ -138,12 +138,12 @@ export const portal =
 					} catch (e: unknown) {
 						if (e instanceof Error) {
 							ctx.context.logger.error(
-								`Pago benefits list failed. Error: ${e.message}`,
+								`Falha ao listar benefícios Pago. Erro: ${e.message}`,
 							);
 						}
 
 						throw new APIError("INTERNAL_SERVER_ERROR", {
-							message: "Benefits list failed",
+							message: "Falha ao listar benefícios",
 						});
 					}
 				},
@@ -165,7 +165,7 @@ export const portal =
 				async (ctx) => {
 					if (!ctx.context.session.user.id) {
 						throw new APIError("BAD_REQUEST", {
-							message: "User not found",
+							message: "Usuário não encontrado",
 						});
 					}
 
@@ -185,12 +185,12 @@ export const portal =
 							console.log(e);
 							if (e instanceof Error) {
 								ctx.context.logger.error(
-									`Pago subscriptions list with referenceId failed. Error: ${e.message}`,
+									`Falha ao listar assinaturas Pago com referenceId. Erro: ${e.message}`,
 								);
 							}
 
 							throw new APIError("INTERNAL_SERVER_ERROR", {
-								message: "Subscriptions list with referenceId failed",
+								message: "Falha ao listar assinaturas com referenceId",
 							});
 						}
 					}
@@ -213,12 +213,12 @@ export const portal =
 					} catch (e: unknown) {
 						if (e instanceof Error) {
 							ctx.context.logger.error(
-								`Pago subscriptions list failed. Error: ${e.message}`,
+								`Falha ao listar assinaturas Pago. Erro: ${e.message}`,
 							);
 						}
 
 						throw new APIError("INTERNAL_SERVER_ERROR", {
-							message: "Pago subscriptions list failed",
+							message: "Falha ao listar assinaturas Pago",
 						});
 					}
 				},
@@ -239,7 +239,7 @@ export const portal =
 				async (ctx) => {
 					if (!ctx.context.session.user.id) {
 						throw new APIError("BAD_REQUEST", {
-							message: "User not found",
+							message: "Usuário não encontrado",
 						});
 					}
 
@@ -261,12 +261,12 @@ export const portal =
 					} catch (e: unknown) {
 						if (e instanceof Error) {
 							ctx.context.logger.error(
-								`Pago orders list failed. Error: ${e.message}`,
+								`Falha ao listar pedidos Pago. Erro: ${e.message}`,
 							);
 						}
 
 						throw new APIError("INTERNAL_SERVER_ERROR", {
-							message: "Orders list failed",
+							message: "Falha ao listar pedidos",
 						});
 					}
 				},
