@@ -1,6 +1,6 @@
 {
   "name": "@pago-sh/adapter-utils",
-  "version": "0.4.6",
+  "version": "1.0.0",
   "description": "Core package for Pago adapters",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

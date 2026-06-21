@@ -1,6 +1,6 @@
 {
   "name": "@pago-sh/nuxt",
-  "version": "0.5.7",
+  "version": "1.0.0",
   "description": "Integração da pago.sh para Nuxt",
   "repository": {
     "type": "git",

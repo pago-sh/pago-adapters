@@ -1,6 +1,6 @@
 {
   "name": "@pago-sh/sveltekit",
-  "version": "0.7.6",
+  "version": "1.0.0",
   "description": "Integração da pago.sh para SvelteKit",
   "main": "dist/index.js",
   "module": "dist/index.js",
