@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "npm:@pago-sh/sdk": "./mocks/sdk.ts",
+    "npm:@pago-sh/sdk/webhooks": "./mocks/webhook.ts"
+  }
+}
