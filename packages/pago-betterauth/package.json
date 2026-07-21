@@ -51,7 +51,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@pago-sh/adapter-utils": "workspace:*",
-    "@pago-sh/sdk": "^0.47.0",
+    "@pago-sh/sdk": "^1.0.0",
     "@sindresorhus/tsconfig": "^7.0.0",
     "@types/node": "^20.0.0",
     "better-auth": "^1.4.18",
@@ -60,11 +60,11 @@
     "zod": "^3.25.0 || ^4.0.0"
   },
   "peerDependencies": {
-    "@pago-sh/sdk": "^0.47.0",
+    "@pago-sh/sdk": "^1.0.0",
     "better-auth": "^1.4.12",
     "zod": "^3.25.0 || ^4.0.0"
   },
   "dependencies": {
-    "@pago-sh/checkout": "^0.2.0"
+    "@pago-sh/checkout": "^1.0.0"
   }
 }
