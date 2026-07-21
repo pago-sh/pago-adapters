@@ -1,3 +1,4 @@
+import { createPago } from "@pago-sh/sdk/2026-04";
 import type { models } from "@pago-sh/sdk/2026-04";
 import type { Pago } from "@pago-sh/sdk/2026-04";
 import { APIError } from "better-auth/api";
@@ -59,9 +60,12 @@ export const portal =
 							redirect: ctx.body?.redirect ?? true,
 						});
 					} catch (e: unknown) {
+						if (e instanceof APIError) {
+							throw e;
+						}
 						if (e instanceof Error) {
 							ctx.context.logger.error(
-								`Falha ao criar o portal do cliente Pago. Erro: ${e.message}`,
+								`Falha ao criar o portal do cliente no Pago. Erro: ${e.message}`,
 							);
 						}
 
@@ -85,12 +89,16 @@ export const portal =
 					}
 
 					try {
-						const state = await pago.customers.getStateExternal(
-							ctx.context.session.user.id,
-						);
+						const state: models.CustomerState =
+							await pago.customers.getStateExternal(
+								ctx.context.session.user.id,
+							);
 
 						return ctx.json(state);
 					} catch (e: unknown) {
+						if (e instanceof APIError) {
+							throw e;
+						}
 						if (e instanceof Error) {
 							ctx.context.logger.error(
 								`Falha ao listar assinaturas Pago. Erro: ${e.message}`,
@@ -127,20 +135,22 @@ export const portal =
 							external_customer_id: ctx.context.session?.user.id,
 						});
 
-						const benefits = await pago.customerPortal.benefitGrants.list(
-							// BLOQUEADO: o SDK não permite sobrepor a autenticação por requisição.
-							// Os endpoints de customer portal autenticam com o token da customer session,
-							// mas `createPago` fixa o accessToken no cliente e o `Pago` recebido não expõe
-							// a baseUrl para reconstruir um cliente com escopo de sessão.
-							{ customerSession: customerSession.token },
-							{
+						const sessionClient = createPago({
+							accessToken: customerSession.token,
+							baseUrl: pago.baseUrl,
+						});
+
+						const benefits: models.ListResourceCustomerBenefitGrant =
+							await sessionClient.customerPortal.benefitGrants.list({
 								page: ctx.query?.page,
 								limit: ctx.query?.limit,
-							},
-						);
+							});
 
 						return ctx.json(benefits);
 					} catch (e: unknown) {
+						if (e instanceof APIError) {
+							throw e;
+						}
 						if (e instanceof Error) {
 							ctx.context.logger.error(
 								`Falha ao listar benefícios Pago. Erro: ${e.message}`,
@@ -176,18 +186,22 @@ export const portal =
 
 					if (ctx.query?.referenceId) {
 						try {
-							const subscriptions = await pago.subscriptions.list({
-								page: ctx.query?.page,
-								limit: ctx.query?.limit,
-								active: ctx.query?.active,
-								metadata: {
-									referenceId: ctx.query?.referenceId,
-								},
-							});
+							const subscriptions: models.ListResourceSubscription =
+								await pago.subscriptions.list({
+									page: ctx.query?.page,
+									limit: ctx.query?.limit,
+									active: ctx.query?.active,
+									metadata: {
+										referenceId: ctx.query?.referenceId,
+									},
+								});
 
 							return ctx.json(subscriptions);
 						} catch (e: unknown) {
 							console.log(e);
+							if (e instanceof APIError) {
+								throw e;
+							}
 							if (e instanceof Error) {
 								ctx.context.logger.error(
 									`Falha ao listar assinaturas Pago com referenceId. Erro: ${e.message}`,
@@ -205,21 +219,23 @@ export const portal =
 							external_customer_id: ctx.context.session?.user.id,
 						});
 
-						const subscriptions = await pago.customerPortal.subscriptions.list(
-							// BLOQUEADO: o SDK não permite sobrepor a autenticação por requisição.
-							// Os endpoints de customer portal autenticam com o token da customer session,
-							// mas `createPago` fixa o accessToken no cliente e o `Pago` recebido não expõe
-							// a baseUrl para reconstruir um cliente com escopo de sessão.
-							{ customerSession: customerSession.token },
-							{
+						const sessionClient = createPago({
+							accessToken: customerSession.token,
+							baseUrl: pago.baseUrl,
+						});
+
+						const subscriptions: models.ListResourceCustomerSubscription =
+							await sessionClient.customerPortal.subscriptions.list({
 								page: ctx.query?.page,
 								limit: ctx.query?.limit,
 								active: ctx.query?.active,
-							},
-						);
+							});
 
 						return ctx.json(subscriptions);
 					} catch (e: unknown) {
+						if (e instanceof APIError) {
+							throw e;
+						}
 						if (e instanceof Error) {
 							ctx.context.logger.error(
 								`Falha ao listar assinaturas Pago. Erro: ${e.message}`,
@@ -257,21 +273,23 @@ export const portal =
 							external_customer_id: ctx.context.session?.user.id,
 						});
 
-						const orders = await pago.customerPortal.orders.list(
-							// BLOQUEADO: o SDK não permite sobrepor a autenticação por requisição.
-							// Os endpoints de customer portal autenticam com o token da customer session,
-							// mas `createPago` fixa o accessToken no cliente e o `Pago` recebido não expõe
-							// a baseUrl para reconstruir um cliente com escopo de sessão.
-							{ customerSession: customerSession.token },
-							{
+						const sessionClient = createPago({
+							accessToken: customerSession.token,
+							baseUrl: pago.baseUrl,
+						});
+
+						const orders: models.ListResourceCustomerOrder =
+							await sessionClient.customerPortal.orders.list({
 								page: ctx.query?.page,
 								limit: ctx.query?.limit,
 								product_billing_type: ctx.query?.productBillingType,
-							},
-						);
+							});
 
 						return ctx.json(orders);
 					} catch (e: unknown) {
+						if (e instanceof APIError) {
+							throw e;
+						}
 						if (e instanceof Error) {
 							ctx.context.logger.error(
 								`Falha ao listar pedidos Pago. Erro: ${e.message}`,

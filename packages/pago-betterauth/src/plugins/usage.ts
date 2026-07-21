@@ -1,3 +1,4 @@
+import { createPago } from "@pago-sh/sdk/2026-04";
 import type { models } from "@pago-sh/sdk/2026-04";
 import type { Pago } from "@pago-sh/sdk/2026-04";
 import {
@@ -39,20 +40,22 @@ export const usage = (_usageOptions?: UsageOptions) => (pago: Pago) => {
 						external_customer_id: ctx.context.session.user.id,
 					});
 
-					const customerMeters = await pago.customerPortal.customerMeters.list(
-						// BLOQUEADO: o SDK não permite sobrepor a autenticação por requisição.
-						// Os endpoints de customer portal autenticam com o token da customer session,
-						// mas `createPago` fixa o accessToken no cliente e o `Pago` recebido não expõe
-						// a baseUrl para reconstruir um cliente com escopo de sessão.
-						{ customerSession: customerSession.token },
-						{
+					const sessionClient = createPago({
+						accessToken: customerSession.token,
+						baseUrl: pago.baseUrl,
+					});
+
+					const customerMeters: models.ListResourceCustomerCustomerMeter =
+						await sessionClient.customerPortal.customerMeters.list({
 							page: ctx.query?.page,
 							limit: ctx.query?.limit,
-						},
-					);
+						});
 
 					return ctx.json(customerMeters);
 				} catch (e: unknown) {
+					if (e instanceof APIError) {
+						throw e;
+					}
 					if (e instanceof Error) {
 						ctx.context.logger.error(
 							`Falha ao listar medidores do Pago. Erro: ${e.message}`,
@@ -86,18 +89,22 @@ export const usage = (_usageOptions?: UsageOptions) => (pago: Pago) => {
 				}
 
 				try {
-					const ingestion = await pago.events.ingest({
-						events: [
-							{
-								name: ctx.body.event,
-								metadata: ctx.body.metadata,
-								external_customer_id: ctx.context.session.user.id,
-							},
-						],
-					});
+					const ingestion: models.EventsIngestResponse =
+						await pago.events.ingest({
+							events: [
+								{
+									name: ctx.body.event,
+									metadata: ctx.body.metadata,
+									external_customer_id: ctx.context.session.user.id,
+								},
+							],
+						});
 
 					return ctx.json(ingestion);
 				} catch (e: unknown) {
+					if (e instanceof APIError) {
+						throw e;
+					}
 					if (e instanceof Error) {
 						ctx.context.logger.error(
 							`Falha na ingestão do Pago. Erro: ${e.message}`,

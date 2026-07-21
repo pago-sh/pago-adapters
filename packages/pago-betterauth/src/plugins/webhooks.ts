@@ -1,6 +1,6 @@
+import { handleWebhookPayload } from "@pago-sh/adapter-utils";
 import type { Pago } from "@pago-sh/sdk/2026-04";
 import { webhooks as sdkWebhooks } from "@pago-sh/sdk/2026-04";
-import { handleWebhookPayload } from "@pago-sh/adapter-utils";
 import { APIError, createAuthEndpoint } from "better-auth/api";
 
 export interface WebhooksOptions {
@@ -206,6 +206,9 @@ export const webhooks = (options: WebhooksOptions) => (_pago: Pago) => {
 
 					event = await sdkWebhooks.validateEvent(buf, headers, secret);
 				} catch (err: unknown) {
+					if (err instanceof APIError) {
+						throw err;
+					}
 					if (err instanceof Error) {
 						ctx.context.logger.error(`${err.message}`);
 						throw new APIError("BAD_REQUEST", {
@@ -223,6 +226,9 @@ export const webhooks = (options: WebhooksOptions) => (_pago: Pago) => {
 						...eventHandlers,
 					});
 				} catch (e: unknown) {
+					if (e instanceof APIError) {
+						throw e;
+					}
 					if (e instanceof Error) {
 						ctx.context.logger.error(
 							`Falha no webhook do Pago. Erro: ${e.message}`,

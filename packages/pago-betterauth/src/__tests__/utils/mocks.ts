@@ -4,6 +4,7 @@ import { vi } from "vitest";
 
 export const createMockPagoClient = (): Pago =>
 	({
+		baseUrl: "https://api.pago.sh",
 		products: {
 			get: vi.fn(),
 			list: vi.fn(),

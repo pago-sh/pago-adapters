@@ -20,15 +20,26 @@ vi.mock("better-auth/api", () => ({
 	})),
 }));
 
+vi.mock("@pago-sh/sdk/2026-04", () => ({
+	createPago: vi.fn(),
+}));
+
 const { APIError, sessionMiddleware, createAuthEndpoint } =
 	(await vi.importMock("better-auth/api")) as any;
 
+const { createPago } = (await vi.importMock("@pago-sh/sdk/2026-04")) as any;
+
 describe("portal plugin", () => {
 	let mockClient: ReturnType<typeof createMockPagoClient>;
+	// Os endpoints de customer portal autenticam com o token da customer session,
+	// então o plugin monta um segundo cliente com escopo de sessão via createPago.
+	let mockSessionClient: ReturnType<typeof createMockPagoClient>;
 
 	beforeEach(() => {
 		mockClient = createMockPagoClient();
 		vi.clearAllMocks();
+		mockSessionClient = createMockPagoClient();
+		vi.mocked(createPago).mockReturnValue(mockSessionClient);
 	});
 
 	describe("plugin creation", () => {
@@ -333,9 +344,9 @@ describe("portal plugin", () => {
 
 			await handler(ctx);
 
-			expect(mockClient.customers.getStateExternal).toHaveBeenCalledWith({
-				externalId: "user-123",
-			});
+			expect(mockClient.customers.getStateExternal).toHaveBeenCalledWith(
+				"user-123",
+			);
 
 			expect(ctx.json).toHaveBeenCalledWith(mockState);
 		});
@@ -391,9 +402,9 @@ describe("portal plugin", () => {
 			vi.mocked(mockClient.customerSessions.create).mockResolvedValue(
 				mockSession,
 			);
-			vi.mocked(mockClient.customerPortal.benefitGrants.list).mockResolvedValue(
-				mockBenefits,
-			);
+			vi.mocked(
+				mockSessionClient.customerPortal.benefitGrants.list,
+			).mockResolvedValue(mockBenefits);
 
 			const ctx = {
 				context: {
@@ -409,10 +420,14 @@ describe("portal plugin", () => {
 				external_customer_id: "user-123",
 			});
 
-			expect(mockClient.customerPortal.benefitGrants.list).toHaveBeenCalledWith(
-				{ customerSession: "session-token-123" },
-				{ page: 1, limit: 10 },
-			);
+			expect(createPago).toHaveBeenCalledWith({
+				accessToken: "session-token-123",
+				baseUrl: mockClient.baseUrl,
+			});
+
+			expect(
+				mockSessionClient.customerPortal.benefitGrants.list,
+			).toHaveBeenCalledWith({ page: 1, limit: 10 });
 
 			expect(ctx.json).toHaveBeenCalledWith(mockBenefits);
 		});
@@ -424,9 +439,9 @@ describe("portal plugin", () => {
 			vi.mocked(mockClient.customerSessions.create).mockResolvedValue(
 				mockSession,
 			);
-			vi.mocked(mockClient.customerPortal.benefitGrants.list).mockResolvedValue(
-				mockBenefits,
-			);
+			vi.mocked(
+				mockSessionClient.customerPortal.benefitGrants.list,
+			).mockResolvedValue(mockBenefits);
 
 			const ctx = {
 				context: {
@@ -438,10 +453,9 @@ describe("portal plugin", () => {
 
 			await handler(ctx);
 
-			expect(mockClient.customerPortal.benefitGrants.list).toHaveBeenCalledWith(
-				{ customerSession: "session-token-123" },
-				{ page: undefined, limit: undefined },
-			);
+			expect(
+				mockSessionClient.customerPortal.benefitGrants.list,
+			).toHaveBeenCalledWith({ page: undefined, limit: undefined });
 		});
 
 		it("should handle API errors", async () => {
@@ -479,9 +493,9 @@ describe("portal plugin", () => {
 			vi.mocked(mockClient.customerSessions.create).mockResolvedValue(
 				mockSession,
 			);
-			vi.mocked(mockClient.customerPortal.subscriptions.list).mockResolvedValue(
-				mockSubscriptions,
-			);
+			vi.mocked(
+				mockSessionClient.customerPortal.subscriptions.list,
+			).mockResolvedValue(mockSubscriptions);
 
 			const ctx = {
 				context: {
@@ -493,10 +507,14 @@ describe("portal plugin", () => {
 
 			await handler(ctx);
 
-			expect(mockClient.customerPortal.subscriptions.list).toHaveBeenCalledWith(
-				{ customerSession: "session-token-123" },
-				{ page: 1, limit: 5, active: true },
-			);
+			expect(createPago).toHaveBeenCalledWith({
+				accessToken: "session-token-123",
+				baseUrl: mockClient.baseUrl,
+			});
+
+			expect(
+				mockSessionClient.customerPortal.subscriptions.list,
+			).toHaveBeenCalledWith({ page: 1, limit: 5, active: true });
 
 			expect(ctx.json).toHaveBeenCalledWith(mockSubscriptions);
 		});
@@ -585,7 +603,7 @@ describe("portal plugin", () => {
 			vi.mocked(mockClient.customerSessions.create).mockResolvedValue(
 				mockSession,
 			);
-			vi.mocked(mockClient.customerPortal.orders.list).mockResolvedValue(
+			vi.mocked(mockSessionClient.customerPortal.orders.list).mockResolvedValue(
 				mockOrders,
 			);
 
@@ -599,9 +617,17 @@ describe("portal plugin", () => {
 
 			await handler(ctx);
 
-			expect(mockClient.customerPortal.orders.list).toHaveBeenCalledWith(
-				{ customerSession: "session-token-123" },
-				{ page: 1, limit: 20, productBillingType: "recurring" },
+			expect(createPago).toHaveBeenCalledWith({
+				accessToken: "session-token-123",
+				baseUrl: mockClient.baseUrl,
+			});
+
+			expect(mockSessionClient.customerPortal.orders.list).toHaveBeenCalledWith(
+				{
+					page: 1,
+					limit: 20,
+					product_billing_type: "recurring",
+				},
 			);
 
 			expect(ctx.json).toHaveBeenCalledWith(mockOrders);
@@ -614,7 +640,7 @@ describe("portal plugin", () => {
 			vi.mocked(mockClient.customerSessions.create).mockResolvedValue(
 				mockSession,
 			);
-			vi.mocked(mockClient.customerPortal.orders.list).mockResolvedValue(
+			vi.mocked(mockSessionClient.customerPortal.orders.list).mockResolvedValue(
 				mockOrders,
 			);
 
@@ -628,9 +654,8 @@ describe("portal plugin", () => {
 
 			await handler(ctx);
 
-			expect(mockClient.customerPortal.orders.list).toHaveBeenCalledWith(
-				{ customerSession: "session-token-123" },
-				expect.objectContaining({ productBillingType: "one_time" }),
+			expect(mockSessionClient.customerPortal.orders.list).toHaveBeenCalledWith(
+				expect.objectContaining({ product_billing_type: "one_time" }),
 			);
 		});
 

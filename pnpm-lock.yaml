@@ -124,8 +124,8 @@ importers:
         specifier: workspace:*
         version: link:../adapter-utils
       '@pago-sh/sdk':
-        specifier: ^1.0.0
-        version: 1.0.0
+        specifier: ^1.0.1
+        version: 1.0.1
       '@sindresorhus/tsconfig':
         specifier: ^7.0.0
         version: 7.0.0
@@ -2427,6 +2427,10 @@ packages:
 
   '@pago-sh/sdk@1.0.0':
     resolution: {integrity: sha512-K2MfZqJ9rX82QKYTa3+KQGMJnUXrpj8i1HKsh0UU1/9RZ6ekRnhDuZnazm48NYmeF9BR6r6S3zPmzzIE9PDDlA==}
+    engines: {node: '>=18'}
+
+  '@pago-sh/sdk@1.0.1':
+    resolution: {integrity: sha512-a2zmbR9UJB/fB5yeQ1Zpw9UuJ8YWKy9hmW9abP5so356xWzPBRtGd0WPguZkoSCcehdGoSSOTrS67BgypEfLTQ==}
     engines: {node: '>=18'}
 
   '@paralleldrive/cuid2@2.2.2':
@@ -10436,6 +10440,8 @@ snapshots:
       react: 19.1.1
 
   '@pago-sh/sdk@1.0.0': {}
+
+  '@pago-sh/sdk@1.0.1': {}
 
   '@paralleldrive/cuid2@2.2.2':
     dependencies:

@@ -30,12 +30,8 @@ describe("customer hooks", () => {
 	beforeEach(() => {
 		mockClient = createMockPagoClient();
 		vi.mocked(mockClient.customers.list).mockResolvedValue({
-			result: {
-				items: [],
-				pagination: { totalCount: 0, maxPage: 1 },
-			},
-			next: vi.fn(),
-			[Symbol.asyncIterator]: vi.fn(),
+			items: [],
+			pagination: { total_count: 0, max_page: 1 },
 		});
 		vi.mocked(mockClient.customers.create).mockResolvedValue(
 			createMockCustomer(),
@@ -88,12 +84,8 @@ describe("customer hooks", () => {
 			const mockCustomer = createMockCustomer();
 
 			vi.mocked(mockClient.customers.list).mockResolvedValue({
-				result: {
-					items: [mockCustomer],
-					pagination: { totalCount: 1, maxPage: 1 },
-				},
-				next: vi.fn(),
-				[Symbol.asyncIterator]: vi.fn(),
+				items: [mockCustomer],
+				pagination: { total_count: 1, max_page: 1 },
 			});
 
 			const ctx = { context: { logger: { error: vi.fn() } } } as any;
@@ -181,7 +173,7 @@ describe("customer hooks", () => {
 			const hook = onBeforeUserCreate(options);
 
 			await expect(hook(mockUser, ctx)).rejects.toThrow(
-				"Falha ao criar o cliente. Erro: Erro interno do servidor",
+				"Falha ao criar o cliente no Pago. Erro: Erro interno do servidor",
 			);
 		});
 
@@ -201,7 +193,7 @@ describe("customer hooks", () => {
 			const hook = onBeforeUserCreate(options);
 
 			await expect(hook(mockUser, ctx)).rejects.toThrow(
-				"Falha ao criar o cliente. Erro: Erro desconhecido",
+				"Falha ao criar o cliente no Pago. Erro: Erro desconhecido",
 			);
 		});
 
@@ -216,7 +208,7 @@ describe("customer hooks", () => {
 			const hook = onBeforeUserCreate(options);
 
 			await expect(hook(mockUser, ctx)).rejects.toThrow(
-				"Um e-mail associado é obrigatório",
+				"É necessário um e-mail associado",
 			);
 
 			expect(mockClient.customers.create).not.toHaveBeenCalled();
@@ -239,17 +231,13 @@ describe("customer hooks", () => {
 			const existingCustomer = {
 				...createMockCustomer(),
 				id: "customer-456",
-				externalId: null, // No external ID set
+				external_id: null, // No external ID set
 			};
 
 			// Mock existing customer found
 			vi.mocked(mockClient.customers.list).mockResolvedValue({
-				result: {
-					items: [existingCustomer],
-					pagination: { totalCount: 1, maxPage: 1 },
-				},
-				next: vi.fn(),
-				[Symbol.asyncIterator]: vi.fn(),
+				items: [existingCustomer],
+				pagination: { total_count: 1, max_page: 1 },
 			});
 
 			vi.mocked(mockClient.customers.update).mockResolvedValue(
@@ -265,11 +253,8 @@ describe("customer hooks", () => {
 				email: "test@example.com",
 			});
 
-			expect(mockClient.customers.update).toHaveBeenCalledWith({
-				id: "customer-456",
-				customerUpdate: {
-					external_id: "user-123",
-				},
+			expect(mockClient.customers.update).toHaveBeenCalledWith("customer-456", {
+				external_id: "user-123",
 			});
 		});
 
@@ -287,16 +272,12 @@ describe("customer hooks", () => {
 			const existingCustomer = {
 				...createMockCustomer(),
 				id: "customer-456",
-				externalId: "different-user-id",
+				external_id: "different-user-id",
 			};
 
 			vi.mocked(mockClient.customers.list).mockResolvedValue({
-				result: {
-					items: [existingCustomer],
-					pagination: { totalCount: 1, maxPage: 1 },
-				},
-				next: vi.fn(),
-				[Symbol.asyncIterator]: vi.fn(),
+				items: [existingCustomer],
+				pagination: { total_count: 1, max_page: 1 },
 			});
 
 			vi.mocked(mockClient.customers.update).mockResolvedValue(
@@ -308,11 +289,8 @@ describe("customer hooks", () => {
 
 			await hook(mockUser, ctx);
 
-			expect(mockClient.customers.update).toHaveBeenCalledWith({
-				id: "customer-456",
-				customerUpdate: {
-					external_id: "user-123",
-				},
+			expect(mockClient.customers.update).toHaveBeenCalledWith("customer-456", {
+				external_id: "user-123",
 			});
 		});
 
@@ -330,16 +308,12 @@ describe("customer hooks", () => {
 			const existingCustomer = {
 				...createMockCustomer(),
 				id: "customer-456",
-				externalId: "user-123", // Same external ID
+				external_id: "user-123", // Same external ID
 			};
 
 			vi.mocked(mockClient.customers.list).mockResolvedValue({
-				result: {
-					items: [existingCustomer],
-					pagination: { totalCount: 1, maxPage: 1 },
-				},
-				next: vi.fn(),
-				[Symbol.asyncIterator]: vi.fn(),
+				items: [existingCustomer],
+				pagination: { total_count: 1, max_page: 1 },
 			});
 
 			const ctx = { context: { logger: { error: vi.fn() } } } as any;
@@ -397,7 +371,7 @@ describe("customer hooks", () => {
 			const hook = onAfterUserCreate(options);
 
 			await expect(hook(mockUser, ctx)).rejects.toThrow(
-				"Falha ao criar o cliente. Erro: Erro interno do servidor",
+				"Falha ao criar o cliente no Pago. Erro: Erro interno do servidor",
 			);
 		});
 
@@ -417,7 +391,7 @@ describe("customer hooks", () => {
 			const hook = onAfterUserCreate(options);
 
 			await expect(hook(mockUser, ctx)).rejects.toThrow(
-				"Falha ao criar o cliente. Erro: Erro desconhecido",
+				"Falha ao criar o cliente no Pago. Erro: Erro desconhecido",
 			);
 		});
 	});
@@ -448,13 +422,13 @@ describe("customer hooks", () => {
 
 			await hook(mockUser, ctx);
 
-			expect(mockClient.customers.updateExternal).toHaveBeenCalledWith({
-				external_id: "user-123",
-				customerUpdateExternalID: {
+			expect(mockClient.customers.updateExternal).toHaveBeenCalledWith(
+				"user-123",
+				{
 					email: "updated@example.com",
 					name: "Usuário atualizado",
 				},
-			});
+			);
 		});
 
 		it("should not update customer when createCustomerOnSignUp is disabled", async () => {
@@ -511,7 +485,7 @@ describe("customer hooks", () => {
 			await hook(mockUser, ctx);
 
 			expect(ctx.context.logger.error).toHaveBeenCalledWith(
-				"Falha ao atualizar o cliente. Erro: Cliente não encontrado",
+				"Falha ao atualizar o cliente no Pago. Erro: Cliente não encontrado",
 			);
 		});
 
@@ -536,7 +510,7 @@ describe("customer hooks", () => {
 			await hook(mockUser, ctx);
 
 			expect(ctx.context.logger.error).toHaveBeenCalledWith(
-				"Falha ao atualizar o cliente. Erro: Erro desconhecido",
+				"Falha ao atualizar o cliente no Pago. Erro: Erro desconhecido",
 			);
 		});
 
@@ -561,7 +535,7 @@ describe("customer hooks", () => {
 			await hook(mockUser, ctx);
 
 			expect(ctx.context.logger.error).toHaveBeenCalledWith(
-				"Falha ao atualizar o cliente. Erro: Tempo de rede esgotado",
+				"Falha ao atualizar o cliente no Pago. Erro: Tempo de rede esgotado",
 			);
 		});
 	});

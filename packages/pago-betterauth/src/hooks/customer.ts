@@ -38,14 +38,17 @@ export const onBeforeUserCreate =
 					});
 				}
 			} catch (e: unknown) {
+				if (e instanceof APIError) {
+					throw e;
+				}
 				if (e instanceof Error) {
 					throw new APIError("INTERNAL_SERVER_ERROR", {
-						message: `Falha ao criar o cliente Pago. Erro: ${e.message}`,
+						message: `Falha ao criar o cliente no Pago. Erro: ${e.message}`,
 					});
 				}
 
 				throw new APIError("INTERNAL_SERVER_ERROR", {
-					message: `Falha ao criar o cliente Pago. Erro: ${e}`,
+					message: `Falha ao criar o cliente no Pago. Erro: ${e}`,
 				});
 			}
 		}
@@ -73,14 +76,17 @@ export const onAfterUserCreate =
 					}
 				}
 			} catch (e: unknown) {
+				if (e instanceof APIError) {
+					throw e;
+				}
 				if (e instanceof Error) {
 					throw new APIError("INTERNAL_SERVER_ERROR", {
-						message: `Falha ao criar o cliente Pago. Erro: ${e.message}`,
+						message: `Falha ao criar o cliente no Pago. Erro: ${e.message}`,
 					});
 				}
 
 				throw new APIError("INTERNAL_SERVER_ERROR", {
-					message: `Falha ao criar o cliente Pago. Erro: ${e}`,
+					message: `Falha ao criar o cliente no Pago. Erro: ${e}`,
 				});
 			}
 		}
@@ -100,13 +106,16 @@ export const onUserUpdate =
 					name: user.name,
 				});
 			} catch (e: unknown) {
+				if (e instanceof APIError) {
+					throw e;
+				}
 				if (e instanceof Error) {
 					context.context.logger.error(
-						`Falha ao atualizar o cliente Pago. Erro: ${e.message}`,
+						`Falha ao atualizar o cliente no Pago. Erro: ${e.message}`,
 					);
 				} else {
 					context.context.logger.error(
-						`Falha ao atualizar o cliente Pago. Erro: ${e}`,
+						`Falha ao atualizar o cliente no Pago. Erro: ${e}`,
 					);
 				}
 			}
@@ -132,14 +141,17 @@ export const onUserDelete =
 					}
 				}
 			} catch (e: unknown) {
+				if (e instanceof APIError) {
+					throw e;
+				}
 				if (e instanceof Error) {
 					context?.context.logger.error(
-						`Falha ao excluir o cliente Pago. Erro: ${e.message}`,
+						`Falha ao excluir o cliente no Pago. Erro: ${e.message}`,
 					);
 					return;
 				}
 				context?.context.logger.error(
-					`Falha ao excluir o cliente Pago. Erro: ${e}`,
+					`Falha ao excluir o cliente no Pago. Erro: ${e}`,
 				);
 			}
 		}

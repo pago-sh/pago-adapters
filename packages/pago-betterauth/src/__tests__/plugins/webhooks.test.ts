@@ -1,3 +1,4 @@
+import { webhooks as sdkWebhooks } from "@pago-sh/sdk/2026-04";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { webhooks } from "../../plugins/webhooks";
 import { createMockPagoClient } from "../utils/mocks";
@@ -33,10 +34,7 @@ vi.mock("better-auth/api", () => ({
 const { handleWebhookPayload } = (await vi.importMock(
 	"@pago-sh/adapter-utils",
 )) as any;
-const { webhooks: sdkWebhooks } = (await vi.importMock(
-	"@pago-sh/sdk/2026-04",
-)) as any;
-const { validateEvent } = sdkWebhooks;
+const { validateEvent } = sdkWebhooks as any;
 const { APIError, createAuthEndpoint } = (await vi.importMock(
 	"better-auth/api",
 )) as any;
@@ -192,7 +190,7 @@ describe("webhooks plugin", () => {
 			};
 
 			await expect(noSecretHandler(ctx)).rejects.toThrow(
-				"Segredo do webhook da Pago não encontrado",
+				"Segredo do webhook do Pago não encontrado",
 			);
 		});
 
@@ -207,7 +205,7 @@ describe("webhooks plugin", () => {
 			};
 
 			await expect(handler(ctx)).rejects.toThrow(
-				"Erro de webhook: Assinatura inválida",
+				"Erro no webhook: Assinatura inválida",
 			);
 			expect(ctx.context.logger.error).toHaveBeenCalledWith(
 				"Assinatura inválida",
@@ -231,7 +229,7 @@ describe("webhooks plugin", () => {
 			};
 
 			await expect(handler(ctx)).rejects.toThrow(
-				"Erro de webhook: Cabeçalhos obrigatórios ausentes",
+				"Erro no webhook: Cabeçalhos obrigatórios ausentes",
 			);
 		});
 
@@ -248,10 +246,10 @@ describe("webhooks plugin", () => {
 			};
 
 			await expect(handler(ctx)).rejects.toThrow(
-				"Erro de webhook: veja os logs do servidor para mais informações.",
+				"Erro no webhook: consulte os logs do servidor para mais informações.",
 			);
 			expect(ctx.context.logger.error).toHaveBeenCalledWith(
-				"Falha no webhook. Erro: Falha no processamento do handler",
+				"Falha no webhook do Pago. Erro: Falha no processamento do handler",
 			);
 		});
 
@@ -266,10 +264,10 @@ describe("webhooks plugin", () => {
 			};
 
 			await expect(handler(ctx)).rejects.toThrow(
-				"Erro de webhook: veja os logs do servidor para mais informações.",
+				"Erro no webhook: consulte os logs do servidor para mais informações.",
 			);
 			expect(ctx.context.logger.error).toHaveBeenCalledWith(
-				"Falha no webhook. Erro: Erro desconhecido",
+				"Falha no webhook do Pago. Erro: Erro desconhecido",
 			);
 		});
 
@@ -284,7 +282,7 @@ describe("webhooks plugin", () => {
 			};
 
 			await expect(handler(ctx)).rejects.toThrow(
-				"Erro de webhook: Erro de validação desconhecido",
+				"Erro no webhook: Erro de validação desconhecido",
 			);
 		});
 

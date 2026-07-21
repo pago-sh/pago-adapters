@@ -301,7 +301,7 @@ describe("checkout plugin", () => {
 			};
 
 			await expect(authHandler(ctx)).rejects.toThrow(
-				"Você precisa estar logado para finalizar a compra",
+				"Você precisa estar autenticado para finalizar a compra",
 			);
 		});
 

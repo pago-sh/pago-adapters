@@ -20,15 +20,26 @@ vi.mock("better-auth/api", () => ({
 	sessionMiddleware: vi.fn(),
 }));
 
+vi.mock("@pago-sh/sdk/2026-04", () => ({
+	createPago: vi.fn(),
+}));
+
 const { APIError, createAuthEndpoint, sessionMiddleware } =
 	(await vi.importMock("better-auth/api")) as any;
 
+const { createPago } = (await vi.importMock("@pago-sh/sdk/2026-04")) as any;
+
 describe("usage plugin", () => {
 	let mockClient: ReturnType<typeof createMockPagoClient>;
+	// Os endpoints de customer portal autenticam com o token da customer session,
+	// então o plugin monta um segundo cliente com escopo de sessão via createPago.
+	let mockSessionClient: ReturnType<typeof createMockPagoClient>;
 
 	beforeEach(() => {
 		mockClient = createMockPagoClient();
 		vi.clearAllMocks();
+		mockSessionClient = createMockPagoClient();
+		vi.mocked(createPago).mockReturnValue(mockSessionClient);
 	});
 
 	describe("plugin creation", () => {
@@ -113,7 +124,7 @@ describe("usage plugin", () => {
 				mockSession,
 			);
 			vi.mocked(
-				mockClient.customerPortal.customerMeters.list,
+				mockSessionClient.customerPortal.customerMeters.list,
 			).mockResolvedValue(mockMeters);
 
 			const ctx = {
@@ -130,12 +141,14 @@ describe("usage plugin", () => {
 				external_customer_id: "user-123",
 			});
 
+			expect(createPago).toHaveBeenCalledWith({
+				accessToken: "session-token-123",
+				baseUrl: mockClient.baseUrl,
+			});
+
 			expect(
-				mockClient.customerPortal.customerMeters.list,
-			).toHaveBeenCalledWith(
-				{ customerSession: "session-token-123" },
-				{ page: 1, limit: 10 },
-			);
+				mockSessionClient.customerPortal.customerMeters.list,
+			).toHaveBeenCalledWith({ page: 1, limit: 10 });
 
 			expect(ctx.json).toHaveBeenCalledWith(mockMeters);
 		});
@@ -148,7 +161,7 @@ describe("usage plugin", () => {
 				mockSession,
 			);
 			vi.mocked(
-				mockClient.customerPortal.customerMeters.list,
+				mockSessionClient.customerPortal.customerMeters.list,
 			).mockResolvedValue(mockMeters);
 
 			const ctx = {
@@ -162,11 +175,8 @@ describe("usage plugin", () => {
 			await handler(ctx);
 
 			expect(
-				mockClient.customerPortal.customerMeters.list,
-			).toHaveBeenCalledWith(
-				{ customerSession: "session-token-123" },
-				{ page: undefined, limit: undefined },
-			);
+				mockSessionClient.customerPortal.customerMeters.list,
+			).toHaveBeenCalledWith({ page: undefined, limit: undefined });
 		});
 
 		it("should throw error when user not found", async () => {
@@ -203,7 +213,7 @@ describe("usage plugin", () => {
 				mockSession,
 			);
 			vi.mocked(
-				mockClient.customerPortal.customerMeters.list,
+				mockSessionClient.customerPortal.customerMeters.list,
 			).mockRejectedValue(mockApiError(500, "Erro interno do servidor"));
 
 			const ctx = {
@@ -266,7 +276,7 @@ describe("usage plugin", () => {
 							method: "GET",
 							responseTime: 150,
 						},
-						externalCustomerId: "user-123",
+						external_customer_id: "user-123",
 					},
 				],
 			});
@@ -306,7 +316,7 @@ describe("usage plugin", () => {
 							size: 1024,
 							processed: true,
 						},
-						externalCustomerId: "user-123",
+						external_customer_id: "user-123",
 					},
 				],
 			});
@@ -342,7 +352,7 @@ describe("usage plugin", () => {
 							numberValue: 42,
 							booleanValue: false,
 						},
-						externalCustomerId: "user-123",
+						external_customer_id: "user-123",
 					},
 				],
 			});
@@ -402,7 +412,7 @@ describe("usage plugin", () => {
 
 			await expect(handler(ctx)).rejects.toThrow("Falha na ingestão");
 			expect(ctx.context.logger.error).toHaveBeenCalledWith(
-				"Falha na ingestão. Erro: Tempo de rede esgotado",
+				"Falha na ingestão do Pago. Erro: Tempo de rede esgotado",
 			);
 		});
 	});

@@ -168,6 +168,9 @@ export const checkout =
 							redirect: ctx.body.redirect ?? true,
 						});
 					} catch (e: unknown) {
+						if (e instanceof APIError) {
+							throw e;
+						}
 						if (e instanceof Error) {
 							ctx.context.logger.error(
 								`Falha ao criar o checkout do Pago. Erro: ${e.message}`,
