@@ -1,19 +1,16 @@
 // Mock the modules before any imports
-vi.mock("@pago-sh/sdk/webhooks", () => {
-	class WebhookVerificationError extends Error {
-		constructor(message: string) {
-			super(message);
-			this.name = "WebhookVerificationError";
-		}
-	}
-
+vi.mock("@pago-sh/sdk/2026-04", async (importOriginal) => {
+	const actual = await importOriginal<typeof import("@pago-sh/sdk/2026-04")>();
 	return {
-		validateEvent: vi.fn((body: string) => ({
-			type: "order.created" as const,
-			timestamp: new Date(),
-			data: { id: "order-123" },
-		})),
-		WebhookVerificationError,
+		...actual,
+		webhooks: {
+			...actual.webhooks,
+			validateEvent: vi.fn(async () => ({
+				type: "order.created" as const,
+				timestamp: new Date().toISOString(),
+				data: { id: "order-123" },
+			})),
+		},
 	};
 });
 
@@ -27,22 +24,24 @@ vi.mock("@pago-sh/adapter-utils", async (importOriginal) => {
 });
 
 import { handleWebhookPayload } from "@pago-sh/adapter-utils";
-import {
-	WebhookVerificationError,
-	validateEvent,
-} from "@pago-sh/sdk/webhooks";
+import { PagoWebhookVerificationError } from "@pago-sh/sdk";
+import { webhooks } from "@pago-sh/sdk/2026-04";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { Webhooks } from "./webhooks";
 
 // Get the mocked functions — typed loosely so mockReturnValue accepts partial payloads
-const mockValidateEvent = vi.mocked(validateEvent) as ReturnType<typeof vi.fn>;
-const mockHandleWebhookPayload = vi.mocked(handleWebhookPayload) as ReturnType<typeof vi.fn>;
+const mockValidateEvent = vi.mocked(webhooks.validateEvent) as ReturnType<
+	typeof vi.fn
+>;
+const mockHandleWebhookPayload = vi.mocked(handleWebhookPayload) as ReturnType<
+	typeof vi.fn
+>;
 
 describe("Webhooks", () => {
 	beforeEach(() => {
 		mockValidateEvent.mockClear();
 		mockHandleWebhookPayload.mockClear();
-		mockValidateEvent.mockReturnValue({
+		mockValidateEvent.mockResolvedValue({
 			type: "order.created" as const,
 			timestamp: new Date(),
 			data: { id: "order-123" },
@@ -67,7 +66,7 @@ describe("Webhooks", () => {
 				data: { id: "order-123" },
 			};
 
-			mockValidateEvent.mockReturnValue(mockPayload);
+			mockValidateEvent.mockResolvedValue(mockPayload);
 
 			const handler = Webhooks({
 				webhookSecret: "test-secret",
@@ -98,7 +97,7 @@ describe("Webhooks", () => {
 
 		it("should return 403 on verification error", async () => {
 			mockValidateEvent.mockImplementation(() => {
-				throw new WebhookVerificationError("Assinatura inválida");
+				throw new PagoWebhookVerificationError("Assinatura inválida");
 			});
 
 			const handler = Webhooks({
@@ -128,7 +127,7 @@ describe("Webhooks", () => {
 				data: { id: "order-123" },
 			};
 
-			mockValidateEvent.mockReturnValue(mockPayload);
+			mockValidateEvent.mockResolvedValue(mockPayload);
 
 			const onOrderCreated = vi.fn();
 
@@ -162,7 +161,7 @@ describe("Webhooks", () => {
 				data: { id: "sub-123" },
 			};
 
-			mockValidateEvent.mockReturnValue(mockPayload);
+			mockValidateEvent.mockResolvedValue(mockPayload);
 
 			const onPayload = vi.fn();
 
@@ -196,7 +195,7 @@ describe("Webhooks", () => {
 				data: { id: "checkout-123" },
 			};
 
-			mockValidateEvent.mockReturnValue(mockPayload);
+			mockValidateEvent.mockResolvedValue(mockPayload);
 
 			const handler = Webhooks({
 				webhookSecret: "test-secret",
@@ -232,7 +231,7 @@ describe("Webhooks", () => {
 				data: { id: "product-123" },
 			};
 
-			mockValidateEvent.mockReturnValue(mockPayload);
+			mockValidateEvent.mockResolvedValue(mockPayload);
 
 			const handler = Webhooks({
 				webhookSecret: "test-secret",

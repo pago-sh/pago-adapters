@@ -1,4 +1,4 @@
-import { Pago } from "@pago-sh/sdk";
+import { createPagoClient } from "@pago-sh/adapter-utils";
 import { type NextRequest, NextResponse } from "next/server";
 
 interface CustomerPortalBaseConfig {
@@ -31,7 +31,7 @@ export type CustomerPortalConfig =
 export const CustomerPortal = (config: CustomerPortalConfig) => {
 	const { accessToken, server, returnUrl } = config;
 
-	const pago = new Pago({
+	const pago = createPagoClient({
 		accessToken,
 		server,
 	});
@@ -52,10 +52,11 @@ export const CustomerPortal = (config: CustomerPortalConfig) => {
 			}
 
 			try {
-				const { customerPortalUrl } = await pago.customerSessions.create({
-					returnUrl: decodedReturnUrl,
-					externalCustomerId,
-				});
+				const { customer_portal_url: customerPortalUrl } =
+					await pago.customerSessions.create({
+						return_url: decodedReturnUrl,
+						external_customer_id: externalCustomerId,
+					});
 
 				return NextResponse.redirect(customerPortalUrl);
 			} catch (error) {
@@ -74,10 +75,11 @@ export const CustomerPortal = (config: CustomerPortalConfig) => {
 		}
 
 		try {
-			const { customerPortalUrl } = await pago.customerSessions.create({
-				returnUrl: decodedReturnUrl,
-				customerId,
-			});
+			const { customer_portal_url: customerPortalUrl } =
+				await pago.customerSessions.create({
+					return_url: decodedReturnUrl,
+					customer_id: customerId,
+				});
 
 			return NextResponse.redirect(customerPortalUrl);
 		} catch (error) {

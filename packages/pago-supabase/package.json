@@ -31,6 +31,7 @@
     "dist"
   ],
   "dependencies": {
+    "@pago-sh/adapter-utils": "workspace:*",
     "@pago-sh/sdk": "^1.0.0"
   },
   "devDependencies": {

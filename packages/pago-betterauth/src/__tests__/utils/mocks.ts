@@ -1,5 +1,4 @@
-import type { Pago } from "@pago-sh/sdk";
-import type { Customer } from "@pago-sh/sdk/models/components/customer.js";
+import type { Pago, models } from "@pago-sh/sdk/2026-04";
 import type { User } from "better-auth";
 import { vi } from "vitest";
 
@@ -124,8 +123,8 @@ export const createMockCheckout = () => ({
 });
 
 export const createMockCustomer = (
-	overrides: Partial<Customer> = {},
-): Customer => ({
+	overrides: Partial<models.Customer> = {},
+): models.Customer => ({
 	id: "customer-123",
 	email: "test@example.com",
 	emailVerified: true,

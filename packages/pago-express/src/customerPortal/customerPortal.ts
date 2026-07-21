@@ -1,4 +1,4 @@
-import { Pago } from "@pago-sh/sdk";
+import { createPagoClient } from "@pago-sh/adapter-utils";
 import type { Request, Response } from "express";
 
 export interface CustomerPortalConfig {
@@ -14,7 +14,7 @@ export const CustomerPortal = ({
 	getCustomerId,
 	returnUrl,
 }: CustomerPortalConfig) => {
-	const pago = new Pago({
+	const pago = createPagoClient({
 		accessToken: accessToken ?? process.env["PAGO_ACCESS_TOKEN"],
 		server,
 	});
@@ -31,11 +31,11 @@ export const CustomerPortal = ({
 
 		try {
 			const result = await pago.customerSessions.create({
-				customerId,
-				returnUrl: retUrl ? decodeURI(retUrl.toString()) : undefined,
+				customer_id: customerId,
+				return_url: retUrl ? decodeURI(retUrl.toString()) : undefined,
 			});
 
-			res.redirect(result.customerPortalUrl);
+			res.redirect(result.customer_portal_url);
 			return;
 		} catch (error) {
 			console.error(error);

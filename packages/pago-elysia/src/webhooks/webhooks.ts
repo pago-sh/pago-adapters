@@ -2,10 +2,8 @@ import {
 	type WebhooksConfig,
 	handleWebhookPayload,
 } from "@pago-sh/adapter-utils";
-import {
-	WebhookVerificationError,
-	validateEvent,
-} from "@pago-sh/sdk/webhooks";
+import { PagoWebhookVerificationError } from "@pago-sh/sdk";
+import { webhooks } from "@pago-sh/sdk/2026-04";
 import { type Context, status } from "elysia";
 import type { InlineHandler } from "elysia/types";
 
@@ -32,16 +30,16 @@ export const Webhooks = ({
 			"webhook-signature": ctx.request.headers.get("webhook-signature") ?? "",
 		};
 
-		let webhookPayload: ReturnType<typeof validateEvent>;
+		let webhookPayload: webhooks.WebhookPayload;
 		try {
-			webhookPayload = validateEvent(
+			webhookPayload = await webhooks.validateEvent(
 				requestBody,
 				webhookHeaders,
 				webhookSecret,
 			);
 		} catch (error) {
 			console.log(error);
-			if (error instanceof WebhookVerificationError) {
+			if (error instanceof PagoWebhookVerificationError) {
 				return status(400, { received: false });
 			}
 

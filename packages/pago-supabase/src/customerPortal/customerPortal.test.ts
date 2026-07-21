@@ -1,20 +1,19 @@
 // Define mock values at the top level
 const mockCustomerPortalUrl = "https://pago.sh/portal/session-123";
 const mockCustomerSessionCreate = vi.fn(() => ({
-	customerPortalUrl: mockCustomerPortalUrl,
+	customer_portal_url: mockCustomerPortalUrl,
 }));
 
 // Mock the module before any imports
-vi.mock("@pago-sh/sdk", async (importOriginal) => {
-	class Pago {
-		customerSessions = {
-			create: mockCustomerSessionCreate,
-		};
-	}
-
+vi.mock("@pago-sh/sdk/2026-04", async (importOriginal) => {
+	const actual = await importOriginal<typeof import("@pago-sh/sdk/2026-04")>();
 	return {
-		...(await importOriginal()),
-		Pago,
+		...actual,
+		createPago: vi.fn(() => ({
+			customerSessions: {
+				create: mockCustomerSessionCreate,
+			},
+		})),
 	};
 });
 
@@ -75,7 +74,7 @@ describe("CustomerPortal", () => {
 			expect(getCustomerIdCalls[0]).toBe(request);
 			expect(mockCustomerSessionCreate).toHaveBeenCalledTimes(1);
 			expect(mockCustomerSessionCreate).toHaveBeenCalledWith({
-				customerId: "customer-123",
+				customer_id: "customer-123",
 			});
 			expect(response.status).toBe(302);
 			expect(response.headers.get("location")).toBe(

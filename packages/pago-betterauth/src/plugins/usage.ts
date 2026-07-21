@@ -1,4 +1,5 @@
-import type { Pago } from "@pago-sh/sdk";
+import type { models } from "@pago-sh/sdk/2026-04";
+import type { Pago } from "@pago-sh/sdk/2026-04";
 import {
 	APIError,
 	createAuthEndpoint,
@@ -35,10 +36,14 @@ export const usage = (_usageOptions?: UsageOptions) => (pago: Pago) => {
 
 				try {
 					const customerSession = await pago.customerSessions.create({
-						externalCustomerId: ctx.context.session.user.id,
+						external_customer_id: ctx.context.session.user.id,
 					});
 
 					const customerMeters = await pago.customerPortal.customerMeters.list(
+						// BLOQUEADO: o SDK não permite sobrepor a autenticação por requisição.
+						// Os endpoints de customer portal autenticam com o token da customer session,
+						// mas `createPago` fixa o accessToken no cliente e o `Pago` recebido não expõe
+						// a baseUrl para reconstruir um cliente com escopo de sessão.
 						{ customerSession: customerSession.token },
 						{
 							page: ctx.query?.page,
@@ -86,7 +91,7 @@ export const usage = (_usageOptions?: UsageOptions) => (pago: Pago) => {
 							{
 								name: ctx.body.event,
 								metadata: ctx.body.metadata,
-								externalCustomerId: ctx.context.session.user.id,
+								external_customer_id: ctx.context.session.user.id,
 							},
 						],
 					});

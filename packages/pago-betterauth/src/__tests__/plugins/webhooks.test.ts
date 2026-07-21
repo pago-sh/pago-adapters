@@ -6,9 +6,13 @@ vi.mock("@pago-sh/adapter-utils", () => ({
 	handleWebhookPayload: vi.fn(),
 }));
 
-vi.mock("@pago-sh/sdk/webhooks", () => ({
-	validateEvent: vi.fn(),
-}));
+vi.mock("@pago-sh/sdk/2026-04", async (importOriginal) => {
+	const actual = await importOriginal<typeof import("@pago-sh/sdk/2026-04")>();
+	return {
+		...actual,
+		webhooks: { ...actual.webhooks, validateEvent: vi.fn() },
+	};
+});
 
 vi.mock("better-auth/api", () => ({
 	APIError: class APIError extends Error {
@@ -29,9 +33,10 @@ vi.mock("better-auth/api", () => ({
 const { handleWebhookPayload } = (await vi.importMock(
 	"@pago-sh/adapter-utils",
 )) as any;
-const { validateEvent } = (await vi.importMock(
-	"@pago-sh/sdk/webhooks",
+const { webhooks: sdkWebhooks } = (await vi.importMock(
+	"@pago-sh/sdk/2026-04",
 )) as any;
+const { validateEvent } = sdkWebhooks;
 const { APIError, createAuthEndpoint } = (await vi.importMock(
 	"better-auth/api",
 )) as any;

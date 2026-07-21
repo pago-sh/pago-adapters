@@ -1,12 +1,10 @@
 import {
+	createPagoClient,
 	type WebhooksConfig,
 	handleWebhookPayload,
 } from "@pago-sh/adapter-utils";
-import { Pago } from "@pago-sh/sdk";
-import {
-	WebhookVerificationError,
-	validateEvent,
-} from "@pago-sh/sdk/webhooks";
+import { PagoWebhookVerificationError } from "@pago-sh/sdk";
+import { webhooks } from "@pago-sh/sdk/2026-04";
 import type { Context } from "hono";
 
 export {
@@ -33,7 +31,7 @@ export const Checkout = ({
 	theme,
 	includeCheckoutId = true,
 }: CheckoutConfig) => {
-	const pago = new Pago({
+	const pago = createPagoClient({
 		accessToken: accessToken ?? process.env["PAGO_ACCESS_TOKEN"],
 		server,
 	});
@@ -60,29 +58,29 @@ export const Checkout = ({
 		try {
 			const result = await pago.checkouts.create({
 				products,
-				successUrl: success ? decodeURI(success.toString()) : undefined,
-				customerId: url.searchParams.get("customerId") ?? undefined,
-				externalCustomerId:
+				success_url: success ? decodeURI(success.toString()) : undefined,
+				customer_id: url.searchParams.get("customerId") ?? undefined,
+				external_customer_id:
 					url.searchParams.get("customerExternalId") ?? undefined,
-				customerEmail: url.searchParams.get("customerEmail") ?? undefined,
-				customerName: url.searchParams.get("customerName") ?? undefined,
-				customerBillingAddress: url.searchParams.has("customerBillingAddress")
+				customer_email: url.searchParams.get("customerEmail") ?? undefined,
+				customer_name: url.searchParams.get("customerName") ?? undefined,
+				customer_billing_address: url.searchParams.has("customerBillingAddress")
 					? JSON.parse(url.searchParams.get("customerBillingAddress") ?? "{}")
 					: undefined,
-				customerTaxId: url.searchParams.get("customerTaxId") ?? undefined,
-				customerIpAddress:
+				customer_tax_id: url.searchParams.get("customerTaxId") ?? undefined,
+				customer_ip_address:
 					url.searchParams.get("customerIpAddress") ?? undefined,
-				customerMetadata: url.searchParams.has("customerMetadata")
+				customer_metadata: url.searchParams.has("customerMetadata")
 					? JSON.parse(url.searchParams.get("customerMetadata") ?? "{}")
 					: undefined,
-				allowDiscountCodes: url.searchParams.has("allowDiscountCodes")
+				allow_discount_codes: url.searchParams.has("allowDiscountCodes")
 					? url.searchParams.get("allowDiscountCodes") === "true"
 					: undefined,
-				discountId: url.searchParams.get("discountId") ?? undefined,
+				discount_id: url.searchParams.get("discountId") ?? undefined,
 				metadata: url.searchParams.has("metadata")
 					? JSON.parse(url.searchParams.get("metadata") ?? "{}")
 					: undefined,
-				returnUrl: retUrl ? decodeURI(retUrl.toString()) : undefined,
+				return_url: retUrl ? decodeURI(retUrl.toString()) : undefined,
 			});
 
 			const redirectUrl = new URL(result.url);
@@ -112,7 +110,7 @@ export const CustomerPortal = ({
 	getCustomerId,
 	returnUrl,
 }: CustomerPortalConfig) => {
-	const pago = new Pago({
+	const pago = createPagoClient({
 		accessToken: accessToken ?? process.env["PAGO_ACCESS_TOKEN"],
 		server,
 	});
@@ -128,11 +126,11 @@ export const CustomerPortal = ({
 
 		try {
 			const result = await pago.customerSessions.create({
-				customerId,
-				returnUrl: retUrl ? decodeURI(retUrl.toString()) : undefined,
+				customer_id: customerId,
+				return_url: retUrl ? decodeURI(retUrl.toString()) : undefined,
 			});
 
-			return c.redirect(result.customerPortalUrl);
+			return c.redirect(result.customer_portal_url);
 		} catch (error) {
 			console.error(error);
 			return c.json({ error: "Erro interno do servidor" }, { status: 500 });
@@ -155,15 +153,15 @@ export const Webhooks = ({
 			"webhook-signature": c.req.header("webhook-signature") ?? "",
 		};
 
-		let webhookPayload: ReturnType<typeof validateEvent>;
+		let webhookPayload: webhooks.WebhookPayload;
 		try {
-			webhookPayload = validateEvent(
+			webhookPayload = await webhooks.validateEvent(
 				requestBody,
 				webhookHeaders,
 				webhookSecret,
 			);
 		} catch (error) {
-			if (error instanceof WebhookVerificationError) {
+			if (error instanceof PagoWebhookVerificationError) {
 				return c.json({ received: false }, { status: 403 });
 			}
 

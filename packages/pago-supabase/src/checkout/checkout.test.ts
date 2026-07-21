@@ -3,16 +3,15 @@ const mockCheckoutUrl = "https://pago.sh/checkout/123";
 const mockCheckoutCreate = vi.fn(() => ({ url: mockCheckoutUrl }));
 
 // Mock the module before any imports
-vi.mock("@pago-sh/sdk", async (importOriginal) => {
-	class Pago {
-		checkouts = {
-			create: mockCheckoutCreate,
-		};
-	}
-
+vi.mock("@pago-sh/sdk/2026-04", async (importOriginal) => {
+	const actual = await importOriginal<typeof import("@pago-sh/sdk/2026-04")>();
 	return {
-		...(await importOriginal()),
-		Pago,
+		...actual,
+		createPago: vi.fn(() => ({
+			checkouts: {
+				create: mockCheckoutCreate,
+			},
+		})),
 	};
 });
 
@@ -98,7 +97,7 @@ describe("Checkout", () => {
 
 			expect(mockCheckoutCreate).toHaveBeenCalledWith({
 				products: ["prod_123"],
-				successUrl: "https://example.com/success?checkoutId={CHECKOUT_ID}",
+				success_url: "https://example.com/success?checkoutId={CHECKOUT_ID}",
 			});
 		});
 
@@ -116,7 +115,7 @@ describe("Checkout", () => {
 
 			expect(mockCheckoutCreate).toHaveBeenCalledWith({
 				products: ["prod_123"],
-				successUrl: "https://example.com/success",
+				success_url: "https://example.com/success",
 			});
 		});
 
@@ -165,19 +164,19 @@ describe("Checkout", () => {
 
 			expect(mockCheckoutCreate).toHaveBeenCalledWith({
 				products: ["prod_123"],
-				customerId: "cust_123",
-				externalCustomerId: "ext_123",
-				customerEmail: "test@example.com",
-				customerName: "John Doe",
-				customerBillingAddress: {
+				customer_id: "cust_123",
+				external_customer_id: "ext_123",
+				customer_email: "test@example.com",
+				customer_name: "John Doe",
+				customer_billing_address: {
 					street: "123 Main St",
 					city: "NYC",
 				},
-				customerTaxId: "TAX123",
-				customerIpAddress: "192.168.1.1",
-				customerMetadata: { plan: "premium" },
-				allowDiscountCodes: true,
-				discountId: "disc_123",
+				customer_tax_id: "TAX123",
+				customer_ip_address: "192.168.1.1",
+				customer_metadata: { plan: "premium" },
+				allow_discount_codes: true,
+				discount_id: "disc_123",
 				metadata: { source: "website" },
 			});
 		});
@@ -192,7 +191,7 @@ describe("Checkout", () => {
 
 			expect(mockCheckoutCreate).toHaveBeenCalledWith({
 				products: ["prod_123"],
-				allowDiscountCodes: false,
+				allow_discount_codes: false,
 			});
 		});
 

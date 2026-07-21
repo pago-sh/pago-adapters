@@ -1,88 +1,90 @@
-import type { validateEvent } from "@pago-sh/sdk/webhooks";
-import type { WebhookBenefitCreatedPayload } from "@pago-sh/sdk/models/components/webhookbenefitcreatedpayload";
-import type { WebhookBenefitGrantCreatedPayload } from "@pago-sh/sdk/models/components/webhookbenefitgrantcreatedpayload";
-import type { WebhookBenefitGrantRevokedPayload } from "@pago-sh/sdk/models/components/webhookbenefitgrantrevokedpayload";
-import type { WebhookBenefitGrantUpdatedPayload } from "@pago-sh/sdk/models/components/webhookbenefitgrantupdatedpayload";
-import type { WebhookBenefitUpdatedPayload } from "@pago-sh/sdk/models/components/webhookbenefitupdatedpayload";
-import type { WebhookCheckoutCreatedPayload } from "@pago-sh/sdk/models/components/webhookcheckoutcreatedpayload";
-import type { WebhookCheckoutUpdatedPayload } from "@pago-sh/sdk/models/components/webhookcheckoutupdatedpayload";
-import type { WebhookOrderCreatedPayload } from "@pago-sh/sdk/models/components/webhookordercreatedpayload";
-import type { WebhookOrderPaidPayload } from "@pago-sh/sdk/models/components/webhookorderpaidpayload";
-import type { WebhookOrderRefundedPayload } from "@pago-sh/sdk/models/components/webhookorderrefundedpayload";
-import type { WebhookOrderUpdatedPayload } from "@pago-sh/sdk/models/components/webhookorderupdatedpayload";
-import type { WebhookOrganizationUpdatedPayload } from "@pago-sh/sdk/models/components/webhookorganizationupdatedpayload";
-import type { WebhookProductCreatedPayload } from "@pago-sh/sdk/models/components/webhookproductcreatedpayload";
-import type { WebhookProductUpdatedPayload } from "@pago-sh/sdk/models/components/webhookproductupdatedpayload";
-import type { WebhookRefundCreatedPayload } from "@pago-sh/sdk/models/components/webhookrefundcreatedpayload";
-import type { WebhookRefundUpdatedPayload } from "@pago-sh/sdk/models/components/webhookrefundupdatedpayload";
-import type { WebhookSubscriptionActivePayload } from "@pago-sh/sdk/models/components/webhooksubscriptionactivepayload";
-import type { WebhookSubscriptionCanceledPayload } from "@pago-sh/sdk/models/components/webhooksubscriptioncanceledpayload";
-import type { WebhookSubscriptionCreatedPayload } from "@pago-sh/sdk/models/components/webhooksubscriptioncreatedpayload";
-import type { WebhookSubscriptionRevokedPayload } from "@pago-sh/sdk/models/components/webhooksubscriptionrevokedpayload";
-import type { WebhookSubscriptionUncanceledPayload } from "@pago-sh/sdk/models/components/webhooksubscriptionuncanceledpayload";
-import type { WebhookSubscriptionUpdatedPayload } from "@pago-sh/sdk/models/components/webhooksubscriptionupdatedpayload";
+import type { webhooks } from "@pago-sh/sdk/2026-04";
 import type { Entitlements } from "../entitlement/entitlement";
-import type { WebhookCustomerUpdatedPayload } from "@pago-sh/sdk/models/components/webhookcustomerupdatedpayload";
-import type { WebhookCustomerDeletedPayload } from "@pago-sh/sdk/models/components/webhookcustomerdeletedpayload";
-import type { WebhookCustomerCreatedPayload } from "@pago-sh/sdk/models/components/webhookcustomercreatedpayload";
-import type { WebhookCustomerStateChangedPayload } from "@pago-sh/sdk/models/components/webhookcustomerstatechangedpayload";
 
 export interface WebhooksConfig {
 	webhookSecret: string;
 	entitlements?: typeof Entitlements;
-	onPayload?: (payload: ReturnType<typeof validateEvent>) => Promise<void>;
-	onCheckoutCreated?: (payload: WebhookCheckoutCreatedPayload) => Promise<void>;
-	onCheckoutUpdated?: (payload: WebhookCheckoutUpdatedPayload) => Promise<void>;
-	onOrderCreated?: (payload: WebhookOrderCreatedPayload) => Promise<void>;
-	onOrderUpdated?: (payload: WebhookOrderUpdatedPayload) => Promise<void>;
-	onOrderPaid?: (payload: WebhookOrderPaidPayload) => Promise<void>;
-	onOrderRefunded?: (payload: WebhookOrderRefundedPayload) => Promise<void>;
-	onRefundCreated?: (payload: WebhookRefundCreatedPayload) => Promise<void>;
-	onRefundUpdated?: (payload: WebhookRefundUpdatedPayload) => Promise<void>;
+	onPayload?: (payload: webhooks.WebhookPayload) => Promise<void>;
+	onCheckoutCreated?: (
+		payload: webhooks.WebhookCheckoutCreatedPayload,
+	) => Promise<void>;
+	onCheckoutUpdated?: (
+		payload: webhooks.WebhookCheckoutUpdatedPayload,
+	) => Promise<void>;
+	onOrderCreated?: (
+		payload: webhooks.WebhookOrderCreatedPayload,
+	) => Promise<void>;
+	onOrderUpdated?: (
+		payload: webhooks.WebhookOrderUpdatedPayload,
+	) => Promise<void>;
+	onOrderPaid?: (payload: webhooks.WebhookOrderPaidPayload) => Promise<void>;
+	onOrderRefunded?: (
+		payload: webhooks.WebhookOrderRefundedPayload,
+	) => Promise<void>;
+	onRefundCreated?: (
+		payload: webhooks.WebhookRefundCreatedPayload,
+	) => Promise<void>;
+	onRefundUpdated?: (
+		payload: webhooks.WebhookRefundUpdatedPayload,
+	) => Promise<void>;
 	onSubscriptionCreated?: (
-		payload: WebhookSubscriptionCreatedPayload,
+		payload: webhooks.WebhookSubscriptionCreatedPayload,
 	) => Promise<void>;
 	onSubscriptionUpdated?: (
-		payload: WebhookSubscriptionUpdatedPayload,
+		payload: webhooks.WebhookSubscriptionUpdatedPayload,
 	) => Promise<void>;
 	onSubscriptionActive?: (
-		payload: WebhookSubscriptionActivePayload,
+		payload: webhooks.WebhookSubscriptionActivePayload,
 	) => Promise<void>;
 	onSubscriptionCanceled?: (
-		payload: WebhookSubscriptionCanceledPayload,
+		payload: webhooks.WebhookSubscriptionCanceledPayload,
 	) => Promise<void>;
 	onSubscriptionRevoked?: (
-		payload: WebhookSubscriptionRevokedPayload,
+		payload: webhooks.WebhookSubscriptionRevokedPayload,
 	) => Promise<void>;
 	onSubscriptionUncanceled?: (
-		payload: WebhookSubscriptionUncanceledPayload,
+		payload: webhooks.WebhookSubscriptionUncanceledPayload,
 	) => Promise<void>;
-	onProductCreated?: (payload: WebhookProductCreatedPayload) => Promise<void>;
-	onProductUpdated?: (payload: WebhookProductUpdatedPayload) => Promise<void>;
+	onProductCreated?: (
+		payload: webhooks.WebhookProductCreatedPayload,
+	) => Promise<void>;
+	onProductUpdated?: (
+		payload: webhooks.WebhookProductUpdatedPayload,
+	) => Promise<void>;
 	onOrganizationUpdated?: (
-		payload: WebhookOrganizationUpdatedPayload,
+		payload: webhooks.WebhookOrganizationUpdatedPayload,
 	) => Promise<void>;
-	onBenefitCreated?: (payload: WebhookBenefitCreatedPayload) => Promise<void>;
-	onBenefitUpdated?: (payload: WebhookBenefitUpdatedPayload) => Promise<void>;
+	onBenefitCreated?: (
+		payload: webhooks.WebhookBenefitCreatedPayload,
+	) => Promise<void>;
+	onBenefitUpdated?: (
+		payload: webhooks.WebhookBenefitUpdatedPayload,
+	) => Promise<void>;
 	onBenefitGrantCreated?: (
-		payload: WebhookBenefitGrantCreatedPayload,
+		payload: webhooks.WebhookBenefitGrantCreatedPayload,
 	) => Promise<void>;
 	onBenefitGrantUpdated?: (
-		payload: WebhookBenefitGrantUpdatedPayload,
+		payload: webhooks.WebhookBenefitGrantUpdatedPayload,
 	) => Promise<void>;
 	onBenefitGrantRevoked?: (
-		payload: WebhookBenefitGrantRevokedPayload,
+		payload: webhooks.WebhookBenefitGrantRevokedPayload,
 	) => Promise<void>;
-	onCustomerCreated?: (payload: WebhookCustomerCreatedPayload) => Promise<void>;
-	onCustomerUpdated?: (payload: WebhookCustomerUpdatedPayload) => Promise<void>;
-	onCustomerDeleted?: (payload: WebhookCustomerDeletedPayload) => Promise<void>;
+	onCustomerCreated?: (
+		payload: webhooks.WebhookCustomerCreatedPayload,
+	) => Promise<void>;
+	onCustomerUpdated?: (
+		payload: webhooks.WebhookCustomerUpdatedPayload,
+	) => Promise<void>;
+	onCustomerDeleted?: (
+		payload: webhooks.WebhookCustomerDeletedPayload,
+	) => Promise<void>;
 	onCustomerStateChanged?: (
-		payload: WebhookCustomerStateChangedPayload,
+		payload: webhooks.WebhookCustomerStateChangedPayload,
 	) => Promise<void>;
 }
 
 export const handleWebhookPayload = async (
-	payload: ReturnType<typeof validateEvent>,
+	payload: webhooks.WebhookPayload,
 	{ webhookSecret, entitlements, onPayload, ...eventHandlers }: WebhooksConfig,
 ) => {
 	const promises: Promise<void>[] = [];

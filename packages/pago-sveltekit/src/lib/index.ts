@@ -1,11 +1,9 @@
-import { Pago } from "@pago-sh/sdk";
-import {
-	WebhookVerificationError,
-	validateEvent,
-} from "@pago-sh/sdk/webhooks";
+import { PagoWebhookVerificationError } from "@pago-sh/sdk";
+import { webhooks } from "@pago-sh/sdk/2026-04";
 import type { RequestEvent } from "@sveltejs/kit";
 import {
 	type WebhooksConfig,
+	createPagoClient,
 	handleWebhookPayload,
 } from "@pago-sh/adapter-utils";
 
@@ -37,7 +35,7 @@ export const Checkout = ({
 	theme,
 	includeCheckoutId = true,
 }: CheckoutConfig): CheckoutHandler => {
-	const pago = new Pago({ accessToken, server });
+	const pago = createPagoClient({ accessToken, server });
 
 	return async (event) => {
 		const url = new URL(event.request.url);
@@ -63,29 +61,29 @@ export const Checkout = ({
 		try {
 			const result = await pago.checkouts.create({
 				products,
-				successUrl: success ? decodeURI(success.toString()) : undefined,
-				customerId: url.searchParams.get("customerId") ?? undefined,
-				externalCustomerId:
+				success_url: success ? decodeURI(success.toString()) : undefined,
+				customer_id: url.searchParams.get("customerId") ?? undefined,
+				external_customer_id:
 					url.searchParams.get("customerExternalId") ?? undefined,
-				customerEmail: url.searchParams.get("customerEmail") ?? undefined,
-				customerName: url.searchParams.get("customerName") ?? undefined,
-				customerBillingAddress: url.searchParams.has("customerBillingAddress")
+				customer_email: url.searchParams.get("customerEmail") ?? undefined,
+				customer_name: url.searchParams.get("customerName") ?? undefined,
+				customer_billing_address: url.searchParams.has("customerBillingAddress")
 					? JSON.parse(url.searchParams.get("customerBillingAddress") ?? "{}")
 					: undefined,
-				customerTaxId: url.searchParams.get("customerTaxId") ?? undefined,
-				customerIpAddress:
+				customer_tax_id: url.searchParams.get("customerTaxId") ?? undefined,
+				customer_ip_address:
 					url.searchParams.get("customerIpAddress") ?? undefined,
-				customerMetadata: url.searchParams.has("customerMetadata")
+				customer_metadata: url.searchParams.has("customerMetadata")
 					? JSON.parse(url.searchParams.get("customerMetadata") ?? "{}")
 					: undefined,
-				allowDiscountCodes: url.searchParams.has("allowDiscountCodes")
+				allow_discount_codes: url.searchParams.has("allowDiscountCodes")
 					? url.searchParams.get("allowDiscountCodes") === "true"
 					: undefined,
-				discountId: url.searchParams.get("discountId") ?? undefined,
+				discount_id: url.searchParams.get("discountId") ?? undefined,
 				metadata: url.searchParams.has("metadata")
 					? JSON.parse(url.searchParams.get("metadata") ?? "{}")
 					: undefined,
-				returnUrl: retUrl ? decodeURI(retUrl.toString()) : undefined,
+				return_url: retUrl ? decodeURI(retUrl.toString()) : undefined,
 			});
 
 			const redirectUrl = new URL(result.url);
@@ -109,17 +107,17 @@ type CustomerPortalBaseConfig = {
 	accessToken: string;
 	server?: "sandbox" | "production";
 	returnUrl?: string;
-}
+};
 
 type CustomerPortalCustomerIdConfig = CustomerPortalBaseConfig & {
 	getCustomerId: (event: RequestEvent) => Promise<string>;
 	getExternalCustomerId?: never;
-}
+};
 
 type CustomerPortalExternalCustomerIdConfig = CustomerPortalBaseConfig & {
 	getCustomerId?: never;
 	getExternalCustomerId: (event: RequestEvent) => Promise<string>;
-}
+};
 
 function configIsExternalCustomerIdConfig(
 	config: CustomerPortalConfig,
@@ -127,23 +125,25 @@ function configIsExternalCustomerIdConfig(
 	return typeof config.getExternalCustomerId === "function";
 }
 
-export type CustomerPortalConfig = CustomerPortalCustomerIdConfig | CustomerPortalExternalCustomerIdConfig;
+export type CustomerPortalConfig =
+	| CustomerPortalCustomerIdConfig
+	| CustomerPortalExternalCustomerIdConfig;
 
-export const CustomerPortal = (config: CustomerPortalConfig): CustomerPortalHandler => {
-	const {
-		accessToken,
-		server,
-		returnUrl,
-	} = config;
+export const CustomerPortal = (
+	config: CustomerPortalConfig,
+): CustomerPortalHandler => {
+	const { accessToken, server, returnUrl } = config;
 
-	const pago = new Pago({
+	const pago = createPagoClient({
 		accessToken,
 		server,
 	});
-	
+
 	return async (event) => {
 		try {
-			const decodedReturnUrl = returnUrl ? decodeURI(new URL(returnUrl, event.url).toString()) : undefined
+			const decodedReturnUrl = returnUrl
+				? decodeURI(new URL(returnUrl, event.url).toString())
+				: undefined;
 
 			if (configIsExternalCustomerIdConfig(config)) {
 				const externalCustomerId = await config.getExternalCustomerId(event);
@@ -155,11 +155,12 @@ export const CustomerPortal = (config: CustomerPortalConfig): CustomerPortalHand
 					);
 				}
 
-				const { customerPortalUrl } = await pago.customerSessions.create({
-					returnUrl: decodedReturnUrl,
-					externalCustomerId,
-				});
-				
+				const { customer_portal_url: customerPortalUrl } =
+					await pago.customerSessions.create({
+						return_url: decodedReturnUrl,
+						external_customer_id: externalCustomerId,
+					});
+
 				return new Response(null, {
 					status: 302,
 					headers: { Location: customerPortalUrl },
@@ -175,10 +176,11 @@ export const CustomerPortal = (config: CustomerPortalConfig): CustomerPortalHand
 				);
 			}
 
-			const { customerPortalUrl } = await pago.customerSessions.create({
-				returnUrl: decodedReturnUrl,
-				customerId,
-			});
+			const { customer_portal_url: customerPortalUrl } =
+				await pago.customerSessions.create({
+					return_url: decodedReturnUrl,
+					customer_id: customerId,
+				});
 
 			return new Response(null, {
 				status: 302,
@@ -209,13 +211,13 @@ export const Webhooks = ({
 		let webhookPayload: any;
 
 		try {
-			webhookPayload = validateEvent(
+			webhookPayload = await webhooks.validateEvent(
 				requestBody,
 				webhookHeaders,
 				webhookSecret,
 			);
 		} catch (error) {
-			if (error instanceof WebhookVerificationError) {
+			if (error instanceof PagoWebhookVerificationError) {
 				return new Response(JSON.stringify({ received: false }), {
 					status: 403,
 				});

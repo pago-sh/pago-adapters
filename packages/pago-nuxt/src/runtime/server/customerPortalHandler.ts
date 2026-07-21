@@ -1,4 +1,4 @@
-import { Pago } from "@pago-sh/sdk";
+import { createPagoClient } from "@pago-sh/adapter-utils";
 import { createError, sendRedirect } from "h3";
 import type { H3Event } from "h3";
 
@@ -31,17 +31,17 @@ export const CustomerPortal = ({
 		}
 
 		try {
-			const pago = new Pago({
+			const pago = createPagoClient({
 				accessToken,
 				server,
 			});
 
 			const result = await pago.customerSessions.create({
-				customerId,
-				returnUrl: retUrl ? decodeURI(retUrl.toString()) : undefined,
+				customer_id: customerId,
+				return_url: retUrl ? decodeURI(retUrl.toString()) : undefined,
 			});
 
-			return sendRedirect(event, result.customerPortalUrl);
+			return sendRedirect(event, result.customer_portal_url);
 		} catch (error) {
 			console.error("Falha ao redirecionar para o portal do cliente", error);
 			throw createError({

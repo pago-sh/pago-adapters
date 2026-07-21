@@ -127,7 +127,7 @@ describe("usage plugin", () => {
 			await handler(ctx);
 
 			expect(mockClient.customerSessions.create).toHaveBeenCalledWith({
-				externalCustomerId: "user-123",
+				external_customer_id: "user-123",
 			});
 
 			expect(

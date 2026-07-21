@@ -193,7 +193,9 @@ describe("customer hooks", () => {
 
 			const mockUser = createMockUser();
 
-			vi.mocked(mockClient.customers.create).mockRejectedValue("Erro desconhecido");
+			vi.mocked(mockClient.customers.create).mockRejectedValue(
+				"Erro desconhecido",
+			);
 
 			const ctx = { context: { logger: { error: vi.fn() } } } as any;
 			const hook = onBeforeUserCreate(options);
@@ -266,7 +268,7 @@ describe("customer hooks", () => {
 			expect(mockClient.customers.update).toHaveBeenCalledWith({
 				id: "customer-456",
 				customerUpdate: {
-					externalId: "user-123",
+					external_id: "user-123",
 				},
 			});
 		});
@@ -309,7 +311,7 @@ describe("customer hooks", () => {
 			expect(mockClient.customers.update).toHaveBeenCalledWith({
 				id: "customer-456",
 				customerUpdate: {
-					externalId: "user-123",
+					external_id: "user-123",
 				},
 			});
 		});
@@ -407,7 +409,9 @@ describe("customer hooks", () => {
 
 			const mockUser = createMockUser();
 
-			vi.mocked(mockClient.customers.list).mockRejectedValue("Erro desconhecido");
+			vi.mocked(mockClient.customers.list).mockRejectedValue(
+				"Erro desconhecido",
+			);
 
 			const ctx = { context: { logger: { error: vi.fn() } } } as any;
 			const hook = onAfterUserCreate(options);
@@ -445,7 +449,7 @@ describe("customer hooks", () => {
 			await hook(mockUser, ctx);
 
 			expect(mockClient.customers.updateExternal).toHaveBeenCalledWith({
-				externalId: "user-123",
+				external_id: "user-123",
 				customerUpdateExternalID: {
 					email: "updated@example.com",
 					name: "Usuário atualizado",

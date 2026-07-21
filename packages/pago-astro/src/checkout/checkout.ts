@@ -1,4 +1,4 @@
-import { Pago } from "@pago-sh/sdk";
+import { createPagoClient } from "@pago-sh/adapter-utils";
 import type { APIRoute } from "astro";
 
 export interface CheckoutConfig {
@@ -24,7 +24,7 @@ export const Checkout = ({
 			accessToken = getSecret("PAGO_ACCESS_TOKEN");
 		}
 
-		const pago = new Pago({
+		const pago = createPagoClient({
 			accessToken,
 			server,
 		});
@@ -49,32 +49,32 @@ export const Checkout = ({
 		try {
 			const result = await pago.checkouts.create({
 				products,
-				successUrl: success ? decodeURI(success.toString()) : undefined,
-				customerId: url.searchParams.get("customerId") ?? undefined,
-				externalCustomerId:
+				success_url: success ? decodeURI(success.toString()) : undefined,
+				customer_id: url.searchParams.get("customerId") ?? undefined,
+				external_customer_id:
 					url.searchParams.get("customerExternalId") ?? undefined,
-				customerEmail: url.searchParams.get("customerEmail") ?? undefined,
-				customerName: url.searchParams.get("customerName") ?? undefined,
-				customerBillingAddress: url.searchParams.has("customerBillingAddress")
+				customer_email: url.searchParams.get("customerEmail") ?? undefined,
+				customer_name: url.searchParams.get("customerName") ?? undefined,
+				customer_billing_address: url.searchParams.has("customerBillingAddress")
 					? JSON.parse(url.searchParams.get("customerBillingAddress") ?? "{}")
 					: undefined,
-				customerTaxId: url.searchParams.get("customerTaxId") ?? undefined,
-				customerIpAddress:
+				customer_tax_id: url.searchParams.get("customerTaxId") ?? undefined,
+				customer_ip_address:
 					url.searchParams.get("customerIpAddress") ?? undefined,
-				customerMetadata: url.searchParams.has("customerMetadata")
+				customer_metadata: url.searchParams.has("customerMetadata")
 					? JSON.parse(url.searchParams.get("customerMetadata") ?? "{}")
 					: undefined,
-				allowDiscountCodes: url.searchParams.has("allowDiscountCodes")
+				allow_discount_codes: url.searchParams.has("allowDiscountCodes")
 					? url.searchParams.get("allowDiscountCodes") === "true"
 					: undefined,
-				discountId: url.searchParams.get("discountId") ?? undefined,
+				discount_id: url.searchParams.get("discountId") ?? undefined,
 				metadata: url.searchParams.has("metadata")
 					? JSON.parse(url.searchParams.get("metadata") ?? "{}")
 					: undefined,
 				seats: url.searchParams.has("seats")
 					? Number.parseInt(url.searchParams.get("seats") ?? "1", 10)
 					: undefined,
-				returnUrl: retUrl ? decodeURI(retUrl.toString()) : undefined,
+				return_url: retUrl ? decodeURI(retUrl.toString()) : undefined,
 			});
 
 			const redirectUrl = new URL(result.url);
@@ -86,7 +86,10 @@ export const Checkout = ({
 			return Response.redirect(redirectUrl.toString());
 		} catch (error) {
 			console.error(error);
-			return Response.json({ error: "Erro interno do servidor" }, { status: 500 });
+			return Response.json(
+				{ error: "Erro interno do servidor" },
+				{ status: 500 },
+			);
 		}
 	};
 };

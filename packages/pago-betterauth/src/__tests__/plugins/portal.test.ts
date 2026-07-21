@@ -79,7 +79,7 @@ describe("portal plugin", () => {
 		it("should create customer portal session and return URL", async () => {
 			const mockSession = {
 				token: "session-token-123",
-				customerPortalUrl: "https://pago.sh/portal/session-123",
+				customer_portal_url: "https://pago.sh/portal/session-123",
 			};
 
 			vi.mocked(mockClient.customerSessions.create).mockResolvedValue(
@@ -96,7 +96,7 @@ describe("portal plugin", () => {
 			await handler(ctx);
 
 			expect(mockClient.customerSessions.create).toHaveBeenCalledWith({
-				externalCustomerId: "user-123",
+				external_customer_id: "user-123",
 			});
 
 			expect(ctx.json).toHaveBeenCalledWith({
@@ -118,7 +118,7 @@ describe("portal plugin", () => {
 		it("should return redirect: false when body param is false (POST)", async () => {
 			const mockSession = {
 				token: "session-token-123",
-				customerPortalUrl: "https://pago.sh/portal/session-123",
+				customer_portal_url: "https://pago.sh/portal/session-123",
 			};
 
 			vi.mocked(mockClient.customerSessions.create).mockResolvedValue(
@@ -144,7 +144,7 @@ describe("portal plugin", () => {
 		it("should return redirect: true when body param is true (POST)", async () => {
 			const mockSession = {
 				token: "session-token-123",
-				customerPortalUrl: "https://pago.sh/portal/session-123",
+				customer_portal_url: "https://pago.sh/portal/session-123",
 			};
 
 			vi.mocked(mockClient.customerSessions.create).mockResolvedValue(
@@ -194,7 +194,7 @@ describe("portal plugin", () => {
 
 			const mockSession = {
 				token: "session-token-123",
-				customerPortalUrl: "https://pago.sh/portal/session-123",
+				customer_portal_url: "https://pago.sh/portal/session-123",
 			};
 
 			vi.mocked(mockClient.customerSessions.create).mockResolvedValue(
@@ -223,7 +223,7 @@ describe("portal plugin", () => {
 
 			const mockSession = {
 				token: "session-token-123",
-				customerPortalUrl: "https://pago.sh/portal/session-123",
+				customer_portal_url: "https://pago.sh/portal/session-123",
 			};
 
 			vi.mocked(mockClient.customerSessions.create).mockResolvedValue(
@@ -252,7 +252,7 @@ describe("portal plugin", () => {
 
 			const mockSession = {
 				token: "session-token-123",
-				customerPortalUrl: "https://pago.sh/portal/session-123",
+				customer_portal_url: "https://pago.sh/portal/session-123",
 			};
 
 			vi.mocked(mockClient.customerSessions.create).mockResolvedValue(
@@ -281,7 +281,7 @@ describe("portal plugin", () => {
 
 			const mockSession = {
 				token: "session-token-123",
-				customerPortalUrl: "https://pago.sh/portal/session-123?foo=bar",
+				customer_portal_url: "https://pago.sh/portal/session-123?foo=bar",
 			};
 
 			vi.mocked(mockClient.customerSessions.create).mockResolvedValue(
@@ -406,7 +406,7 @@ describe("portal plugin", () => {
 			await handler(ctx);
 
 			expect(mockClient.customerSessions.create).toHaveBeenCalledWith({
-				externalCustomerId: "user-123",
+				external_customer_id: "user-123",
 			});
 
 			expect(mockClient.customerPortal.benefitGrants.list).toHaveBeenCalledWith(
@@ -562,9 +562,7 @@ describe("portal plugin", () => {
 				query: {},
 			};
 
-			await expect(handler(ctx)).rejects.toThrow(
-				"Falha ao listar assinaturas",
-			);
+			await expect(handler(ctx)).rejects.toThrow("Falha ao listar assinaturas");
 		});
 	});
 

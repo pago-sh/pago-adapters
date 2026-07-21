@@ -1,8 +1,11 @@
-vi.mock("@pago-sh/sdk/webhooks", async (importOriginal) => {
+vi.mock("@pago-sh/sdk/2026-04", async (importOriginal) => {
+	const actual = await importOriginal<typeof import("@pago-sh/sdk/2026-04")>();
 	return {
-		...(await importOriginal()),
-		WebhookVerificationError: vi.fn(),
-		validateEvent: vi.fn((v) => JSON.parse(v)),
+		...actual,
+		webhooks: {
+			...actual.webhooks,
+			validateEvent: vi.fn((v: string) => JSON.parse(v)),
+		},
 	};
 });
 
@@ -81,7 +84,7 @@ describe("Middleware de webhooks", () => {
 		expect(response).toBeInstanceOf(Response);
 		expect((response as Response).status).toBe(405);
 		expect(await (response as Response).json()).toEqual({
-			message: "Method not allowed",
+			message: "Método não permitido",
 		});
 	});
 });

@@ -17,9 +17,7 @@ export const pago = <O extends PagoOptions>(options: O) => {
 
 	return {
 		id: "pago",
-		endpoints: {
-			...plugins,
-		},
+		endpoints: { ...plugins } as PagoEndpoints,
 		init() {
 			return {
 				options: {

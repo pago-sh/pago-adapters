@@ -1,4 +1,4 @@
-import { Pago } from "@pago-sh/sdk";
+import { createPagoClient } from "@pago-sh/adapter-utils";
 import type { FastifyReply, FastifyRequest, RouteHandler } from "fastify";
 export interface CustomerPortalConfig {
 	accessToken?: string;
@@ -13,7 +13,7 @@ export const CustomerPortal = ({
 	getCustomerId,
 	returnUrl,
 }: CustomerPortalConfig): RouteHandler => {
-	const pago = new Pago({
+	const pago = createPagoClient({
 		accessToken: accessToken ?? process.env["PAGO_ACCESS_TOKEN"],
 		server,
 	});
@@ -29,11 +29,11 @@ export const CustomerPortal = ({
 
 		try {
 			const result = await pago.customerSessions.create({
-				customerId,
-				returnUrl: retUrl ? decodeURI(retUrl.toString()) : undefined,
+				customer_id: customerId,
+				return_url: retUrl ? decodeURI(retUrl.toString()) : undefined,
 			});
 
-			return reply.redirect(result.customerPortalUrl);
+			return reply.redirect(result.customer_portal_url);
 		} catch (error) {
 			console.error(error);
 			return reply.status(500).send({ error: "Erro interno do servidor" });

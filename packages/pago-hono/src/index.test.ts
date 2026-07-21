@@ -3,32 +3,27 @@ const mockCustomerPortalUrl = "https://mock-customer-portal-url.com";
 const mockCheckoutUrl = "https://mock-checkout-url.com";
 const mockSessionCreate = vi
 	.fn()
-	.mockResolvedValue({ customerPortalUrl: mockCustomerPortalUrl });
+	.mockResolvedValue({ customer_portal_url: mockCustomerPortalUrl });
 const mockCheckoutCreate = vi.fn().mockResolvedValue({ url: mockCheckoutUrl });
 
 // Mock the module before any imports
-vi.mock("@pago-sh/sdk", async (importOriginal) => {
-	class Pago {
-		customerSessions = {
-			create: mockSessionCreate,
-		};
-
-		checkouts = {
-			create: mockCheckoutCreate,
-		};
-	}
-
+vi.mock("@pago-sh/sdk/2026-04", async (importOriginal) => {
+	const actual = await importOriginal<typeof import("@pago-sh/sdk/2026-04")>();
 	return {
-		...(await importOriginal()),
-		Pago,
-	};
-});
+		...actual,
+		webhooks: {
+			...actual.webhooks,
+			validateEvent: vi.fn((v: string) => JSON.parse(v)),
+		},
+		createPago: vi.fn(() => ({
+			customerSessions: {
+				create: mockSessionCreate,
+			},
 
-vi.mock("@pago-sh/sdk/webhooks", async (importOriginal) => {
-	return {
-		...(await importOriginal()),
-		WebhookVerificationError: vi.fn(),
-		validateEvent: vi.fn((v) => JSON.parse(v)),
+			checkouts: {
+				create: mockCheckoutCreate,
+			},
+		})),
 	};
 });
 
@@ -97,7 +92,7 @@ describe("Middleware do portal do cliente", () => {
 
 		const res = await app.request("/");
 		expect(res.status).toBe(400);
-		expect(await res.json()).toEqual({ error: "customerId not defined" });
+		expect(await res.json()).toEqual({ error: "customerId não definido" });
 	});
 });
 

@@ -1,8 +1,11 @@
-vi.mock("@pago-sh/sdk/webhooks", async (importOriginal) => {
+vi.mock("@pago-sh/sdk/2026-04", async (importOriginal) => {
+	const actual = await importOriginal<typeof import("@pago-sh/sdk/2026-04")>();
 	return {
-		...(await importOriginal()),
-		WebhookVerificationError: vi.fn(),
-		validateEvent: vi.fn((v) => JSON.parse(v)),
+		...actual,
+		webhooks: {
+			...actual.webhooks,
+			validateEvent: vi.fn((v: string) => JSON.parse(v)),
+		},
 	};
 });
 

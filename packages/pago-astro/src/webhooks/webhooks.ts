@@ -2,10 +2,8 @@ import {
 	type WebhooksConfig,
 	handleWebhookPayload,
 } from "@pago-sh/adapter-utils";
-import {
-	WebhookVerificationError,
-	validateEvent,
-} from "@pago-sh/sdk/webhooks";
+import { PagoWebhookVerificationError } from "@pago-sh/sdk";
+import { webhooks } from "@pago-sh/sdk/2026-04";
 import type { APIRoute } from "astro";
 
 export {
@@ -24,7 +22,10 @@ export const Webhooks = ({
 }: WebhooksConfig): APIRoute => {
 	return async ({ request }) => {
 		if (request.method !== "POST") {
-			return Response.json({ message: "Método não permitido" }, { status: 405 });
+			return Response.json(
+				{ message: "Método não permitido" },
+				{ status: 405 },
+			);
 		}
 
 		const requestBody = await request.text();
@@ -35,20 +36,23 @@ export const Webhooks = ({
 			"webhook-signature": request.headers.get("webhook-signature") ?? "",
 		};
 
-		let webhookPayload: ReturnType<typeof validateEvent>;
+		let webhookPayload: webhooks.WebhookPayload;
 		try {
-			webhookPayload = validateEvent(
+			webhookPayload = await webhooks.validateEvent(
 				requestBody,
 				webhookHeaders,
 				webhookSecret,
 			);
 		} catch (error) {
 			console.log(error);
-			if (error instanceof WebhookVerificationError) {
+			if (error instanceof PagoWebhookVerificationError) {
 				return Response.json({ received: false }, { status: 403 });
 			}
 
-			return Response.json({ error: "Erro interno do servidor" }, { status: 500 });
+			return Response.json(
+				{ error: "Erro interno do servidor" },
+				{ status: 500 },
+			);
 		}
 
 		await handleWebhookPayload(webhookPayload, {

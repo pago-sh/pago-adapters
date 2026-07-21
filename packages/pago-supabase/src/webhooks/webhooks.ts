@@ -2,10 +2,8 @@ import {
 	type WebhooksConfig,
 	handleWebhookPayload,
 } from "@pago-sh/adapter-utils";
-import {
-	WebhookVerificationError,
-	validateEvent,
-} from "@pago-sh/sdk/webhooks";
+import { PagoWebhookVerificationError } from "@pago-sh/sdk";
+import { webhooks } from "@pago-sh/sdk/2026-04";
 
 export {
 	type EntitlementContext,
@@ -30,15 +28,15 @@ export const Webhooks = ({
 			"webhook-signature": request.headers.get("webhook-signature") ?? "",
 		};
 
-		let webhookPayload: ReturnType<typeof validateEvent>;
+		let webhookPayload: webhooks.WebhookPayload;
 		try {
-			webhookPayload = validateEvent(
+			webhookPayload = await webhooks.validateEvent(
 				requestBody,
 				webhookHeaders,
 				webhookSecret,
 			);
 		} catch (error) {
-			if (error instanceof WebhookVerificationError) {
+			if (error instanceof PagoWebhookVerificationError) {
 				return new Response(JSON.stringify({ received: false }), {
 					status: 403,
 					headers: { "Content-Type": "application/json" },

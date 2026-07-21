@@ -3,24 +3,23 @@ const mockCustomerPortalUrl = "https://mock-customer-portal-url.com";
 const mockCheckoutUrl = "https://mock-checkout-url.com/";
 const mockSessionCreate = vi
 	.fn()
-	.mockResolvedValue({ customerPortalUrl: mockCustomerPortalUrl });
+	.mockResolvedValue({ customer_portal_url: mockCustomerPortalUrl });
 const mockCheckoutCreate = vi.fn(() => ({ url: mockCheckoutUrl }));
 
 // Mock the module before any imports
-vi.mock("@pago-sh/sdk", async (importOriginal) => {
-	class Pago {
-		customerSessions = {
-			create: mockSessionCreate,
-		};
-
-		checkouts = {
-			create: mockCheckoutCreate,
-		};
-	}
-
+vi.mock("@pago-sh/sdk/2026-04", async (importOriginal) => {
+	const actual = await importOriginal<typeof import("@pago-sh/sdk/2026-04")>();
 	return {
-		...(await importOriginal()),
-		Pago,
+		...actual,
+		createPago: vi.fn(() => ({
+			customerSessions: {
+				create: mockSessionCreate,
+			},
+
+			checkouts: {
+				create: mockCheckoutCreate,
+			},
+		})),
 	};
 });
 
@@ -63,7 +62,7 @@ describe("Middleware de checkout", () => {
 
 		expect(response.statusCode).toBe(400);
 		expect(response.json()).toEqual({
-			error: "Produtos ausentes nos parâmetros da query",
+			error: "Produtos ausentes nos parâmetros de consulta",
 		});
 	});
 });

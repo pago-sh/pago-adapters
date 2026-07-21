@@ -1,4 +1,4 @@
-import { Pago } from "@pago-sh/sdk";
+import { createPagoClient } from "@pago-sh/adapter-utils";
 import type { APIRoute } from "astro";
 
 export interface CustomerPortalConfig {
@@ -20,7 +20,7 @@ export const CustomerPortal = ({
 			accessToken = getSecret("PAGO_ACCESS_TOKEN");
 		}
 
-		const pago = new Pago({
+		const pago = createPagoClient({
 			accessToken,
 			server,
 		});
@@ -38,14 +38,17 @@ export const CustomerPortal = ({
 
 		try {
 			const result = await pago.customerSessions.create({
-				customerId,
-				returnUrl: retUrl ? decodeURI(retUrl.toString()) : undefined,
+				customer_id: customerId,
+				return_url: retUrl ? decodeURI(retUrl.toString()) : undefined,
 			});
 
-			return Response.redirect(result.customerPortalUrl);
+			return Response.redirect(result.customer_portal_url);
 		} catch (error) {
 			console.error(error);
-			return Response.json({ error: "Erro interno do servidor" }, { status: 500 });
+			return Response.json(
+				{ error: "Erro interno do servidor" },
+				{ status: 500 },
+			);
 		}
 	};
 };

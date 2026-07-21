@@ -3,13 +3,17 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mockCustomerSessionCreate = vi.fn();
 
-vi.mock("@pago-sh/sdk", () => ({
-	Pago: vi.fn().mockImplementation(() => ({
-		customerSessions: {
-			create: mockCustomerSessionCreate,
-		},
-	})),
-}));
+vi.mock("@pago-sh/sdk/2026-04", async (importOriginal) => {
+	const actual = await importOriginal<typeof import("@pago-sh/sdk/2026-04")>();
+	return {
+		...actual,
+		createPago: vi.fn(() => ({
+			customerSessions: {
+				create: mockCustomerSessionCreate,
+			},
+		})),
+	};
+});
 
 import { CustomerPortal } from "./customerPortal";
 
@@ -46,7 +50,7 @@ describe("CustomerPortal", () => {
 			const data = await response.json();
 
 			expect(response.status).toBe(400);
-			expect(data.error).toBe("customerId not defined");
+			expect(data.error).toBe("customerId não definido");
 			expect(getCustomerId).toHaveBeenCalledWith(request);
 		});
 
@@ -63,13 +67,13 @@ describe("CustomerPortal", () => {
 			const data = await response.json();
 
 			expect(response.status).toBe(400);
-			expect(data.error).toBe("customerId not defined");
+			expect(data.error).toBe("customerId não definido");
 		});
 
 		it("should create customer session and redirect when customerId is valid", async () => {
 			const getCustomerId = vi.fn().mockResolvedValue("cust_123");
 			mockCustomerSessionCreate.mockResolvedValue({
-				customerPortalUrl: "https://pago.sh/portal/session_123",
+				customer_portal_url: "https://pago.sh/portal/session_123",
 			});
 
 			const portal = CustomerPortal({
@@ -83,7 +87,7 @@ describe("CustomerPortal", () => {
 
 			expect(getCustomerId).toHaveBeenCalledWith(request);
 			expect(mockCustomerSessionCreate).toHaveBeenCalledWith({
-				customerId: "cust_123",
+				customer_id: "cust_123",
 			});
 			expect(response.status).toBe(307);
 			expect(response.headers.get("location")).toBe(
@@ -120,7 +124,7 @@ describe("CustomerPortal", () => {
 			});
 
 			mockCustomerSessionCreate.mockResolvedValue({
-				customerPortalUrl: "https://pago.sh/portal/session_456",
+				customer_portal_url: "https://pago.sh/portal/session_456",
 			});
 
 			const portal = CustomerPortal({
@@ -136,13 +140,15 @@ describe("CustomerPortal", () => {
 
 			expect(getCustomerId).toHaveBeenCalledWith(request);
 			expect(mockCustomerSessionCreate).toHaveBeenCalledWith({
-				customerId: "user_456",
+				customer_id: "user_456",
 			});
 			expect(response.status).toBe(307);
 		});
 
 		it("should handle getCustomerId throwing an error", async () => {
-			const getCustomerId = vi.fn().mockRejectedValue(new Error("Erro de autenticação"));
+			const getCustomerId = vi
+				.fn()
+				.mockRejectedValue(new Error("Erro de autenticação"));
 			const consoleSpy = vi
 				.spyOn(console, "error")
 				.mockImplementation(() => {});

@@ -1,5 +1,4 @@
-import type { Pago } from "@pago-sh/sdk";
-
+import type { Pago } from "@pago-sh/sdk/2026-04";
 import type { UnionToIntersection, User } from "better-auth";
 import type { checkout } from "./plugins/checkout";
 import type { portal } from "./plugins/portal";
